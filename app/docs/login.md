@@ -24,4 +24,23 @@
 - 前台：首页 + 登录/注册页
 
 启动：`php artisan serve` + `npm run dev`
+————————————————————————————————————————————————————————————
+角色管理模块已按 `auth_role` 表生成，接口与页面可用。
 
+### 后端
+- 迁移 / 模型：`auth_role` · `AuthRole`
+- 枚举：`RoleType` / `DataScope` / `RoleStatus`
+- 错误码：`AuthRoleError` + `CodePrefix::AUTH_ROLE = 810`
+- 能力：分页 CRUD、排序、启停；系统角色不可删、不可改 `role_code`
+
+| 接口 | 说明 |
+|---|---|
+| `GET /backend/api/roles` | 列表（关键词/类型/状态/数据权限） |
+| `POST/PUT/PATCH/DELETE ...` | 增改删 / 排序 / 状态 |
+
+### 前端
+- 页面：`/backend/roles`
+- 侧栏入口：权限菜单分类管理 → 角色管理
+- 支持数据权限「自定义部门」时填写部门 ID
+
+默认种子角色：`super_admin`（超级管理员）、`admin`（管理员）。

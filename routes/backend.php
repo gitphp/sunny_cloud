@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\backend\AuthController;
 use App\Http\Controllers\backend\AuthMenuController;
+use App\Http\Controllers\backend\AuthRoleController;
 use App\Http\Controllers\backend\CategoryController;
 use App\Http\Controllers\backend\IndexController;
 use App\Http\Controllers\backend\UserAccountController;
@@ -39,6 +40,14 @@ Route::prefix('backend')->group(function () {
             Route::patch('menus/{authMenu}/sort', [AuthMenuController::class, 'updateSort']);
             Route::patch('menus/{authMenu}/status', [AuthMenuController::class, 'updateStatus']);
             Route::delete('menus/{authMenu}', [AuthMenuController::class, 'destroy']);
+
+            Route::get('roles', [AuthRoleController::class, 'index']);
+            Route::post('roles', [AuthRoleController::class, 'store']);
+            Route::get('roles/{authRole}', [AuthRoleController::class, 'show']);
+            Route::put('roles/{authRole}', [AuthRoleController::class, 'update']);
+            Route::patch('roles/{authRole}/sort', [AuthRoleController::class, 'updateSort']);
+            Route::patch('roles/{authRole}/status', [AuthRoleController::class, 'updateStatus']);
+            Route::delete('roles/{authRole}', [AuthRoleController::class, 'destroy']);
         });
     });
 

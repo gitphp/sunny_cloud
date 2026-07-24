@@ -41,6 +41,14 @@ class AuthMenuSeeder extends Seeder
                         'menu_sort' => 20,
                     ],
                     [
+                        'menu_name' => '角色管理',
+                        'menu_icon' => '',
+                        'menu_path' => '/backend/roles',
+                        'component' => 'roles/Index',
+                        'permission_code' => 'role.view',
+                        'menu_sort' => 15,
+                    ],
+                    [
                         'menu_name' => '菜单管理',
                         'menu_icon' => '',
                         'menu_path' => '/backend/menus',

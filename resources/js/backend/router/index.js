@@ -58,6 +58,12 @@ const routes = [
                 meta: { title: '菜单管理', parent: '权限菜单分类管理' },
             },
             {
+                path: 'roles',
+                name: 'roles',
+                component: () => import('@backend/views/roles/Index.vue'),
+                meta: { title: '角色管理', parent: '权限菜单分类管理' },
+            },
+            {
                 path: 'permissions',
                 name: 'permissions',
                 component: () => import('@backend/views/Placeholder.vue'),

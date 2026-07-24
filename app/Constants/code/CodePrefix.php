@@ -30,4 +30,7 @@ class CodePrefix
 
     /** 菜单管理 */
     public const AUTH_MENU = 800;
+
+    /** 角色管理 */
+    public const AUTH_ROLE = 810;
 }

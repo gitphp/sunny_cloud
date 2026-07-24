@@ -12,6 +12,7 @@ export const adminMenus = [
     children: [
       { key: 'permissions-list', title: '权限', path: '/backend/permissions' },
       { key: 'menus-list', title: '菜单管理', path: '/backend/menus' },
+      { key: 'roles-list', title: '角色管理', path: '/backend/roles' },
     ],
   },
   {

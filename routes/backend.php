@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\backend\AuthController;
 use App\Http\Controllers\backend\AuthMenuController;
+use App\Http\Controllers\backend\AuthPermissionController;
 use App\Http\Controllers\backend\AuthRoleController;
 use App\Http\Controllers\backend\CategoryController;
 use App\Http\Controllers\backend\IndexController;
@@ -48,6 +49,14 @@ Route::prefix('backend')->group(function () {
             Route::patch('roles/{authRole}/sort', [AuthRoleController::class, 'updateSort']);
             Route::patch('roles/{authRole}/status', [AuthRoleController::class, 'updateStatus']);
             Route::delete('roles/{authRole}', [AuthRoleController::class, 'destroy']);
+
+            Route::get('permissions/tree', [AuthPermissionController::class, 'tree']);
+            Route::get('permissions', [AuthPermissionController::class, 'index']);
+            Route::post('permissions', [AuthPermissionController::class, 'store']);
+            Route::put('permissions/{authPermission}', [AuthPermissionController::class, 'update']);
+            Route::patch('permissions/{authPermission}/sort', [AuthPermissionController::class, 'updateSort']);
+            Route::patch('permissions/{authPermission}/status', [AuthPermissionController::class, 'updateStatus']);
+            Route::delete('permissions/{authPermission}', [AuthPermissionController::class, 'destroy']);
         });
     });
 

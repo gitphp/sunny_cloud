@@ -44,3 +44,23 @@
 - 支持数据权限「自定义部门」时填写部门 ID
 
 默认种子角色：`super_admin`（超级管理员）、`admin`（管理员）。
+———————————————————————————————————————————————————————————————
+权限模块已按 `auth_permissions` 表生成，接口与页面可用。
+
+### 后端
+- 迁移 / 模型：`auth_permissions` · `AuthPermission`
+- 枚举：`PermissionType`（menu/button/api）· `PermissionStatus`
+- 错误码：`AuthPermissionError` + `CodePrefix::AUTH_PERMISSION = 820`
+- 能力：树形 CRUD、排序、启停；`api` 类型强制 HTTP 方法；有子节点不可删
+
+| 接口 | 说明 |
+|---|---|
+| `GET /backend/api/permissions` | 管理树（可按关键词/类型筛选） |
+| `GET /backend/api/permissions/tree` | 启用权限树（供角色授权） |
+| `POST/PUT/PATCH/DELETE ...` | 增改删 / 排序 / 状态 |
+
+### 前端
+- 页面：`/backend/permissions`（树表 + 类型筛选）
+- 侧栏：权限菜单分类管理 → 权限管理
+
+库中已有 47 条权限数据；种子会补齐菜单入口并在空表时写入用户/角色/菜单/权限基础规则。

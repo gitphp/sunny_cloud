@@ -66,8 +66,8 @@ const routes = [
             {
                 path: 'permissions',
                 name: 'permissions',
-                component: () => import('@backend/views/Placeholder.vue'),
-                meta: { title: '权限', parent: '权限菜单分类管理' },
+                component: () => import('@backend/views/permissions/Index.vue'),
+                meta: { title: '权限管理', parent: '权限菜单分类管理' },
             },
             {
                 path: 'cases',

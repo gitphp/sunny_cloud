@@ -10,7 +10,7 @@ export const adminMenus = [
     title: '权限菜单分类管理',
     icon: 'Lock',
     children: [
-      { key: 'permissions-list', title: '权限', path: '/backend/permissions' },
+      { key: 'permissions-list', title: '权限管理', path: '/backend/permissions' },
       { key: 'menus-list', title: '菜单管理', path: '/backend/menus' },
       { key: 'roles-list', title: '角色管理', path: '/backend/roles' },
     ],

@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             UserAccountSeeder::class,
             AuthMenuSeeder::class,
             AuthRoleSeeder::class,
+            AuthPermissionSeeder::class,
         ]);
     }
 }

@@ -33,4 +33,7 @@ class CodePrefix
 
     /** 角色管理 */
     public const AUTH_ROLE = 810;
+
+    /** 权限管理 */
+    public const AUTH_PERMISSION = 820;
 }

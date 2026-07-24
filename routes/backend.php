@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\backend\AuthController;
+use App\Http\Controllers\backend\AuthMenuController;
 use App\Http\Controllers\backend\CategoryController;
 use App\Http\Controllers\backend\IndexController;
 use App\Http\Controllers\backend\UserAccountController;
@@ -30,6 +31,14 @@ Route::prefix('backend')->group(function () {
             Route::put('users/{userAccount}', [UserAccountController::class, 'update']);
             Route::patch('users/{userAccount}/status', [UserAccountController::class, 'updateStatus']);
             Route::delete('users/{userAccount}', [UserAccountController::class, 'destroy']);
+
+            Route::get('menus/nav', [AuthMenuController::class, 'nav']);
+            Route::get('menus', [AuthMenuController::class, 'index']);
+            Route::post('menus', [AuthMenuController::class, 'store']);
+            Route::put('menus/{authMenu}', [AuthMenuController::class, 'update']);
+            Route::patch('menus/{authMenu}/sort', [AuthMenuController::class, 'updateSort']);
+            Route::patch('menus/{authMenu}/status', [AuthMenuController::class, 'updateStatus']);
+            Route::delete('menus/{authMenu}', [AuthMenuController::class, 'destroy']);
         });
     });
 

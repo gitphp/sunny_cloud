@@ -466,9 +466,11 @@ a:hover {
     color: #f1c40f;
 }
 
-.category-table .name-cell .doc-icon {
-    color: #95a5a6;
+.category-table .name-cell .menu-row-icon {
+    color: var(--admin-primary);
+    margin-right: 2px;
 }
+
 
 .placeholder-page {
     display: flex;

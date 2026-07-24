@@ -37,3 +37,25 @@ npm run dev
 ```
 
 然后打开：http://127.0.0.1:8000/backend
+
+
+————————————————————————————————————————————————————————————————————————————
+
+菜单模块已按 `auth_menus` 表生成，侧栏会从接口动态加载。
+
+### 后端
+- 迁移 / 模型：`auth_menus` · `AuthMenu` · `MenuStatus`
+- 错误码：`AuthMenuError` + `CodePrefix::AUTH_MENU = 800`
+- 服务 / 接口：树形 CRUD、排序、启停、侧栏导航
+
+| 接口 | 说明 |
+|---|---|
+| `GET /backend/api/menus` | 管理树（含禁用） |
+| `GET /backend/api/menus/nav` | 侧栏导航（仅启用） |
+| `POST/PUT/PATCH/DELETE ...` | 增改删 / 排序 / 状态 |
+
+### 前端
+- 菜单管理页：`/backend/menus`（树表 + 搜索/添加/修改/删除/排序/启停）
+- 侧栏改为请求 `/menus/nav`，失败时回退本地 `menus.js`
+
+库里已有 27 条菜单数据，种子会跳过；前端已 build。打开后台即可在「权限菜单分类管理 → 菜单管理」使用。

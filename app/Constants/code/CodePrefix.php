@@ -27,4 +27,7 @@ class CodePrefix
 
     /** 用户 */
     public const USER = 700;
+
+    /** 菜单管理 */
+    public const AUTH_MENU = 800;
 }

@@ -1,58 +1,380 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ADC 后端开发规范
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 目录
 
-## About Laravel
+- [项目概述](#项目概述)
+- [开发环境规范](#开发环境规范)
+- [版本控制规范](#版本控制规范)
+- [数据库规范](#数据库规范)
+- [API 开发规范](#api-开发规范)
+- [MQ 命名规范](#mq-命名规范)
+- [接口规范](#接口规范)
+- [常见问题](#常见问题)
+- [附录](#附录)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 项目概述
 
-## Learning Laravel
+### 技术栈
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+| 组件 | 技术 |
+|:-----|:-----|
+| 框架 | Laravel13.21 |
+| 数据库 | MySQL |
+| 消息队列 | RabbitMQ (AMQP) |
+| 前端 | Vue |
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
 
-## Agentic Development
+## 版本控制规范
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### Git 分支策略
 
+| 分支类型 | 命名规则 | 用途 |
+|:---------|:---------|:-----|
+| 主分支 | `main` | 生产环境代码 |
+| 开发分支 | `dev` | 开发环境代码 |
+| 测试分支 | `test` | 测试环境代码 |
+| 功能分支 | `feature/{scope}-{short}` | 新功能开发 |
+| 修复分支 | `hotfix/{issue}-{short}` | 紧急问题修复 |
+
+**示例：**
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+feature/user-login      # 用户登录功能
+hotfix-payment-error    # 支付问题紧急修复
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 提交信息规范
 
-## Contributing
+**格式：** `type(scope): summary`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**类型说明：**
 
-## Code of Conduct
+| 类型 | 含义 | 示例 |
+|:-----|:-----|:-----|
+| `feat` | 新功能 | `feat(user): 新增用户注册接口` |
+| `fix` | 修复 bug | `fix(api): 修复分页参数传递错误` |
+| `docs` | 文档变更 | `docs(readme): 增加使用示例` |
+| `refactor` | 代码重构 | `refactor(auth): 重构 JWT 鉴权逻辑` |
+| `test` | 测试相关 | `test(login): 增加登录接口测试` |
+| `chore` | 构建/工具 | `chore(deps): 升级依赖包到最新版本` |
+| `perf` | 性能优化 | `perf(cache): 优化 Redis 查询性能` |
+| `style` | 代码格式 | `style(lint): 调整代码缩进规则` |
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**提交示例：**
+```bash
+feat(user): 新增用户注册接口
+fix(api): 修复分页参数传递错误
+docs(readme): 增加使用示例
+refactor(auth): 重构 JWT 鉴权逻辑
+perf(cache): 优化 Redis 查询性能
+```
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 数据库规范
 
-## License
+### 表结构管理
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+> **⚠️ 强制规范：禁止通过数据库工具直接创建或修改表结构！**
+>
+> 统一使用框架的数据库迁移工具，每个表的新建或更新都必须有对应的迁移文件。
+
+### 表设计规范
+
+| 维度 | 规范                     | 示例 |
+|:-----|:-----------------------|:-----|
+| **模型类名** | 单数                     | `App\Model\Photo` |
+| **类文件名** | 单数                     | `app/Model/Photo.php` |
+| **数据库表名** | 复数 + Snake Case        | `photos`、`my_photos` |
+| **迁移文件名** | 单数 + 时间前缀              | `2025_10_10_154417_create_photo_table.php` |
+| **字段名** | Snake Case             | `view_count`、`is_vip` |
+| **主键** | 统一使用 `id`              | `id` |
+| **外键** | `resource_id` 格式       | `user_id`、`post_id` |
+| **时间字段** | `datetime(6)` 存时间精确到微秒 | `created_at`、`updated_at`、`deleted_at` |
+| **操作人字段** | `bigint` 存用户 ID        | `created_by`、`updated_by`、`deleted_by` |
+
+### 索引设计原则
+
+1. **不建无用索引**：避免为低频查询字段、全表扫描字段建索引
+2. **不重复建索引**：如主键索引已包含 `user_id`，无需再为 `user_id` 建单字段索引
+3. **避免过度索引**：单表索引数量建议不超过 5 个（索引越多，插入/更新维护成本越高）
+
+---
+
+## API 开发规范
+
+### 核心原则
+
+1. **接口风格**：遵循 RESTful 设计，以「资源」为中心
+2. **数据格式**：请求/响应体统一使用 `application/json`
+3. **命名规范**：
+   - 路径：小写字母 + 复数形式 + kebab-case（如 `user-groups`）
+   - 参数/字段：Snake Case（如 `role_name`、`menu_ids`）
+
+### HTTP 方法语义
+
+| 方法 | 语义 | 说明 |
+|:-----|:-----|:-----|
+| `GET` | 查询 | 仅查询资源，无副作用 |
+| `POST` | 创建 | 创建新资源或增量添加关联 |
+| `PUT` | 全量更新 | 替换完整资源，需传完整数据 |
+| `PATCH` | 部分更新 | 仅修改部分字段 |
+| `DELETE` | 删除 | 删除资源（支持单个/批量） |
+
+### 请求验证规范
+
+> **⚠️ 强制规范：必须使用验证 Request**
+
+**规范要求：**
+- 每个控制器对应一个 Request 类，继承 `Request`
+- 控制器方法对应 Request 类中的不同场景
+
+ **注意事项**
+
+Request 只做字段级基础验证。
+
+复杂的动态规则、业务级逻辑校验应该放到Service层处理。
+
+
+
+#### 1.  核心强制要求
+
+1. **一一对应**：每个控制器对应一个独立的 Request 验证类（如 `OrganizationRequest`），且必须继承框架原生 Request）。
+2. **场景隔离**：同一个控制器的不同方法（如 `create` 新建、`update` 编辑、`delete` 删除），对应 Request 类中的不同 **验证场景**。
+3. **场景的规则清晰可见、独立管理**，尽可能做到"所见即所得"
+4. **方法绑定场景**：控制器方法接收 Request 实例时，自动触发对应场景的验证规则，无需手动写验证逻辑。
+
+#### 2.  职责边界 Request = 输入校验，Service = 业务规则
+
+|  层级   |                           核心职责                           |                             示例                             |
+| :-----: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+| Request | 字段级**基础验证**（格式、必填、数据类型、长度，在指定枚举内等） | 1.  组织名称不能为空；2.  组织编号必须是字符串且长度 6-32；3.  联系电话格式必须正确，4. 状态字段值是在给定的枚举值数组中 |
+| Service |         业务级**逻辑校验**（规则、关联数据合法性等）         | 1.  该租户下是否已存在同名组织；2.  父组织是否存在且允许添加子组织 |
+
+
+
+### 控制器规范
+
+**控制器职责：**
+| 职责 | 说明 |
+|:-----|:-----|
+| 参数校验 | 接收请求，触发 Request 场景校验 |
+| 权限鉴权 | 通过注解中间件进行权限和租户/机构隔离校验 |
+| 协调编排 | 将校验后的参数传递给 Service，不写业务逻辑 |
+| 事务边界 | 事务在 Service 层开启，控制器不直接管理事务 |
+| 返回数据 | 必须通过 Resource 封装，由 ApiResponseHelper 统一返回 |
+
+### 服务层规范
+
+**位置：** `app/Service`
+
+**规范要求：**
+
+| 维度 | 规范 |
+|:-----|:-----|
+| **方法命名** | 小驼峰格式（如 `getUserList`） |
+| **返回值** | 单个对象返回具体类型或 null；集合返回数组或 Collection；分页返回 PaginatorInterface |
+| **业务验证** | 在 Service 层进行业务规则验证，抛出有意义的异常 |
+| **日志记录** | 记录关键业务操作，包含必要的上下文信息 |
+| **事务边界** | 确保事务的原子性 |
+| **避免 HTTP** | 不直接处理 HTTP 请求，保持 Service 纯净性 |
+
+**异常示例：**
+```php
+throw new BusinessException(RoleCode::ROLE_NOT_EXIST);
+```
+
+### 错误码规范
+
+> **⚠️ 强制规范：统一枚举化管理，禁止魔法数字**
+
+**设计原则：**
+
+- 分区分段：模块维度 + 业务细分
+
+**编码规则（示例）：**
+| 类型 | 错误码范围 |
+|:-----|:-----------|
+| 成功 | `0` |
+| 通用错误 | `1001xx` |
+| 用户模块 | `2001xx` |
+| 订单模块 | `3001xx` |
+
+**返回格式：**
+```json
+{
+  "code": 1002001,
+  "message": "用户不存在",
+  "request_id": "a1b2c3d4",
+  "data": null
+}
+```
+
+**使用示例：**
+```php
+return ApiResponseHelper::error(
+    code: DemoCode::USER_STATUS_ERROR->getCode(),
+    message: DemoCode::USER_STATUS_ERROR->genI18nMsg([
+        'org_name' => '测试机构',
+        'account_status' => '已通过',
+    ])
+);
+```
+
+---
+
+## MQ 命名规范
+
+### 规范目标
+
+- 明确 Exchange/Queue 归属与用途，避免命名冲突
+- 支持跨服务消息投递与消费
+- 降低问题排查成本
+- 统一团队协作标准
+
+### 核心命名规则
+
+**通用格式：** `[服务名].[功能模块].[操作/事件]`
+
+**命名要求：**
+- 仅允许字母（a-z/A-Z）、数字（0-9）、点（.）、连字符（-）
+- 采用「小驼峰 + 点分隔」风格
+- 服务名与 `APP_NAME` 环境变量保持一致（全小写）
+- 系统级标识以 `system.` 开头
+
+### Consumer 端规范（消息接收方）
+
+**Exchange 命名：**
+```
+[服务名].[功能模块].[操作/事件]
+```
+
+**示例：**
+- 订单服务接收「订单创建」消息：`order.order.createOrder`
+- 系统级「全局通知」消息：`system.notify.broadcast`
+
+**Queue 命名：**
+```
+[服务名].[功能模块].[操作/事件].queue
+```
+
+**示例：**
+- 订单服务队列：`order.order.createOrder.queue`
+- 系统级队列：`system.notify.broadcast.queue`
+
+### Producer 端规范（消息发送方）
+
+**Exchange 命名：**
+```
+[目标服务名].[功能模块].[操作/事件]
+```
+
+**示例：**
+- 用户服务给订单服务发消息：`order.order.createOrder`（目标服务是 order）
+- 支付服务给系统发日志：`system.log.paymentLog`
+
+### 跨服务通信示例
+
+**场景：A 服务（user）→ B 服务（order）发送「订单创建」消息**
+
+**B 服务（Consumer）配置：**
+- Exchange：`order.order.createOrder`
+- Queue：`order.order.createOrder.queue`
+- RoutingKey：`order.createOrder`
+
+**A 服务（Producer）配置：**
+- Exchange：`order.order.createOrder`（目标服务的 Exchange）
+- RoutingKey：`order.createOrder`
+
+---
+
+
+### 请求响应格式
+
+> **⚠️ 强制规范**
+
+| 维度 | 规范 |
+|:-----|:-----|
+| **Content-Type** | `application/json; charset=utf-8` |
+| **时间格式** | `Y-m-d H:i:s`（示例：`2025-01-01 12:00:00`） |
+| **数字精度** | 涉及金额统一以最小货币单位存储，资源层格式化返回 |
+
+### 分页排序规范
+
+> **⚠️ 强制规范**
+
+**入参：**
+- `current_page`：当前页（默认 1）
+- `per_page`：每页数量（默认 10，最大 1000）
+- `sort`：排序字段
+- `order`：排序方向（asc/desc）
+
+**返回：**
+```json
+{
+  "data": {
+    "items": [],
+    "total": 100,
+    "current_page": 1,
+    "per_page": 10,
+    "last_page": 10
+  }
+}
+```
+
+### 幂等与限流
+
+| 机制 | 说明 |
+|:-----|:-----|
+| **幂等** | 写操作支持 `Idempotency-Key` 请求头，同一 Key 在过期时间内返回相同结果 |
+| **限流** | 对敏感接口启用令牌桶/漏桶策略，超限返回标准错误码 |
+
+### 追踪与日志
+
+> **⚠️ 强制规范**
+
+| 维度 | 规范 |
+|:-----|:-----|
+| **关联 ID** | 请求头支持 `X-Trace-Id`，若无则服务端生成并在响应回写（基础中间件已处理） |
+| **必要审计** | 登录、权限变更、资金/关键业务操作必须记录审计日志 |
+
+**统一错误响应格式：**
+```json
+{
+  "code": 1001001,
+  "message": "用户状态异常",
+  "request_id": "a1b2c3d4",
+  "data": []
+}
+```
+
+---
+
+## 常见问题
+
+### Q1：如何在开发中快速验证接口？
+
+使用  apifox 进行接口测试。
+
+### Q2：数据库迁移文件如何命名？
+
+格式：`{年}_{月}_{日}_{时间}_{操作}_{表名}.php`
+
+示例：`2026_08_01_154417_create_user_table.php`
+
+---
+
+
+## 总结
+
+本规范文档涵盖了后端微服务项目的完整开发规范。所有标记为 **⚠️ 强制规范** 的内容必须严格遵守，违反规范的代码将无法通过代码审查。
+
+请团队成员在开发过程中严格按照本规范执行，确保代码质量和项目的可维护性。
+
+---
+
+**最后更新：** 2026-07-24

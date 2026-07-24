@@ -129,4 +129,65 @@ class AuthRoleController extends Controller
             return ApiResponseHelper::error(810099, '删除失败');
         }
     }
+
+    public function grant(AuthRole $authRole): JsonResponse
+    {
+        return ApiResponseHelper::success($this->authRoleService->getGrant($authRole));
+    }
+
+    public function syncGrant(\App\Http\Requests\backend\AuthRoleGrantRequest $request, AuthRole $authRole): JsonResponse
+    {
+        try {
+            $data = $request->validated();
+            $grant = $this->authRoleService->syncGrant(
+                $authRole,
+                $data['menu_ids'] ?? [],
+                $data['permission_ids'] ?? []
+            );
+
+            return ApiResponseHelper::success($grant, '授权成功');
+        } catch (BusinessException $e) {
+            return ApiResponseHelper::error($e->getErrorCode(), $e->getMessage());
+        } catch (Throwable $e) {
+            report($e);
+
+            return ApiResponseHelper::error(810098, '授权失败');
+        }
+    }
+
+    public function syncMenus(\App\Http\Requests\backend\AuthRoleGrantRequest $request, AuthRole $authRole): JsonResponse
+    {
+        try {
+            $grant = $this->authRoleService->syncMenus(
+                $authRole,
+                $request->validated('menu_ids')
+            );
+
+            return ApiResponseHelper::success($grant, '菜单授权成功');
+        } catch (BusinessException $e) {
+            return ApiResponseHelper::error($e->getErrorCode(), $e->getMessage());
+        } catch (Throwable $e) {
+            report($e);
+
+            return ApiResponseHelper::error(810098, '菜单授权失败');
+        }
+    }
+
+    public function syncPermissions(\App\Http\Requests\backend\AuthRoleGrantRequest $request, AuthRole $authRole): JsonResponse
+    {
+        try {
+            $grant = $this->authRoleService->syncPermissions(
+                $authRole,
+                $request->validated('permission_ids')
+            );
+
+            return ApiResponseHelper::success($grant, '权限授权成功');
+        } catch (BusinessException $e) {
+            return ApiResponseHelper::error($e->getErrorCode(), $e->getMessage());
+        } catch (Throwable $e) {
+            report($e);
+
+            return ApiResponseHelper::error(810098, '权限授权失败');
+        }
+    }
 }

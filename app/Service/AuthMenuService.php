@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class AuthMenuService
 {
-    public function getTree(?string $keyword = null, bool $enabledOnly = false): array
+    public function getTree(?string $keyword = null, bool $enabledOnly = false, ?array $onlyIds = null): array
     {
         $baseQuery = AuthMenu::query()->orderByDesc('menu_sort')->orderBy('id');
         if ($enabledOnly) {
@@ -38,7 +38,37 @@ class AuthMenuService
             return $this->buildTree($all->whereIn('id', $keepIds)->values());
         }
 
-        return $this->buildTree($baseQuery->get());
+        $all = $baseQuery->get();
+
+        if ($onlyIds !== null) {
+            if ($onlyIds === []) {
+                return [];
+            }
+            $keepIds = $this->collectAncestorIds($all, $onlyIds);
+
+            return $this->buildTree($all->whereIn('id', $keepIds)->values());
+        }
+
+        return $this->buildTree($all);
+    }
+
+    /** 当前用户侧栏导航 */
+    public function getNavForUser(\App\Models\UserAccount $user): array
+    {
+        if ($user->isSuperAdmin()) {
+            return $this->getTree(null, true);
+        }
+
+        $menuIds = $user->roles()
+            ->where('role_status', \App\Enums\RoleStatus::Enabled)
+            ->with('menus')
+            ->get()
+            ->flatMap(fn ($role) => $role->menus->pluck('id'))
+            ->unique()
+            ->values()
+            ->all();
+
+        return $this->getTree(null, true, $menuIds);
     }
 
     public function create(array $data): AuthMenu
@@ -233,21 +263,21 @@ class AuthMenuService
 
     private function collectAncestorIds(Collection $all, array $matchedIds): array
     {
-        $map = $all->keyBy('id');
+        $map = $all->keyBy(fn ($item) => (string) $item->id);
         $keep = [];
 
         foreach ($matchedIds as $id) {
-            $current = $map->get($id);
+            $current = $map->get((string) $id);
             while ($current) {
-                $keep[$current->id] = true;
-                if ((int) $current->parent_id === 0) {
+                $keep[(string) $current->id] = true;
+                if ((string) $current->parent_id === '0') {
                     break;
                 }
-                $current = $map->get($current->parent_id);
+                $current = $map->get((string) $current->parent_id);
             }
         }
 
-        return array_map('intval', array_keys($keep));
+        return array_keys($keep);
     }
 
     private function buildTree(Collection $items, int|string $parentId = 0): array

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\RealAuthStatus;
 use App\Enums\UserStatus;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -77,5 +78,20 @@ class UserAccount extends Authenticatable
         }
 
         return false;
+    }
+
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(AuthRole::class, 'auth_user_role', 'user_id', 'role_id')
+            ->withPivot('created_at');
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        if ($this->relationLoaded('roles')) {
+            return $this->roles->contains(fn ($role) => $role->role_code === 'super_admin');
+        }
+
+        return $this->roles()->where('role_code', 'super_admin')->exists();
     }
 }

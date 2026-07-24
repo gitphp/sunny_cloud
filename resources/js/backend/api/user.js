@@ -19,3 +19,11 @@ export function updateUserStatus(id, data) {
 export function deleteUser(id) {
   return http.delete(`/users/${id}`);
 }
+
+export function fetchUserRoles(id) {
+  return http.get(`/users/${id}/roles`);
+}
+
+export function syncUserRoles(id, data) {
+  return http.put(`/users/${id}/roles`, data);
+}

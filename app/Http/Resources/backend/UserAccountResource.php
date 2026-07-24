@@ -30,6 +30,12 @@ class UserAccountResource extends JsonResource
             'register_channel' => $this->register_channel,
             'real_auth_status' => $this->real_auth_status?->value,
             'real_auth_status_label' => $this->real_auth_status?->label(),
+            'role_ids' => $this->whenLoaded('roles', fn () => $this->roles->pluck('id')->map(fn ($id) => (string) $id)->values()->all()),
+            'roles' => $this->whenLoaded('roles', fn () => $this->roles->map(fn ($role) => [
+                'id' => (string) $role->id,
+                'role_name' => $role->role_name,
+                'role_code' => $role->role_code,
+            ])->values()->all()),
             'created_at' => optional($this->created_at)?->format('Y-m-d H:i:s'),
             'updated_at' => optional($this->updated_at)?->format('Y-m-d H:i:s'),
         ];

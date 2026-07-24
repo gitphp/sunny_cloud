@@ -23,3 +23,11 @@ export function updateRoleStatus(id, data) {
 export function deleteRole(id) {
   return http.delete(`/roles/${id}`);
 }
+
+export function fetchRoleGrant(id) {
+  return http.get(`/roles/${id}/grant`);
+}
+
+export function syncRoleGrant(id, data) {
+  return http.put(`/roles/${id}/grant`, data);
+}

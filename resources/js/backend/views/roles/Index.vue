@@ -73,9 +73,10 @@
       </el-table-column>
       <el-table-column prop="role_remark" label="备注" min-width="160" show-overflow-tooltip />
       <el-table-column prop="created_at" label="创建时间" min-width="160" />
-      <el-table-column label="操作" width="160" align="center" fixed="right">
+      <el-table-column label="操作" width="220" align="center" fixed="right">
         <template #default="{ row }">
           <a class="action-edit" @click="openForm(row)">修改</a>
+          <a class="action-edit" @click="openGrant(row)">授权</a>
           <el-button
             class="btn-danger-orange"
             size="small"
@@ -175,6 +176,49 @@
         <el-button class="btn-primary-teal" :loading="saving" @click="submitForm">确定</el-button>
       </template>
     </el-dialog>
+
+    <el-dialog
+      v-model="grantVisible"
+      :title="`授权 - ${grantRoleName}`"
+      width="720px"
+      destroy-on-close
+    >
+      <el-tabs v-model="grantTab">
+        <el-tab-pane label="菜单权限" name="menus">
+          <el-tree
+            ref="menuTreeRef"
+            :data="menuTree"
+            node-key="id"
+            show-checkbox
+            default-expand-all
+            :props="{ label: 'menu_name', children: 'children' }"
+            style="max-height: 420px; overflow: auto"
+          />
+        </el-tab-pane>
+        <el-tab-pane label="功能权限" name="permissions">
+          <el-tree
+            ref="permTreeRef"
+            :data="permissionTree"
+            node-key="id"
+            show-checkbox
+            default-expand-all
+            :props="{ label: 'per_name', children: 'children' }"
+            style="max-height: 420px; overflow: auto"
+          >
+            <template #default="{ data }">
+              <span>
+                {{ data.per_name }}
+                <el-tag size="small" style="margin-left: 8px">{{ data.per_type_label || data.per_type }}</el-tag>
+              </span>
+            </template>
+          </el-tree>
+        </el-tab-pane>
+      </el-tabs>
+      <template #footer>
+        <el-button @click="grantVisible = false">取消</el-button>
+        <el-button class="btn-primary-teal" :loading="grantSaving" @click="submitGrant">保存授权</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -185,11 +229,15 @@ import { Plus, Search } from '@element-plus/icons-vue';
 import {
   createRole,
   deleteRole,
+  fetchRoleGrant,
   fetchRoles,
+  syncRoleGrant,
   updateRole,
   updateRoleSort,
   updateRoleStatus,
 } from '../../api/role';
+import { fetchMenus } from '../../api/menu';
+import { fetchPermissionTree } from '../../api/permission';
 
 const loading = ref(false);
 const saving = ref(false);
@@ -229,6 +277,16 @@ const form = reactive({
   role_status: 1,
   role_remark: '',
 });
+
+const grantVisible = ref(false);
+const grantSaving = ref(false);
+const grantTab = ref('menus');
+const grantRoleId = ref(null);
+const grantRoleName = ref('');
+const menuTree = ref([]);
+const permissionTree = ref([]);
+const menuTreeRef = ref();
+const permTreeRef = ref();
 
 const isSystemRole = computed(() => form.role_type === 1 && !!form.id);
 
@@ -343,6 +401,52 @@ async function handleDelete(row) {
     await loadData();
   } catch (e) {
     if (e !== 'cancel') ElMessage.error(e.message || '删除失败');
+  }
+}
+
+async function openGrant(row) {
+  grantRoleId.value = row.id;
+  grantRoleName.value = row.role_name;
+  grantTab.value = 'menus';
+  grantVisible.value = true;
+  try {
+    const [menusRes, permsRes, grantRes] = await Promise.all([
+      fetchMenus(),
+      fetchPermissionTree(),
+      fetchRoleGrant(row.id),
+    ]);
+    menuTree.value = menusRes.data?.list || [];
+    permissionTree.value = permsRes.data || [];
+    await Promise.resolve();
+    menuTreeRef.value?.setCheckedKeys(grantRes.data?.menu_ids || [], false);
+    permTreeRef.value?.setCheckedKeys(grantRes.data?.permission_ids || [], false);
+  } catch (e) {
+    ElMessage.error(e.message || '加载授权数据失败');
+  }
+}
+
+async function submitGrant() {
+  grantSaving.value = true;
+  try {
+    const menuIds = [
+      ...(menuTreeRef.value?.getCheckedKeys(false) || []),
+      ...(menuTreeRef.value?.getHalfCheckedKeys() || []),
+    ].map(String);
+    const permissionIds = [
+      ...(permTreeRef.value?.getCheckedKeys(false) || []),
+      ...(permTreeRef.value?.getHalfCheckedKeys() || []),
+    ].map(String);
+
+    await syncRoleGrant(grantRoleId.value, {
+      menu_ids: menuIds,
+      permission_ids: permissionIds,
+    });
+    ElMessage.success('授权成功');
+    grantVisible.value = false;
+  } catch (e) {
+    ElMessage.error(e.message || '授权失败');
+  } finally {
+    grantSaving.value = false;
   }
 }
 

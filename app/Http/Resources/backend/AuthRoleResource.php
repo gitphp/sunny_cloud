@@ -25,6 +25,8 @@ class AuthRoleResource extends JsonResource
             'role_status' => $this->role_status?->value,
             'role_status_label' => $this->role_status?->label(),
             'role_remark' => $this->role_remark,
+            'menu_ids' => $this->whenLoaded('menus', fn () => $this->menus->pluck('id')->map(fn ($id) => (string) $id)->values()->all()),
+            'permission_ids' => $this->whenLoaded('permissions', fn () => $this->permissions->pluck('id')->map(fn ($id) => (string) $id)->values()->all()),
             'created_at' => optional($this->created_at)?->format('Y-m-d H:i:s'),
             'updated_at' => optional($this->updated_at)?->format('Y-m-d H:i:s'),
         ];

@@ -43,11 +43,25 @@
         </template>
       </el-table-column>
       <el-table-column prop="real_auth_status_label" label="实名" width="90" align="center" />
+      <el-table-column label="角色" min-width="140">
+        <template #default="{ row }">
+          <el-tag
+            v-for="role in row.roles || []"
+            :key="role.id"
+            size="small"
+            style="margin: 2px"
+          >
+            {{ role.role_name }}
+          </el-tag>
+          <span v-if="!(row.roles || []).length" style="color: #999">未分配</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="last_login_at" label="最后登录" min-width="160" />
       <el-table-column prop="created_at" label="注册时间" min-width="160" />
-      <el-table-column label="操作" width="220" align="center" fixed="right">
+      <el-table-column label="操作" width="260" align="center" fixed="right">
         <template #default="{ row }">
           <a class="action-edit" @click="openForm(row)">修改</a>
+          <a class="action-edit" @click="openRoles(row)">角色</a>
           <a class="action-edit" @click="openStatus(row)">状态</a>
           <el-button class="btn-danger-orange" size="small" @click="handleDelete(row)">删除</el-button>
         </template>
@@ -139,6 +153,27 @@
         <el-button class="btn-primary-teal" :loading="saving" @click="submitStatus">确定</el-button>
       </template>
     </el-dialog>
+
+    <el-dialog v-model="roleVisible" :title="`分配角色 - ${roleUserName}`" width="480px" destroy-on-close>
+      <el-select
+        v-model="selectedRoleIds"
+        multiple
+        filterable
+        placeholder="请选择角色"
+        style="width: 100%"
+      >
+        <el-option
+          v-for="role in roleOptions"
+          :key="role.id"
+          :label="`${role.role_name}（${role.role_code}）`"
+          :value="role.id"
+        />
+      </el-select>
+      <template #footer>
+        <el-button @click="roleVisible = false">取消</el-button>
+        <el-button class="btn-primary-teal" :loading="saving" @click="submitRoles">确定</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -146,7 +181,8 @@
 import { onMounted, reactive, ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { Plus, Search } from '@element-plus/icons-vue';
-import { createUser, deleteUser, fetchUsers, updateUser, updateUserStatus } from '../../api/user';
+import { createUser, deleteUser, fetchUsers, syncUserRoles, updateUser, updateUserStatus } from '../../api/user';
+import { fetchRoles } from '../../api/role';
 
 const loading = ref(false);
 const saving = ref(false);
@@ -167,6 +203,7 @@ const query = reactive({
 
 const dialogVisible = ref(false);
 const statusVisible = ref(false);
+const roleVisible = ref(false);
 const formRef = ref();
 const form = reactive({
   id: null,
@@ -185,6 +222,11 @@ const statusForm = reactive({
   lock_reason: '',
   lock_expire_time: null,
 });
+
+const roleUserId = ref(null);
+const roleUserName = ref('');
+const selectedRoleIds = ref([]);
+const roleOptions = ref([]);
 
 const rules = {
   user_name: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
@@ -292,6 +334,33 @@ async function handleDelete(row) {
     await loadData();
   } catch (e) {
     if (e !== 'cancel') ElMessage.error(e.message || '删除失败');
+  }
+}
+
+async function openRoles(row) {
+  roleUserId.value = row.id;
+  roleUserName.value = row.nick_name || row.user_name;
+  selectedRoleIds.value = (row.role_ids || row.roles?.map((r) => r.id) || []).map(String);
+  roleVisible.value = true;
+  try {
+    const res = await fetchRoles({ per_page: 100, role_status: 1 });
+    roleOptions.value = res.data.list || [];
+  } catch (e) {
+    ElMessage.error(e.message || '加载角色失败');
+  }
+}
+
+async function submitRoles() {
+  saving.value = true;
+  try {
+    await syncUserRoles(roleUserId.value, { role_ids: selectedRoleIds.value });
+    ElMessage.success('角色分配成功');
+    roleVisible.value = false;
+    await loadData();
+  } catch (e) {
+    ElMessage.error(e.message || '角色分配失败');
+  } finally {
+    saving.value = false;
   }
 }
 

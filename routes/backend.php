@@ -32,6 +32,8 @@ Route::prefix('backend')->group(function () {
             Route::get('users/{userAccount}', [UserAccountController::class, 'show']);
             Route::put('users/{userAccount}', [UserAccountController::class, 'update']);
             Route::patch('users/{userAccount}/status', [UserAccountController::class, 'updateStatus']);
+            Route::get('users/{userAccount}/roles', [UserAccountController::class, 'roles']);
+            Route::put('users/{userAccount}/roles', [UserAccountController::class, 'syncRoles']);
             Route::delete('users/{userAccount}', [UserAccountController::class, 'destroy']);
 
             Route::get('menus/nav', [AuthMenuController::class, 'nav']);
@@ -48,6 +50,10 @@ Route::prefix('backend')->group(function () {
             Route::put('roles/{authRole}', [AuthRoleController::class, 'update']);
             Route::patch('roles/{authRole}/sort', [AuthRoleController::class, 'updateSort']);
             Route::patch('roles/{authRole}/status', [AuthRoleController::class, 'updateStatus']);
+            Route::get('roles/{authRole}/grant', [AuthRoleController::class, 'grant']);
+            Route::put('roles/{authRole}/grant', [AuthRoleController::class, 'syncGrant']);
+            Route::put('roles/{authRole}/menus', [AuthRoleController::class, 'syncMenus']);
+            Route::put('roles/{authRole}/permissions', [AuthRoleController::class, 'syncPermissions']);
             Route::delete('roles/{authRole}', [AuthRoleController::class, 'destroy']);
 
             Route::get('permissions/tree', [AuthPermissionController::class, 'tree']);

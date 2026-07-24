@@ -64,3 +64,30 @@
 - 侧栏：权限菜单分类管理 → 权限管理
 
 库中已有 47 条权限数据；种子会补齐菜单入口并在空表时写入用户/角色/菜单/权限基础规则。
+
+——————————————————————————————————————————————————————————————————
+三张关联表已打通，角色授权、用户绑角、侧栏按角色过滤均可用。
+
+### 关联表
+- `auth_role_menus`：角色 ↔ 菜单  
+- `auth_role_permissions`：角色 ↔ 权限  
+- `auth_user_role`：用户 ↔ 角色  
+
+### 主要接口
+| 接口 | 说明 |
+|---|---|
+| `GET/PUT /backend/api/roles/{id}/grant` | 查询 / 保存菜单+权限授权 |
+| `PUT /backend/api/roles/{id}/menus` | 仅同步菜单 |
+| `PUT /backend/api/roles/{id}/permissions` | 仅同步权限 |
+| `GET/PUT /backend/api/users/{id}/roles` | 查询 / 分配用户角色 |
+| `GET /backend/api/menus/nav` | 按当前用户角色过滤侧栏 |
+
+### 前端
+- 角色管理 → **授权**：勾选菜单树 / 权限树  
+- 用户管理 → **角色**：多选分配角色，列表展示角色标签  
+
+### 种子数据
+`AuthRelationSeeder` 已将全部菜单/权限赋给 `super_admin`（及 `admin`），并把 `admin` 用户绑定为超级管理员。
+
+当前验证：`admin` 登录后 `is_super_admin=true`，侧栏可正常加载。
+

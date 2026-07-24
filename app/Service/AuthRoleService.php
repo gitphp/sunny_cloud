@@ -8,8 +8,11 @@ use App\Enums\DataScope;
 use App\Enums\RoleStatus;
 use App\Enums\RoleType;
 use App\Exceptions\BusinessException;
+use App\Models\AuthMenu;
+use App\Models\AuthPermission;
 use App\Models\AuthRole;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 
 class AuthRoleService
 {
@@ -130,7 +133,97 @@ class AuthRoleService
             );
         }
 
-        $role->delete();
+        DB::transaction(function () use ($role) {
+            $role->menus()->detach();
+            $role->permissions()->detach();
+            $role->users()->detach();
+            $role->delete();
+        });
+    }
+
+    public function getGrant(AuthRole $role): array
+    {
+        return [
+            'menu_ids' => $role->menus()->pluck('auth_menus.id')->map(fn ($id) => (string) $id)->values()->all(),
+            'permission_ids' => $role->permissions()->pluck('auth_permissions.id')->map(fn ($id) => (string) $id)->values()->all(),
+        ];
+    }
+
+    public function syncMenus(AuthRole $role, array $menuIds): array
+    {
+        $menuIds = $this->normalizeIds($menuIds);
+        $this->assertMenusExist($menuIds);
+
+        $payload = [];
+        $now = now();
+        foreach ($menuIds as $id) {
+            $payload[$id] = ['created_at' => $now];
+        }
+
+        $role->menus()->sync($payload);
+
+        return $this->getGrant($role);
+    }
+
+    public function syncPermissions(AuthRole $role, array $permissionIds): array
+    {
+        $permissionIds = $this->normalizeIds($permissionIds);
+        $this->assertPermissionsExist($permissionIds);
+
+        $payload = [];
+        $now = now();
+        foreach ($permissionIds as $id) {
+            $payload[$id] = ['created_at' => $now];
+        }
+
+        $role->permissions()->sync($payload);
+
+        return $this->getGrant($role);
+    }
+
+    public function syncGrant(AuthRole $role, array $menuIds, array $permissionIds): array
+    {
+        return DB::transaction(function () use ($role, $menuIds, $permissionIds) {
+            $this->syncMenus($role, $menuIds);
+            $this->syncPermissions($role, $permissionIds);
+
+            return $this->getGrant($role);
+        });
+    }
+
+    private function normalizeIds(array $ids): array
+    {
+        return array_values(array_unique(array_filter(array_map('strval', $ids), fn ($id) => $id !== '' && $id !== '0')));
+    }
+
+    private function assertMenusExist(array $menuIds): void
+    {
+        if ($menuIds === []) {
+            return;
+        }
+
+        $count = AuthMenu::query()->whereIn('id', $menuIds)->count();
+        if ($count !== count($menuIds)) {
+            throw new BusinessException(
+                $this->code(AuthRoleError::INVALID_MENU_IDS),
+                '存在无效菜单'
+            );
+        }
+    }
+
+    private function assertPermissionsExist(array $permissionIds): void
+    {
+        if ($permissionIds === []) {
+            return;
+        }
+
+        $count = AuthPermission::query()->whereIn('id', $permissionIds)->count();
+        if ($count !== count($permissionIds)) {
+            throw new BusinessException(
+                $this->code(AuthRoleError::INVALID_PERMISSION_IDS),
+                '存在无效权限'
+            );
+        }
     }
 
     private function code(int $error): int

@@ -34,10 +34,16 @@ class AuthMenuController extends Controller
         ]);
     }
 
-    /** 侧栏导航（仅启用） */
-    public function nav(): JsonResponse
+    /** 侧栏导航（仅启用，按当前用户角色过滤） */
+    public function nav(Request $request): JsonResponse
     {
-        $tree = $this->authMenuService->getTree(null, true);
+        /** @var \App\Models\UserAccount|null $user */
+        $user = $request->user('backend');
+        if (! $user) {
+            return ApiResponseHelper::error(2001003, '未登录');
+        }
+
+        $tree = $this->authMenuService->getNavForUser($user);
 
         return ApiResponseHelper::success($tree);
     }

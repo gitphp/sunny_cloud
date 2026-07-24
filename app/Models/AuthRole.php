@@ -6,6 +6,7 @@ use App\Enums\DataScope;
 use App\Enums\RoleStatus;
 use App\Enums\RoleType;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AuthRole extends Model
@@ -42,5 +43,23 @@ class AuthRole extends Model
     public function isSystem(): bool
     {
         return $this->role_type === RoleType::System;
+    }
+
+    public function menus(): BelongsToMany
+    {
+        return $this->belongsToMany(AuthMenu::class, 'auth_role_menus', 'role_id', 'menu_id')
+            ->withPivot('created_at');
+    }
+
+    public function permissions(): BelongsToMany
+    {
+        return $this->belongsToMany(AuthPermission::class, 'auth_role_permissions', 'role_id', 'permission_id')
+            ->withPivot('created_at');
+    }
+
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(UserAccount::class, 'auth_user_role', 'role_id', 'user_id')
+            ->withPivot('created_at');
     }
 }

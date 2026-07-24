@@ -29,6 +29,8 @@ class UserAccountController extends Controller
             (int) $request->query('per_page', 15)
         );
 
+        $paginator->getCollection()->load('roles');
+
         return ApiResponseHelper::success([
             'list' => UserAccountResource::collection($paginator->items())->resolve(),
             'meta' => [
@@ -107,6 +109,38 @@ class UserAccountController extends Controller
             return ApiResponseHelper::success(null, '删除成功');
         } catch (Throwable $e) {
             return ApiResponseHelper::error(2001095, '删除失败');
+        }
+    }
+
+    public function roles(UserAccount $userAccount): JsonResponse
+    {
+        $userAccount->load('roles');
+
+        return ApiResponseHelper::success([
+            'role_ids' => $this->userAccountService->getRoleIds($userAccount),
+            'roles' => $userAccount->roles->map(fn ($role) => [
+                'id' => (string) $role->id,
+                'role_name' => $role->role_name,
+                'role_code' => $role->role_code,
+            ])->values()->all(),
+        ]);
+    }
+
+    public function syncRoles(\App\Http\Requests\backend\UserRoleRequest $request, UserAccount $userAccount): JsonResponse
+    {
+        try {
+            $roleIds = $this->userAccountService->syncRoles(
+                $userAccount,
+                $request->validated('role_ids')
+            );
+
+            return ApiResponseHelper::success(['role_ids' => $roleIds], '角色分配成功');
+        } catch (BusinessException $e) {
+            return ApiResponseHelper::error($e->getErrorCode(), $e->getMessage());
+        } catch (Throwable $e) {
+            report($e);
+
+            return ApiResponseHelper::error(2001094, '角色分配失败');
         }
     }
 }

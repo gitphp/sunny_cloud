@@ -2,9 +2,13 @@
 
 namespace App\Service;
 
+use App\Constants\Code\CodePrefix;
+use App\Constants\Code\UserError;
 use App\Enums\RealAuthStatus;
+use App\Enums\RoleStatus;
 use App\Enums\UserStatus;
 use App\Exceptions\BusinessException;
+use App\Models\AuthRole;
 use App\Models\UserAccount;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Hash;
@@ -108,7 +112,42 @@ class UserAccountService
 
     public function delete(UserAccount $user): void
     {
+        $user->roles()->detach();
         $user->delete();
+    }
+
+    public function getRoleIds(UserAccount $user): array
+    {
+        return $user->roles()->pluck('auth_role.id')->map(fn ($id) => (string) $id)->values()->all();
+    }
+
+    public function syncRoles(UserAccount $user, array $roleIds): array
+    {
+        $roleIds = array_values(array_unique(array_filter(array_map('strval', $roleIds), fn ($id) => $id !== '' && $id !== '0')));
+
+        if ($roleIds !== []) {
+            $count = AuthRole::query()
+                ->whereIn('id', $roleIds)
+                ->where('role_status', RoleStatus::Enabled)
+                ->count();
+
+            if ($count !== count($roleIds)) {
+                throw new BusinessException(
+                    CodePrefix::USER * 1000 + UserError::INVALID_ROLE_IDS,
+                    '存在无效或已禁用角色'
+                );
+            }
+        }
+
+        $payload = [];
+        $now = now();
+        foreach ($roleIds as $id) {
+            $payload[$id] = ['created_at' => $now];
+        }
+
+        $user->roles()->sync($payload);
+
+        return $this->getRoleIds($user);
     }
 
     private function assertUnique(array $data, ?int $excludeId = null): void

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\MenuStatus;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -46,5 +47,11 @@ class AuthMenu extends Model
     public function childrenRecursive(): HasMany
     {
         return $this->children()->with('childrenRecursive');
+    }
+
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(AuthRole::class, 'auth_role_menus', 'menu_id', 'role_id')
+            ->withPivot('created_at');
     }
 }

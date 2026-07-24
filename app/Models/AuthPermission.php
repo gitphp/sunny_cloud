@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\PermissionStatus;
 use App\Enums\PermissionType;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -49,5 +50,11 @@ class AuthPermission extends Model
     public function childrenRecursive(): HasMany
     {
         return $this->children()->with('childrenRecursive');
+    }
+
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(AuthRole::class, 'auth_role_permissions', 'permission_id', 'role_id')
+            ->withPivot('created_at');
     }
 }

@@ -53,6 +53,8 @@ class AuthController extends Controller
 
             $request->session()->regenerate();
 
+            $user->load('roles');
+
             return ApiResponseHelper::success(
                 (new UserAccountResource($user))->resolve(),
                 '登录成功'
@@ -80,6 +82,18 @@ class AuthController extends Controller
             return ApiResponseHelper::error(2001003, '未登录');
         }
 
-        return ApiResponseHelper::success((new UserAccountResource($user))->resolve());
+        $user->load(['roles.permissions']);
+
+        $permissionCodes = $user->roles
+            ->flatMap(fn ($role) => $role->permissions->pluck('per_code'))
+            ->unique()
+            ->values()
+            ->all();
+
+        $data = (new UserAccountResource($user))->resolve();
+        $data['permission_codes'] = $user->isSuperAdmin() ? ['*'] : $permissionCodes;
+        $data['is_super_admin'] = $user->isSuperAdmin();
+
+        return ApiResponseHelper::success($data);
     }
 }

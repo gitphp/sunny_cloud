@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             AuthMenuSeeder::class,
             AuthRoleSeeder::class,
             AuthPermissionSeeder::class,
+            AuthRelationSeeder::class,
         ]);
     }
 }

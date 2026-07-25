@@ -11,7 +11,7 @@
  Target Server Version : 80046 (8.0.46)
  File Encoding         : 65001
 
- Date: 25/07/2026 18:45:40
+ Date: 25/07/2026 19:27:09
 */
 
 SET NAMES utf8mb4;
@@ -39,7 +39,7 @@ CREATE TABLE `auth_menus`  (
   INDEX `idx_permission_code`(`permission_code` ASC) USING BTREE,
   INDEX `idx_status`(`menu_status` ASC) USING BTREE,
   INDEX `idx_deleted_at`(`deleted_at` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 920733863034403275 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '菜单/功能表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 920733863034403281 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '菜单/功能表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of auth_menus
@@ -83,6 +83,12 @@ INSERT INTO `auth_menus` VALUES (920733863034403271, 920733863034403270, '品牌
 INSERT INTO `auth_menus` VALUES (920733863034403272, 920733863034403270, '商品分类', '', '/backend/product/categories', 'product/Category', 'product.category', 30, 1, '2026-07-25 10:29:43', '2026-07-25 10:29:43', NULL);
 INSERT INTO `auth_menus` VALUES (920733863034403273, 920733863034403270, '规格管理', '', '/backend/product/specifications', 'product/Specification', 'product.spec', 20, 1, '2026-07-25 10:29:43', '2026-07-25 10:29:43', NULL);
 INSERT INTO `auth_menus` VALUES (920733863034403274, 920733863034403270, '商品管理', '', '/backend/product/products', 'product/Index', 'product.product', 50, 1, '2026-07-25 10:37:40', '2026-07-25 10:37:40', NULL);
+INSERT INTO `auth_menus` VALUES (920733863034403275, 0, '流程管理', 'Share', '', '', 'wf', 35, 1, '2026-07-25 11:18:13', '2026-07-25 11:18:13', NULL);
+INSERT INTO `auth_menus` VALUES (920733863034403276, 920733863034403275, '流程类型', '', '/backend/wf/flow-types', 'wf/FlowType', 'wf.flow_type', 20, 1, '2026-07-25 11:18:13', '2026-07-25 11:18:13', NULL);
+INSERT INTO `auth_menus` VALUES (920733863034403277, 920733863034403275, '流程模板', '', '/backend/wf/flow-definitions', 'wf/FlowDefinitionIndex', 'wf.flow_definition', 10, 1, '2026-07-25 11:18:13', '2026-07-25 11:18:13', NULL);
+INSERT INTO `auth_menus` VALUES (920733863034403278, 920733863034403275, '待我审批', '', '/backend/wf/todo', 'wf/TodoIndex', 'wf.todo', 50, 1, '2026-07-25 11:25:17', '2026-07-25 11:25:17', NULL);
+INSERT INTO `auth_menus` VALUES (920733863034403279, 920733863034403275, '我的申请', '', '/backend/wf/applies', 'wf/ApplyIndex', 'wf.apply', 40, 1, '2026-07-25 11:25:17', '2026-07-25 11:25:17', NULL);
+INSERT INTO `auth_menus` VALUES (920733863034403280, 920733863034403275, '抄送我的', '', '/backend/wf/cc', 'wf/CcIndex', 'wf.cc', 30, 1, '2026-07-25 11:25:17', '2026-07-25 11:25:17', NULL);
 
 -- ----------------------------
 -- Table structure for auth_permissions
@@ -251,6 +257,12 @@ INSERT INTO `auth_role_menus` VALUES (920733860755423247, 920733863034403271, '2
 INSERT INTO `auth_role_menus` VALUES (920733860755423247, 920733863034403272, '2026-07-25 10:37:40');
 INSERT INTO `auth_role_menus` VALUES (920733860755423247, 920733863034403273, '2026-07-25 10:37:40');
 INSERT INTO `auth_role_menus` VALUES (920733860755423247, 920733863034403274, '2026-07-25 10:37:40');
+INSERT INTO `auth_role_menus` VALUES (920733860755423247, 920733863034403275, '2026-07-25 11:25:17');
+INSERT INTO `auth_role_menus` VALUES (920733860755423247, 920733863034403276, '2026-07-25 11:25:17');
+INSERT INTO `auth_role_menus` VALUES (920733860755423247, 920733863034403277, '2026-07-25 11:25:17');
+INSERT INTO `auth_role_menus` VALUES (920733860755423247, 920733863034403278, '2026-07-25 11:25:17');
+INSERT INTO `auth_role_menus` VALUES (920733860755423247, 920733863034403279, '2026-07-25 11:25:17');
+INSERT INTO `auth_role_menus` VALUES (920733860755423247, 920733863034403280, '2026-07-25 11:25:17');
 INSERT INTO `auth_role_menus` VALUES (920733860755423257, 920733860755423248, '2026-07-24 12:06:27');
 INSERT INTO `auth_role_menus` VALUES (920733860755423257, 920733860755423249, '2026-07-24 12:06:27');
 INSERT INTO `auth_role_menus` VALUES (920733860755423257, 920733860755423250, '2026-07-24 12:06:27');
@@ -290,6 +302,12 @@ INSERT INTO `auth_role_menus` VALUES (920733860755423257, 920733863034403271, '2
 INSERT INTO `auth_role_menus` VALUES (920733860755423257, 920733863034403272, '2026-07-25 10:37:40');
 INSERT INTO `auth_role_menus` VALUES (920733860755423257, 920733863034403273, '2026-07-25 10:37:40');
 INSERT INTO `auth_role_menus` VALUES (920733860755423257, 920733863034403274, '2026-07-25 10:37:40');
+INSERT INTO `auth_role_menus` VALUES (920733860755423257, 920733863034403275, '2026-07-25 11:25:17');
+INSERT INTO `auth_role_menus` VALUES (920733860755423257, 920733863034403276, '2026-07-25 11:25:17');
+INSERT INTO `auth_role_menus` VALUES (920733860755423257, 920733863034403277, '2026-07-25 11:25:17');
+INSERT INTO `auth_role_menus` VALUES (920733860755423257, 920733863034403278, '2026-07-25 11:25:17');
+INSERT INTO `auth_role_menus` VALUES (920733860755423257, 920733863034403279, '2026-07-25 11:25:17');
+INSERT INTO `auth_role_menus` VALUES (920733860755423257, 920733863034403280, '2026-07-25 11:25:17');
 
 -- ----------------------------
 -- Table structure for auth_role_permissions
@@ -499,7 +517,7 @@ CREATE TABLE `auth_user_role`  (
   `role_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '角色ID',
   `created_at` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`user_id`, `role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 920733861755423246 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户-角色关联' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户-角色关联' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of auth_user_role
@@ -770,7 +788,7 @@ CREATE TABLE `migrations`  (
   `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of migrations
@@ -796,6 +814,14 @@ INSERT INTO `migrations` VALUES (18, '2026_07_25_000020_create_product_table', 1
 INSERT INTO `migrations` VALUES (19, '2026_07_25_000021_create_product_media_table', 1002);
 INSERT INTO `migrations` VALUES (20, '2026_07_25_000022_create_product_sku_table', 1002);
 INSERT INTO `migrations` VALUES (21, '2026_07_25_000023_create_product_sku_spec_value_table', 1002);
+INSERT INTO `migrations` VALUES (22, '2026_07_25_000030_create_wf_flow_type_table', 1003);
+INSERT INTO `migrations` VALUES (23, '2026_07_25_000031_create_wf_flow_definition_table', 1003);
+INSERT INTO `migrations` VALUES (24, '2026_07_25_000032_create_wf_flow_form_table', 1003);
+INSERT INTO `migrations` VALUES (25, '2026_07_25_000033_create_wf_flow_node_table', 1003);
+INSERT INTO `migrations` VALUES (26, '2026_07_25_000034_create_wf_flow_node_condition_table', 1004);
+INSERT INTO `migrations` VALUES (27, '2026_07_25_000035_create_wf_flow_apply_table', 1004);
+INSERT INTO `migrations` VALUES (28, '2026_07_25_000036_create_wf_flow_approve_record_table', 1004);
+INSERT INTO `migrations` VALUES (29, '2026_07_25_000037_create_wf_flow_cc_user_table', 1004);
 
 -- ----------------------------
 -- Table structure for operation_log
@@ -1118,7 +1144,8 @@ CREATE TABLE `sessions`  (
 -- ----------------------------
 -- Records of sessions
 -- ----------------------------
-INSERT INTO `sessions` VALUES ('HYo1PkjmaPB3exeXjp9DDYC1qnmqL8qrVDEYvLEk', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36', 'eyJfdG9rZW4iOiJSVUF5QjNZMzBqVGVIb0daWERpNHhBR0ZNamsxZk81WG5XTmxMZVJTIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAwXC9iYWNrZW5kXC9wcm9kdWN0XC9zcGVjaWZpY2F0aW9ucyIsInJvdXRlIjoiYmFja2VuZC5pbmRleCJ9LCJfZmxhc2giOnsib2xkIjpbXSwibmV3IjpbXX0sImxvZ2luX2JhY2tlbmRfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI6OTM0MDM1ODAyNTU0NTc2ODk3fQ==', 1784976166);
+INSERT INTO `sessions` VALUES ('HYo1PkjmaPB3exeXjp9DDYC1qnmqL8qrVDEYvLEk', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36', 'eyJfdG9rZW4iOiJSVUF5QjNZMzBqVGVIb0daWERpNHhBR0ZNamsxZk81WG5XTmxMZVJTIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAwXC9iYWNrZW5kXC9tZW51cyIsInJvdXRlIjoiYmFja2VuZC5pbmRleCJ9LCJfZmxhc2giOnsib2xkIjpbXSwibmV3IjpbXX0sImxvZ2luX2JhY2tlbmRfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI6OTM0MDM1ODAyNTU0NTc2ODk3fQ==', 1784978664);
+INSERT INTO `sessions` VALUES ('m8mi3wRb8MIeAfEgY92zsYc3xGPZeFq8Xl1PvX25', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0', 'eyJfdG9rZW4iOiJQbDlTZFdpdnVPTFdaRHJRbTdpaUNzUVNIM2FaOWtXUUtEbkpJbEc2IiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAwXC9iYWNrZW5kXC9sb2dpbiIsInJvdXRlIjoiYmFja2VuZC5pbmRleCJ9LCJfZmxhc2giOnsib2xkIjpbXSwibmV3IjpbXX0sImxvZ2luX2JhY2tlbmRfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI6OTM0MDM1ODAyNTU0NTc2ODk3fQ==', 1784978701);
 
 -- ----------------------------
 -- Table structure for user_account
@@ -1167,7 +1194,199 @@ INSERT INTO `user_account` VALUES (920733860755423008, 'intern_huang', '', '1380
 INSERT INTO `user_account` VALUES (920733860755423009, 'former_zhao', '', '13800000009', 'zhaolei@company.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '', 2, '因违反公司信息安全规定，账号临时冻结', '2026-08-31 23:59:59', '192.168.4.50', '广东深圳', '2026-07-10 15:00:00', '192.168.4.1', 'Chrome/Windows', 'web', 2, '2026-01-15 00:00:00', '2026-07-10 15:00:00', NULL);
 INSERT INTO `user_account` VALUES (920733860755423010, 'former_lu', '', '13800000010', 'luyang@company.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '', 3, '用户主动注销', NULL, '192.168.5.60', '浙江杭州', '2026-06-01 10:00:00', '192.168.5.1', 'Chrome/Mac', 'web', 2, '2025-12-01 00:00:00', '2026-06-01 10:00:00', '2026-06-01 10:00:00');
 INSERT INTO `user_account` VALUES (934035802554576896, 'sunny', '', '13026661119', 'itpeeg@gmail.com', '$2y$10$RTRidRM2EtMIH6pAhsula..8xqM84yh9CPqN3/5pX5JpKP9vscA9e', 'salt', 1, '', NULL, '', '', NULL, '', '', 'web', 0, '2026-07-22 02:39:20', '2026-07-23 04:50:10', NULL);
-INSERT INTO `user_account` VALUES (934035802554576897, 'admin', '管理员', '13800000000', 'admin@example.com', '$2y$12$HhM3Cq8aFGc0xhkMh0kneuMQZxTGW583MSAKN4/F255Nfu1Tr4a4K', '', 1, '', NULL, '127.0.0.1', '', '2026-07-25 10:14:28', '', '', 'web', 2, '2026-07-23 02:21:16', '2026-07-25 10:14:28', NULL);
+INSERT INTO `user_account` VALUES (934035802554576897, 'admin', '管理员', '13800000000', 'admin@example.com', '$2y$12$HhM3Cq8aFGc0xhkMh0kneuMQZxTGW583MSAKN4/F255Nfu1Tr4a4K', '', 1, '', NULL, '127.0.0.1', '', '2026-07-25 11:24:50', '', '', 'web', 2, '2026-07-23 02:21:16', '2026-07-25 11:24:50', NULL);
 INSERT INTO `user_account` VALUES (934035802554576898, 'testuser', '', '13800138002', 'test@example.com', '$2y$10$RTRidRM2EtMIH6pAhsula..8xqM84yh9CPqN3/5pX5JpKP9vscA9e', 'salt', 1, '', NULL, '', '', NULL, '', '', 'web', 1, '2026-07-23 02:21:47', '2026-07-23 04:50:13', NULL);
+
+-- ----------------------------
+-- Table structure for wf_flow_apply
+-- ----------------------------
+DROP TABLE IF EXISTS `wf_flow_apply`;
+CREATE TABLE `wf_flow_apply`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '申请单ID',
+  `apply_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '审批单号',
+  `flow_type_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '审批类型ID',
+  `flow_def_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '流程模板ID',
+  `title` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '单据标题',
+  `apply_user_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '发起人UID',
+  `dept_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '发起人部门ID',
+  `form_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '表单提交内容JSON',
+  `current_node_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '当前待审批节点ID',
+  `current_approve_uid` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '当前待处理审批人',
+  `apply_status` tinyint NOT NULL DEFAULT 0 COMMENT '单据总状态',
+  `remark` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '发起人备注',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uk_apply_no`(`apply_no` ASC) USING BTREE,
+  INDEX `idx_apply_user_id`(`apply_user_id` ASC) USING BTREE,
+  INDEX `idx_flow_def_id`(`flow_def_id` ASC) USING BTREE,
+  INDEX `idx_apply_status`(`apply_status` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 920733862003212321 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of wf_flow_apply
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wf_flow_approve_record
+-- ----------------------------
+DROP TABLE IF EXISTS `wf_flow_approve_record`;
+CREATE TABLE `wf_flow_approve_record`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `apply_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '关联申请单ID',
+  `node_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '流程节点ID',
+  `approve_user_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '操作审批人UID',
+  `action_type` tinyint NOT NULL DEFAULT 0 COMMENT '操作类型',
+  `target_user_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '转审/加签目标人ID',
+  `approve_opinion` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '审批意见',
+  `attach_files` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '附件地址JSON数组',
+  `operate_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '操作时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_apply_id`(`apply_id` ASC) USING BTREE,
+  INDEX `idx_approve_user_id`(`approve_user_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 920733862003213621 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of wf_flow_approve_record
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wf_flow_cc_user
+-- ----------------------------
+DROP TABLE IF EXISTS `wf_flow_cc_user`;
+CREATE TABLE `wf_flow_cc_user`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `apply_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '申请单ID',
+  `cc_uid` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '被抄送用户ID',
+  `is_read` tinyint NOT NULL DEFAULT 0 COMMENT '0未读 1已读',
+  `read_time` datetime NULL DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uk_apply_cc_uid`(`apply_id` ASC, `cc_uid` ASC) USING BTREE,
+  INDEX `idx_cc_uid`(`cc_uid` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 920733862003203210 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of wf_flow_cc_user
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wf_flow_definition
+-- ----------------------------
+DROP TABLE IF EXISTS `wf_flow_definition`;
+CREATE TABLE `wf_flow_definition`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '流程定义ID',
+  `flow_type_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '关联流程类型ID',
+  `flow_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '流程名称',
+  `version` int NOT NULL DEFAULT 1 COMMENT '版本号',
+  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '备注说明',
+  `apply_scope` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '可发起人员范围JSON',
+  `is_publish` tinyint NOT NULL DEFAULT 0 COMMENT '是否发布 0草稿 1已发布',
+  `created_by` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建人用户ID',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deleted_at` datetime NULL DEFAULT NULL COMMENT '删除时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_flow_type_id`(`flow_type_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 920733862004256572 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of wf_flow_definition
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wf_flow_form
+-- ----------------------------
+DROP TABLE IF EXISTS `wf_flow_form`;
+CREATE TABLE `wf_flow_form`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `flow_def_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '绑定流程定义ID',
+  `field_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '字段中文名称',
+  `field_key` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '字段英文标识',
+  `field_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '组件类型',
+  `field_options` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '选项JSON',
+  `is_required` tinyint NOT NULL DEFAULT 1 COMMENT '是否必填',
+  `sort` int NOT NULL DEFAULT 0,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_flow_def_id`(`flow_def_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 920733862003211464 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of wf_flow_form
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wf_flow_node
+-- ----------------------------
+DROP TABLE IF EXISTS `wf_flow_node`;
+CREATE TABLE `wf_flow_node`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '节点ID',
+  `flow_def_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '关联流程定义ID',
+  `node_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '节点名称',
+  `node_sort` int NOT NULL DEFAULT 1 COMMENT '节点执行顺序',
+  `approve_type` tinyint NOT NULL DEFAULT 2 COMMENT '审批人员类型',
+  `approve_target` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '审批目标值JSON',
+  `node_mode` tinyint NOT NULL DEFAULT 1 COMMENT '节点审批模式',
+  `can_reject` tinyint NOT NULL DEFAULT 1 COMMENT '是否可驳回',
+  `can_add_sign` tinyint NOT NULL DEFAULT 1 COMMENT '是否允许加签',
+  `can_transfer` tinyint NOT NULL DEFAULT 1 COMMENT '是否允许转审',
+  `back_node_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '驳回回退节点ID',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_flow_def_id`(`flow_def_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 920733862004251215 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of wf_flow_node
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wf_flow_node_condition
+-- ----------------------------
+DROP TABLE IF EXISTS `wf_flow_node_condition`;
+CREATE TABLE `wf_flow_node_condition`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `flow_def_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '所属流程ID',
+  `pre_node_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '上一个节点ID',
+  `condition_field` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '条件字段',
+  `condition_operator` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '运算符',
+  `condition_value` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '阈值数值',
+  `jump_node_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '满足条件跳转节点ID',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_flow_def_id`(`flow_def_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 920733862004251209 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of wf_flow_node_condition
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wf_flow_type
+-- ----------------------------
+DROP TABLE IF EXISTS `wf_flow_type`;
+CREATE TABLE `wf_flow_type`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `type_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '流程类型名称',
+  `type_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '唯一编码',
+  `icon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '前端图标',
+  `sort` int NOT NULL DEFAULT 0 COMMENT '排序',
+  `status` tinyint NOT NULL DEFAULT 1 COMMENT '状态 0禁用 1启用',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deleted_at` datetime NULL DEFAULT NULL COMMENT '删除时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uk_type_code`(`type_code` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 920733862004256492 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of wf_flow_type
+-- ----------------------------
+INSERT INTO `wf_flow_type` VALUES (920733862004256487, '请假审批', 'leave', 'Calendar', 100, 1, '2026-07-25 11:18:13', '2026-07-25 11:18:13', NULL);
+INSERT INTO `wf_flow_type` VALUES (920733862004256488, '费用报销', 'reimburse', 'Wallet', 90, 1, '2026-07-25 11:18:13', '2026-07-25 11:18:13', NULL);
+INSERT INTO `wf_flow_type` VALUES (920733862004256489, '采购申请', 'purchase', 'ShoppingCart', 80, 1, '2026-07-25 11:18:13', '2026-07-25 11:18:13', NULL);
+INSERT INTO `wf_flow_type` VALUES (920733862004256490, '商品上架审批', 'product_online', 'Goods', 70, 1, '2026-07-25 11:18:13', '2026-07-25 11:18:13', NULL);
+INSERT INTO `wf_flow_type` VALUES (920733862004256491, '客户入驻审批', 'customer_audit', 'UserFilled', 60, 1, '2026-07-25 11:18:13', '2026-07-25 11:18:13', NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;

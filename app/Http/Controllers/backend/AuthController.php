@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\backend;
 
 use App\Exceptions\BusinessException;
-use App\Helpers\ApiResponseHelper;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\backend\AuthRequest;
 use App\Http\Resources\backend\UserAccountResource;
 use App\Service\AuthService;
@@ -12,7 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Throwable;
 
-class AuthController extends Controller
+class AuthController extends AbstractController
 {
     public function __construct(
         private readonly AuthService $authService
@@ -29,14 +27,14 @@ class AuthController extends Controller
                 (string) $request->input('register_channel', 'web'),
             );
 
-            return ApiResponseHelper::success(
+            return $this->success(
                 (new UserAccountResource($user))->resolve(),
                 '注册成功'
             );
         } catch (BusinessException $e) {
-            return ApiResponseHelper::error($e->getErrorCode(), $e->getMessage());
+            return $this->error($e->getErrorCode(), $e->getMessage());
         } catch (Throwable $e) {
-            return ApiResponseHelper::error(2001099, '注册失败');
+            return $this->error(2001099, '注册失败');
         }
     }
 
@@ -55,16 +53,16 @@ class AuthController extends Controller
 
             $user->load('roles');
 
-            return ApiResponseHelper::success(
+            return $this->success(
                 (new UserAccountResource($user))->resolve(),
                 '登录成功'
             );
         } catch (BusinessException $e) {
-            return ApiResponseHelper::error($e->getErrorCode(), $e->getMessage());
+            return $this->error($e->getErrorCode(), $e->getMessage());
         } catch (Throwable $e) {
             report($e);
 
-            return ApiResponseHelper::error(2001098, '登录失败');
+            return $this->error(2001098, '登录失败');
         }
     }
 
@@ -72,14 +70,14 @@ class AuthController extends Controller
     {
         $this->authService->logout();
 
-        return ApiResponseHelper::success(null, '已退出登录');
+        return $this->success(null, '已退出登录');
     }
 
     public function me(): JsonResponse
     {
         $user = $this->authService->currentUser();
         if (! $user) {
-            return ApiResponseHelper::error(2001003, '未登录');
+            return $this->error(2001003, '未登录');
         }
 
         $user->load(['roles.permissions']);
@@ -94,6 +92,6 @@ class AuthController extends Controller
         $data['permission_codes'] = $user->isSuperAdmin() ? ['*'] : $permissionCodes;
         $data['is_super_admin'] = $user->isSuperAdmin();
 
-        return ApiResponseHelper::success($data);
+        return $this->success($data);
     }
 }

@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\backend;
 
-use App\Helpers\ApiResponseHelper;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\backend\CategoryRequest;
 use App\Http\Resources\backend\CategoryResource;
 use App\Models\Category;
@@ -13,7 +11,7 @@ use Illuminate\Http\Request;
 use InvalidArgumentException;
 use Throwable;
 
-class CategoryController extends Controller
+class CategoryController extends AbstractController
 {
     public function __construct(
         private readonly CategoryService $categoryService
@@ -24,7 +22,7 @@ class CategoryController extends Controller
     {
         $tree = $this->categoryService->getTree($request->query('keyword'));
 
-        return ApiResponseHelper::success($tree);
+        return $this->success($tree);
     }
 
     public function store(CategoryRequest $request): JsonResponse
@@ -32,14 +30,14 @@ class CategoryController extends Controller
         try {
             $category = $this->categoryService->create($request->validated());
 
-            return ApiResponseHelper::success(
+            return $this->success(
                 (new CategoryResource($category))->resolve(),
                 '添加成功'
             );
         } catch (InvalidArgumentException $e) {
-            return ApiResponseHelper::error(2001001, $e->getMessage());
+            return $this->error(2001001, $e->getMessage());
         } catch (Throwable $e) {
-            return ApiResponseHelper::error(1001001, '添加失败');
+            return $this->error(1001001, '添加失败');
         }
     }
 
@@ -48,14 +46,14 @@ class CategoryController extends Controller
         try {
             $category = $this->categoryService->update($category, $request->validated());
 
-            return ApiResponseHelper::success(
+            return $this->success(
                 (new CategoryResource($category))->resolve(),
                 '修改成功'
             );
         } catch (InvalidArgumentException $e) {
-            return ApiResponseHelper::error(2001002, $e->getMessage());
+            return $this->error(2001002, $e->getMessage());
         } catch (Throwable $e) {
-            return ApiResponseHelper::error(1001001, '修改失败');
+            return $this->error(1001001, '修改失败');
         }
     }
 
@@ -66,7 +64,7 @@ class CategoryController extends Controller
             (int) $request->validated('sort')
         );
 
-        return ApiResponseHelper::success(
+        return $this->success(
             (new CategoryResource($category))->resolve(),
             '排序更新成功'
         );
@@ -77,9 +75,9 @@ class CategoryController extends Controller
         try {
             $this->categoryService->delete($category);
 
-            return ApiResponseHelper::success(null, '删除成功');
+            return $this->success(null, '删除成功');
         } catch (Throwable $e) {
-            return ApiResponseHelper::error(1001001, '删除失败');
+            return $this->error(1001001, '删除失败');
         }
     }
 }

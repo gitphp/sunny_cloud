@@ -5,8 +5,6 @@ namespace App\Http\Controllers\backend;
 use App\Enums\RealAuthStatus;
 use App\Enums\UserStatus;
 use App\Exceptions\BusinessException;
-use App\Helpers\ApiResponseHelper;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\backend\UserAccountRequest;
 use App\Http\Resources\backend\UserAccountResource;
 use App\Models\UserAccount;
@@ -15,7 +13,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Throwable;
 
-class UserAccountController extends Controller
+class UserAccountController extends AbstractController
 {
     public function __construct(
         private readonly UserAccountService $userAccountService
@@ -31,7 +29,7 @@ class UserAccountController extends Controller
 
         $paginator->getCollection()->load('roles');
 
-        return ApiResponseHelper::success([
+        return $this->success([
             'list' => UserAccountResource::collection($paginator->items())->resolve(),
             'meta' => [
                 'current_page' => $paginator->currentPage(),
@@ -51,20 +49,20 @@ class UserAccountController extends Controller
         try {
             $user = $this->userAccountService->create($request->validated());
 
-            return ApiResponseHelper::success(
+            return $this->success(
                 (new UserAccountResource($user))->resolve(),
                 '添加成功'
             );
         } catch (BusinessException $e) {
-            return ApiResponseHelper::error($e->getErrorCode(), $e->getMessage());
+            return $this->error($e->getErrorCode(), $e->getMessage());
         } catch (Throwable $e) {
-            return ApiResponseHelper::error(2001097, '添加失败');
+            return $this->error(2001097, '添加失败');
         }
     }
 
     public function show(UserAccount $userAccount): JsonResponse
     {
-        return ApiResponseHelper::success(
+        return $this->success(
             (new UserAccountResource($userAccount))->resolve()
         );
     }
@@ -74,14 +72,14 @@ class UserAccountController extends Controller
         try {
             $user = $this->userAccountService->update($userAccount, $request->validated());
 
-            return ApiResponseHelper::success(
+            return $this->success(
                 (new UserAccountResource($user))->resolve(),
                 '修改成功'
             );
         } catch (BusinessException $e) {
-            return ApiResponseHelper::error($e->getErrorCode(), $e->getMessage());
+            return $this->error($e->getErrorCode(), $e->getMessage());
         } catch (Throwable $e) {
-            return ApiResponseHelper::error(2001096, '修改失败');
+            return $this->error(2001096, '修改失败');
         }
     }
 
@@ -95,7 +93,7 @@ class UserAccountController extends Controller
             $data['lock_expire_time'] ?? null
         );
 
-        return ApiResponseHelper::success(
+        return $this->success(
             (new UserAccountResource($user))->resolve(),
             '状态更新成功'
         );
@@ -106,9 +104,9 @@ class UserAccountController extends Controller
         try {
             $this->userAccountService->delete($userAccount);
 
-            return ApiResponseHelper::success(null, '删除成功');
+            return $this->success(null, '删除成功');
         } catch (Throwable $e) {
-            return ApiResponseHelper::error(2001095, '删除失败');
+            return $this->error(2001095, '删除失败');
         }
     }
 
@@ -116,7 +114,7 @@ class UserAccountController extends Controller
     {
         $userAccount->load('roles');
 
-        return ApiResponseHelper::success([
+        return $this->success([
             'role_ids' => $this->userAccountService->getRoleIds($userAccount),
             'roles' => $userAccount->roles->map(fn ($role) => [
                 'id' => (string) $role->id,
@@ -134,13 +132,13 @@ class UserAccountController extends Controller
                 $request->validated('role_ids')
             );
 
-            return ApiResponseHelper::success(['role_ids' => $roleIds], '角色分配成功');
+            return $this->success(['role_ids' => $roleIds], '角色分配成功');
         } catch (BusinessException $e) {
-            return ApiResponseHelper::error($e->getErrorCode(), $e->getMessage());
+            return $this->error($e->getErrorCode(), $e->getMessage());
         } catch (Throwable $e) {
             report($e);
 
-            return ApiResponseHelper::error(2001094, '角色分配失败');
+            return $this->error(2001094, '角色分配失败');
         }
     }
 }

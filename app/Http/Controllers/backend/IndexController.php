@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\backend;
 
-use App\Http\Controllers\Controller;
 use Illuminate\View\View;
 
-class IndexController extends Controller
+class IndexController extends AbstractController
 {
     public function index(): View
     {

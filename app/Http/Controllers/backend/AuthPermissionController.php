@@ -5,8 +5,6 @@ namespace App\Http\Controllers\backend;
 use App\Enums\PermissionStatus;
 use App\Enums\PermissionType;
 use App\Exceptions\BusinessException;
-use App\Helpers\ApiResponseHelper;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\backend\AuthPermissionRequest;
 use App\Http\Resources\backend\AuthPermissionResource;
 use App\Models\AuthPermission;
@@ -15,7 +13,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Throwable;
 
-class AuthPermissionController extends Controller
+class AuthPermissionController extends AbstractController
 {
     public function __construct(
         private readonly AuthPermissionService $authPermissionService
@@ -29,7 +27,7 @@ class AuthPermissionController extends Controller
             $request->query('per_type')
         );
 
-        return ApiResponseHelper::success([
+        return $this->success([
             'list' => $tree,
             'options' => [
                 'per_type' => PermissionType::labels(),
@@ -44,7 +42,7 @@ class AuthPermissionController extends Controller
     {
         $tree = $this->authPermissionService->getTree(null, null, true);
 
-        return ApiResponseHelper::success($tree);
+        return $this->success($tree);
     }
 
     public function store(AuthPermissionRequest $request): JsonResponse
@@ -52,16 +50,16 @@ class AuthPermissionController extends Controller
         try {
             $permission = $this->authPermissionService->create($request->validated());
 
-            return ApiResponseHelper::success(
+            return $this->success(
                 (new AuthPermissionResource($permission))->resolve(),
                 '添加成功'
             );
         } catch (BusinessException $e) {
-            return ApiResponseHelper::error($e->getErrorCode(), $e->getMessage());
+            return $this->error($e->getErrorCode(), $e->getMessage());
         } catch (Throwable $e) {
             report($e);
 
-            return ApiResponseHelper::error(820099, '添加失败');
+            return $this->error(820099, '添加失败');
         }
     }
 
@@ -70,16 +68,16 @@ class AuthPermissionController extends Controller
         try {
             $permission = $this->authPermissionService->update($authPermission, $request->validated());
 
-            return ApiResponseHelper::success(
+            return $this->success(
                 (new AuthPermissionResource($permission))->resolve(),
                 '修改成功'
             );
         } catch (BusinessException $e) {
-            return ApiResponseHelper::error($e->getErrorCode(), $e->getMessage());
+            return $this->error($e->getErrorCode(), $e->getMessage());
         } catch (Throwable $e) {
             report($e);
 
-            return ApiResponseHelper::error(820099, '修改失败');
+            return $this->error(820099, '修改失败');
         }
     }
 
@@ -90,7 +88,7 @@ class AuthPermissionController extends Controller
             (int) $request->validated('per_sort')
         );
 
-        return ApiResponseHelper::success(
+        return $this->success(
             (new AuthPermissionResource($permission))->resolve(),
             '排序更新成功'
         );
@@ -103,7 +101,7 @@ class AuthPermissionController extends Controller
             (int) $request->validated('per_status')
         );
 
-        return ApiResponseHelper::success(
+        return $this->success(
             (new AuthPermissionResource($permission))->resolve(),
             '状态更新成功'
         );
@@ -114,13 +112,13 @@ class AuthPermissionController extends Controller
         try {
             $this->authPermissionService->delete($authPermission);
 
-            return ApiResponseHelper::success(null, '删除成功');
+            return $this->success(null, '删除成功');
         } catch (BusinessException $e) {
-            return ApiResponseHelper::error($e->getErrorCode(), $e->getMessage());
+            return $this->error($e->getErrorCode(), $e->getMessage());
         } catch (Throwable $e) {
             report($e);
 
-            return ApiResponseHelper::error(820099, '删除失败');
+            return $this->error(820099, '删除失败');
         }
     }
 }

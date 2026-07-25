@@ -6,8 +6,6 @@ use App\Enums\DataScope;
 use App\Enums\RoleStatus;
 use App\Enums\RoleType;
 use App\Exceptions\BusinessException;
-use App\Helpers\ApiResponseHelper;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\backend\AuthRoleRequest;
 use App\Http\Resources\backend\AuthRoleResource;
 use App\Models\AuthRole;
@@ -16,7 +14,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Throwable;
 
-class AuthRoleController extends Controller
+class AuthRoleController extends AbstractController
 {
     public function __construct(
         private readonly AuthRoleService $authRoleService
@@ -30,7 +28,7 @@ class AuthRoleController extends Controller
             (int) $request->query('per_page', 15)
         );
 
-        return ApiResponseHelper::success([
+        return $this->success([
             'list' => AuthRoleResource::collection($paginator->items())->resolve(),
             'meta' => [
                 'current_page' => $paginator->currentPage(),
@@ -51,22 +49,22 @@ class AuthRoleController extends Controller
         try {
             $role = $this->authRoleService->create($request->validated());
 
-            return ApiResponseHelper::success(
+            return $this->success(
                 (new AuthRoleResource($role))->resolve(),
                 '添加成功'
             );
         } catch (BusinessException $e) {
-            return ApiResponseHelper::error($e->getErrorCode(), $e->getMessage());
+            return $this->error($e->getErrorCode(), $e->getMessage());
         } catch (Throwable $e) {
             report($e);
 
-            return ApiResponseHelper::error(810099, '添加失败');
+            return $this->error(810099, '添加失败');
         }
     }
 
     public function show(AuthRole $authRole): JsonResponse
     {
-        return ApiResponseHelper::success(
+        return $this->success(
             (new AuthRoleResource($authRole))->resolve()
         );
     }
@@ -76,16 +74,16 @@ class AuthRoleController extends Controller
         try {
             $role = $this->authRoleService->update($authRole, $request->validated());
 
-            return ApiResponseHelper::success(
+            return $this->success(
                 (new AuthRoleResource($role))->resolve(),
                 '修改成功'
             );
         } catch (BusinessException $e) {
-            return ApiResponseHelper::error($e->getErrorCode(), $e->getMessage());
+            return $this->error($e->getErrorCode(), $e->getMessage());
         } catch (Throwable $e) {
             report($e);
 
-            return ApiResponseHelper::error(810099, '修改失败');
+            return $this->error(810099, '修改失败');
         }
     }
 
@@ -96,7 +94,7 @@ class AuthRoleController extends Controller
             (int) $request->validated('role_sort')
         );
 
-        return ApiResponseHelper::success(
+        return $this->success(
             (new AuthRoleResource($role))->resolve(),
             '排序更新成功'
         );
@@ -109,7 +107,7 @@ class AuthRoleController extends Controller
             (int) $request->validated('role_status')
         );
 
-        return ApiResponseHelper::success(
+        return $this->success(
             (new AuthRoleResource($role))->resolve(),
             '状态更新成功'
         );
@@ -120,19 +118,19 @@ class AuthRoleController extends Controller
         try {
             $this->authRoleService->delete($authRole);
 
-            return ApiResponseHelper::success(null, '删除成功');
+            return $this->success(null, '删除成功');
         } catch (BusinessException $e) {
-            return ApiResponseHelper::error($e->getErrorCode(), $e->getMessage());
+            return $this->error($e->getErrorCode(), $e->getMessage());
         } catch (Throwable $e) {
             report($e);
 
-            return ApiResponseHelper::error(810099, '删除失败');
+            return $this->error(810099, '删除失败');
         }
     }
 
     public function grant(AuthRole $authRole): JsonResponse
     {
-        return ApiResponseHelper::success($this->authRoleService->getGrant($authRole));
+        return $this->success($this->authRoleService->getGrant($authRole));
     }
 
     public function syncGrant(\App\Http\Requests\backend\AuthRoleGrantRequest $request, AuthRole $authRole): JsonResponse
@@ -145,13 +143,13 @@ class AuthRoleController extends Controller
                 $data['permission_ids'] ?? []
             );
 
-            return ApiResponseHelper::success($grant, '授权成功');
+            return $this->success($grant, '授权成功');
         } catch (BusinessException $e) {
-            return ApiResponseHelper::error($e->getErrorCode(), $e->getMessage());
+            return $this->error($e->getErrorCode(), $e->getMessage());
         } catch (Throwable $e) {
             report($e);
 
-            return ApiResponseHelper::error(810098, '授权失败');
+            return $this->error(810098, '授权失败');
         }
     }
 
@@ -163,13 +161,13 @@ class AuthRoleController extends Controller
                 $request->validated('menu_ids')
             );
 
-            return ApiResponseHelper::success($grant, '菜单授权成功');
+            return $this->success($grant, '菜单授权成功');
         } catch (BusinessException $e) {
-            return ApiResponseHelper::error($e->getErrorCode(), $e->getMessage());
+            return $this->error($e->getErrorCode(), $e->getMessage());
         } catch (Throwable $e) {
             report($e);
 
-            return ApiResponseHelper::error(810098, '菜单授权失败');
+            return $this->error(810098, '菜单授权失败');
         }
     }
 
@@ -181,13 +179,13 @@ class AuthRoleController extends Controller
                 $request->validated('permission_ids')
             );
 
-            return ApiResponseHelper::success($grant, '权限授权成功');
+            return $this->success($grant, '权限授权成功');
         } catch (BusinessException $e) {
-            return ApiResponseHelper::error($e->getErrorCode(), $e->getMessage());
+            return $this->error($e->getErrorCode(), $e->getMessage());
         } catch (Throwable $e) {
             report($e);
 
-            return ApiResponseHelper::error(810098, '权限授权失败');
+            return $this->error(810098, '权限授权失败');
         }
     }
 }

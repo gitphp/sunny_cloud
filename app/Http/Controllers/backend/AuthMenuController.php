@@ -4,8 +4,6 @@ namespace App\Http\Controllers\backend;
 
 use App\Enums\MenuStatus;
 use App\Exceptions\BusinessException;
-use App\Helpers\ApiResponseHelper;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\backend\AuthMenuRequest;
 use App\Http\Resources\backend\AuthMenuResource;
 use App\Models\AuthMenu;
@@ -14,7 +12,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Throwable;
 
-class AuthMenuController extends Controller
+class AuthMenuController extends AbstractController
 {
     public function __construct(
         private readonly AuthMenuService $authMenuService
@@ -26,7 +24,7 @@ class AuthMenuController extends Controller
     {
         $tree = $this->authMenuService->getTree($request->query('keyword'));
 
-        return ApiResponseHelper::success([
+        return $this->success([
             'list' => $tree,
             'options' => [
                 'menu_status' => MenuStatus::labels(),
@@ -40,12 +38,12 @@ class AuthMenuController extends Controller
         /** @var \App\Models\UserAccount|null $user */
         $user = $request->user('backend');
         if (! $user) {
-            return ApiResponseHelper::error(2001003, '未登录');
+            return $this->error(2001003, '未登录');
         }
 
         $tree = $this->authMenuService->getNavForUser($user);
 
-        return ApiResponseHelper::success($tree);
+        return $this->success($tree);
     }
 
     public function store(AuthMenuRequest $request): JsonResponse
@@ -53,16 +51,16 @@ class AuthMenuController extends Controller
         try {
             $menu = $this->authMenuService->create($request->validated());
 
-            return ApiResponseHelper::success(
+            return $this->success(
                 (new AuthMenuResource($menu))->resolve(),
                 '添加成功'
             );
         } catch (BusinessException $e) {
-            return ApiResponseHelper::error($e->getErrorCode(), $e->getMessage());
+            return $this->error($e->getErrorCode(), $e->getMessage());
         } catch (Throwable $e) {
             report($e);
 
-            return ApiResponseHelper::error(800099, '添加失败');
+            return $this->error(800099, '添加失败');
         }
     }
 
@@ -71,16 +69,16 @@ class AuthMenuController extends Controller
         try {
             $menu = $this->authMenuService->update($authMenu, $request->validated());
 
-            return ApiResponseHelper::success(
+            return $this->success(
                 (new AuthMenuResource($menu))->resolve(),
                 '修改成功'
             );
         } catch (BusinessException $e) {
-            return ApiResponseHelper::error($e->getErrorCode(), $e->getMessage());
+            return $this->error($e->getErrorCode(), $e->getMessage());
         } catch (Throwable $e) {
             report($e);
 
-            return ApiResponseHelper::error(800099, '修改失败');
+            return $this->error(800099, '修改失败');
         }
     }
 
@@ -91,7 +89,7 @@ class AuthMenuController extends Controller
             (int) $request->validated('menu_sort')
         );
 
-        return ApiResponseHelper::success(
+        return $this->success(
             (new AuthMenuResource($menu))->resolve(),
             '排序更新成功'
         );
@@ -104,7 +102,7 @@ class AuthMenuController extends Controller
             (int) $request->validated('menu_status')
         );
 
-        return ApiResponseHelper::success(
+        return $this->success(
             (new AuthMenuResource($menu))->resolve(),
             '状态更新成功'
         );
@@ -115,13 +113,13 @@ class AuthMenuController extends Controller
         try {
             $this->authMenuService->delete($authMenu);
 
-            return ApiResponseHelper::success(null, '删除成功');
+            return $this->success(null, '删除成功');
         } catch (BusinessException $e) {
-            return ApiResponseHelper::error($e->getErrorCode(), $e->getMessage());
+            return $this->error($e->getErrorCode(), $e->getMessage());
         } catch (Throwable $e) {
             report($e);
 
-            return ApiResponseHelper::error(800099, '删除失败');
+            return $this->error(800099, '删除失败');
         }
     }
 }

@@ -59,3 +59,39 @@ npm run dev
 - 侧栏改为请求 `/menus/nav`，失败时回退本地 `menus.js`
 
 库里已有 27 条菜单数据，种子会跳过；前端已 build。打开后台即可在「权限菜单分类管理 → 菜单管理」使用。
+
+————————————————————————————————————————————————————————————————————————————
+已完成。继承结构如下：
+
+```
+Controller
+ └── BaseController          # 统一 success() / error()
+      ├── backend\AbstractController
+      └── frontend\AbstractController
+```
+
+**改动要点：**
+- `BaseController`：封装统一 API 响应
+- 新增 `backend/AbstractController`、`frontend/AbstractController`
+- 前后台所有控制器改为继承各自的 `AbstractController`，并用 `$this->success()` / `$this->error()` 替代直接调用 `ApiResponseHelper`
+- 删除未使用的 `v1/AbstractController`
+
+后续前后台公共逻辑可分别加在对应 `AbstractController` 中。
+——————————————————————————————————————————————————————————————————————————————
+已按新 `category` 表结构对齐前后端。
+
+**字段映射**
+| 旧 | 新 |
+|---|---|
+| `name` | `category_name` |
+| `sort` | `sort_order` |
+| — | `show_type` / `cat_status` / `level` / `description` / `cat_remark` / `deleted_by` |
+
+**主要更新**
+- Migration、Model、Seeder 对齐新表
+- 枚举：`CategoryShowType` / `CategoryStatus` / `CategoryLevel`
+- Service：自动算 `level`（最多三级）、同名校验、有子分类不可删、状态切换
+- 接口新增：`PATCH /categories/{id}/status`
+- 前端树表：名称/级别/可见性/排序/显隐开关，表单含描述与备注
+
+刷新后台分类页即可验证。若库是空的，可跑 `php artisan db:seed --class=CategorySeeder`。

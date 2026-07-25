@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\CategoryLevel;
+use App\Enums\CategoryShowType;
+use App\Enums\CategoryStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,22 +18,36 @@ class Category extends Model
     protected $fillable = [
         'category_name',
         'parent_id',
+        'show_type',
+        'cat_status',
+        'level',
         'sort_order',
+        'description',
+        'cat_remark',
         'created_by',
         'updated_by',
+        'deleted_by',
     ];
 
-    protected $casts = [
-        'parent_id' => 'integer',
-        'sort_order' => 'integer',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-        'deleted_at' => 'datetime',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'parent_id' => 'integer',
+            'show_type' => CategoryShowType::class,
+            'cat_status' => CategoryStatus::class,
+            'level' => CategoryLevel::class,
+            'sort_order' => 'integer',
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'deleted_at' => 'datetime',
+        ];
+    }
 
     public function children(): HasMany
     {
-        return $this->hasMany(self::class, 'parent_id', 'id')->orderByDesc('sort_order')->orderBy('id');
+        return $this->hasMany(self::class, 'parent_id', 'id')
+            ->orderByDesc('sort_order')
+            ->orderBy('id');
     }
 
     public function childrenRecursive(): HasMany

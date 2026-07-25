@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\backend;
 
+use App\Enums\CategoryLevel;
+use App\Enums\CategoryShowType;
+use App\Enums\CategoryStatus;
+use App\Exceptions\BusinessException;
 use App\Http\Requests\backend\CategoryRequest;
 use App\Http\Resources\backend\CategoryResource;
 use App\Models\Category;
 use App\Service\CategoryService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use InvalidArgumentException;
 use Throwable;
 
 class CategoryController extends AbstractController
@@ -22,7 +25,14 @@ class CategoryController extends AbstractController
     {
         $tree = $this->categoryService->getTree($request->query('keyword'));
 
-        return $this->success($tree);
+        return $this->success([
+            'list' => $tree,
+            'options' => [
+                'show_type' => CategoryShowType::labels(),
+                'cat_status' => CategoryStatus::labels(),
+                'level' => CategoryLevel::labels(),
+            ],
+        ]);
     }
 
     public function store(CategoryRequest $request): JsonResponse
@@ -34,10 +44,12 @@ class CategoryController extends AbstractController
                 (new CategoryResource($category))->resolve(),
                 '添加成功'
             );
-        } catch (InvalidArgumentException $e) {
-            return $this->error(2001001, $e->getMessage());
+        } catch (BusinessException $e) {
+            return $this->error($e->getErrorCode(), $e->getMessage());
         } catch (Throwable $e) {
-            return $this->error(1001001, '添加失败');
+            report($e);
+
+            return $this->error(200099, '添加失败');
         }
     }
 
@@ -50,10 +62,12 @@ class CategoryController extends AbstractController
                 (new CategoryResource($category))->resolve(),
                 '修改成功'
             );
-        } catch (InvalidArgumentException $e) {
-            return $this->error(2001002, $e->getMessage());
+        } catch (BusinessException $e) {
+            return $this->error($e->getErrorCode(), $e->getMessage());
         } catch (Throwable $e) {
-            return $this->error(1001001, '修改失败');
+            report($e);
+
+            return $this->error(200099, '修改失败');
         }
     }
 
@@ -61,12 +75,25 @@ class CategoryController extends AbstractController
     {
         $category = $this->categoryService->updateSort(
             $category,
-            (int) $request->validated('sort')
+            (int) $request->validated('sort_order')
         );
 
         return $this->success(
             (new CategoryResource($category))->resolve(),
             '排序更新成功'
+        );
+    }
+
+    public function updateStatus(CategoryRequest $request, Category $category): JsonResponse
+    {
+        $category = $this->categoryService->updateStatus(
+            $category,
+            (int) $request->validated('cat_status')
+        );
+
+        return $this->success(
+            (new CategoryResource($category))->resolve(),
+            '状态更新成功'
         );
     }
 
@@ -76,8 +103,12 @@ class CategoryController extends AbstractController
             $this->categoryService->delete($category);
 
             return $this->success(null, '删除成功');
+        } catch (BusinessException $e) {
+            return $this->error($e->getErrorCode(), $e->getMessage());
         } catch (Throwable $e) {
-            return $this->error(1001001, '删除失败');
+            report($e);
+
+            return $this->error(200099, '删除失败');
         }
     }
 }

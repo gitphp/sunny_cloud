@@ -25,6 +25,7 @@ Route::prefix('backend')->group(function () {
             Route::post('categories', [CategoryController::class, 'store']);
             Route::put('categories/{category}', [CategoryController::class, 'update']);
             Route::patch('categories/{category}/sort', [CategoryController::class, 'updateSort']);
+            Route::patch('categories/{category}/status', [CategoryController::class, 'updateStatus']);
             Route::delete('categories/{category}', [CategoryController::class, 'destroy']);
 
             Route::get('users', [UserAccountController::class, 'index']);

@@ -63,7 +63,10 @@ export const adminMenus = [
     title: '产品',
     icon: 'Goods',
     children: [
-      { key: 'products-list', title: '产品管理', path: '/backend/news/articles' },
+      { key: 'product-brands', title: '品牌管理', path: '/backend/product/brands' },
+      { key: 'product-categories', title: '商品分类', path: '/backend/product/categories' },
+      { key: 'product-specifications', title: '规格管理', path: '/backend/product/specifications' },
+      { key: 'products-list', title: '产品管理', path: '/backend/products' },
     ],
   },
   {

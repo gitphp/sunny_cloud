@@ -9,6 +9,9 @@ use App\Http\Controllers\backend\HrDepartmentController;
 use App\Http\Controllers\backend\HrPostController;
 use App\Http\Controllers\backend\HrUserDeptPostController;
 use App\Http\Controllers\backend\IndexController;
+use App\Http\Controllers\backend\ProductBrandController;
+use App\Http\Controllers\backend\ProductCategoryController;
+use App\Http\Controllers\backend\ProductSpecificationController;
 use App\Http\Controllers\backend\UserAccountController;
 use App\Http\Middleware\EnsureBackendAuthenticated;
 use Illuminate\Support\Facades\Route;
@@ -51,6 +54,33 @@ Route::prefix('backend')->group(function () {
             Route::post('hr/user-dept-posts', [HrUserDeptPostController::class, 'store']);
             Route::put('hr/user-dept-posts/{hrUserDeptPost}', [HrUserDeptPostController::class, 'update']);
             Route::delete('hr/user-dept-posts/{hrUserDeptPost}', [HrUserDeptPostController::class, 'destroy']);
+
+            Route::get('product/brands', [ProductBrandController::class, 'index']);
+            Route::post('product/brands', [ProductBrandController::class, 'store']);
+            Route::put('product/brands/{productBrand}', [ProductBrandController::class, 'update']);
+            Route::patch('product/brands/{productBrand}/sort', [ProductBrandController::class, 'updateSort']);
+            Route::patch('product/brands/{productBrand}/status', [ProductBrandController::class, 'updateStatus']);
+            Route::delete('product/brands/{productBrand}', [ProductBrandController::class, 'destroy']);
+
+            Route::get('product/categories', [ProductCategoryController::class, 'index']);
+            Route::post('product/categories', [ProductCategoryController::class, 'store']);
+            Route::put('product/categories/{productCategory}', [ProductCategoryController::class, 'update']);
+            Route::patch('product/categories/{productCategory}/sort', [ProductCategoryController::class, 'updateSort']);
+            Route::patch('product/categories/{productCategory}/status', [ProductCategoryController::class, 'updateStatus']);
+            Route::delete('product/categories/{productCategory}', [ProductCategoryController::class, 'destroy']);
+
+            Route::get('product/specifications', [ProductSpecificationController::class, 'index']);
+            Route::post('product/specifications', [ProductSpecificationController::class, 'store']);
+            Route::put('product/specifications/{productSpecification}', [ProductSpecificationController::class, 'update']);
+            Route::patch('product/specifications/{productSpecification}/sort', [ProductSpecificationController::class, 'updateSort']);
+            Route::patch('product/specifications/{productSpecification}/status', [ProductSpecificationController::class, 'updateStatus']);
+            Route::delete('product/specifications/{productSpecification}', [ProductSpecificationController::class, 'destroy']);
+            Route::get('product/specifications/{productSpecification}/values', [ProductSpecificationController::class, 'values']);
+            Route::post('product/specifications/{productSpecification}/values', [ProductSpecificationController::class, 'storeValue']);
+            Route::put('product/specification-values/{productSpecificationValue}', [ProductSpecificationController::class, 'updateValue']);
+            Route::patch('product/specification-values/{productSpecificationValue}/sort', [ProductSpecificationController::class, 'updateValueSort']);
+            Route::patch('product/specification-values/{productSpecificationValue}/status', [ProductSpecificationController::class, 'updateValueStatus']);
+            Route::delete('product/specification-values/{productSpecificationValue}', [ProductSpecificationController::class, 'destroyValue']);
 
             Route::get('users', [UserAccountController::class, 'index']);
             Route::post('users', [UserAccountController::class, 'store']);

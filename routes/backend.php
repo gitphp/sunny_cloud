@@ -11,6 +11,7 @@ use App\Http\Controllers\backend\HrUserDeptPostController;
 use App\Http\Controllers\backend\IndexController;
 use App\Http\Controllers\backend\ProductBrandController;
 use App\Http\Controllers\backend\ProductCategoryController;
+use App\Http\Controllers\backend\ProductController;
 use App\Http\Controllers\backend\ProductSpecificationController;
 use App\Http\Controllers\backend\UserAccountController;
 use App\Http\Middleware\EnsureBackendAuthenticated;
@@ -81,6 +82,14 @@ Route::prefix('backend')->group(function () {
             Route::patch('product/specification-values/{productSpecificationValue}/sort', [ProductSpecificationController::class, 'updateValueSort']);
             Route::patch('product/specification-values/{productSpecificationValue}/status', [ProductSpecificationController::class, 'updateValueStatus']);
             Route::delete('product/specification-values/{productSpecificationValue}', [ProductSpecificationController::class, 'destroyValue']);
+
+            Route::post('product/upload', [ProductController::class, 'upload']);
+            Route::get('product/products', [ProductController::class, 'index']);
+            Route::post('product/products', [ProductController::class, 'store']);
+            Route::get('product/products/{product}', [ProductController::class, 'show']);
+            Route::put('product/products/{product}', [ProductController::class, 'update']);
+            Route::patch('product/products/{product}/status', [ProductController::class, 'updateStatus']);
+            Route::delete('product/products/{product}', [ProductController::class, 'destroy']);
 
             Route::get('users', [UserAccountController::class, 'index']);
             Route::post('users', [UserAccountController::class, 'store']);

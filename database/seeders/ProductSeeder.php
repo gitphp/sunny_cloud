@@ -151,6 +151,13 @@ class ProductSeeder extends Seeder
 
         $children = [
             [
+                'menu_name' => '商品管理',
+                'menu_path' => '/backend/product/products',
+                'component' => 'product/Index',
+                'permission_code' => 'product.product',
+                'menu_sort' => 50,
+            ],
+            [
                 'menu_name' => '品牌管理',
                 'menu_path' => '/backend/product/brands',
                 'component' => 'product/Brand',

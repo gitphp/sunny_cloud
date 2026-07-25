@@ -94,10 +94,22 @@ const routes = [
                 meta: { title: '案例管理' },
             },
             {
-                path: 'products',
-                name: 'products',
-                component: () => import('@backend/views/Placeholder.vue'),
-                meta: { title: '产品管理', parent: '产品' },
+                path: 'product/products',
+                name: 'product-products',
+                component: () => import('@backend/views/product/Index.vue'),
+                meta: { title: '商品管理', parent: '产品' },
+            },
+            {
+                path: 'product/products/create',
+                name: 'product-products-create',
+                component: () => import('@backend/views/product/Form.vue'),
+                meta: { title: '新增商品', parent: '产品' },
+            },
+            {
+                path: 'product/products/:id/edit',
+                name: 'product-products-edit',
+                component: () => import('@backend/views/product/Form.vue'),
+                meta: { title: '编辑商品', parent: '产品' },
             },
             {
                 path: 'product/brands',

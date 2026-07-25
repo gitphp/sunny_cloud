@@ -32,6 +32,16 @@ export const adminMenus = [
     ],
   },
   {
+    key: 'hr',
+    title: '人事管理',
+    icon: 'Avatar',
+    children: [
+      { key: 'hr-departments', title: '部门管理', path: '/backend/hr/departments' },
+      { key: 'hr-posts', title: '岗位管理', path: '/backend/hr/posts' },
+      { key: 'hr-user-dept-posts', title: '任职管理', path: '/backend/hr/user-dept-posts' },
+    ],
+  },
+  {
     key: 'news',
     title: '新闻',
     icon: 'Document',

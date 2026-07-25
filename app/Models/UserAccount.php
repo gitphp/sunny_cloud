@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\RealAuthStatus;
 use App\Enums\UserStatus;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -84,6 +85,16 @@ class UserAccount extends Authenticatable
     {
         return $this->belongsToMany(AuthRole::class, 'auth_user_role', 'user_id', 'role_id')
             ->withPivot('created_at');
+    }
+
+    public function deptPosts(): HasMany
+    {
+        return $this->hasMany(HrUserDeptPost::class, 'user_id', 'id');
+    }
+
+    public function ledDepartments(): HasMany
+    {
+        return $this->hasMany(HrDeptLeader::class, 'user_id', 'id');
     }
 
     public function isSuperAdmin(): bool

@@ -5,6 +5,9 @@ use App\Http\Controllers\backend\AuthMenuController;
 use App\Http\Controllers\backend\AuthPermissionController;
 use App\Http\Controllers\backend\AuthRoleController;
 use App\Http\Controllers\backend\CategoryController;
+use App\Http\Controllers\backend\HrDepartmentController;
+use App\Http\Controllers\backend\HrPostController;
+use App\Http\Controllers\backend\HrUserDeptPostController;
 use App\Http\Controllers\backend\IndexController;
 use App\Http\Controllers\backend\UserAccountController;
 use App\Http\Middleware\EnsureBackendAuthenticated;
@@ -27,6 +30,27 @@ Route::prefix('backend')->group(function () {
             Route::patch('categories/{category}/sort', [CategoryController::class, 'updateSort']);
             Route::patch('categories/{category}/status', [CategoryController::class, 'updateStatus']);
             Route::delete('categories/{category}', [CategoryController::class, 'destroy']);
+
+            Route::get('hr/departments', [HrDepartmentController::class, 'index']);
+            Route::post('hr/departments', [HrDepartmentController::class, 'store']);
+            Route::put('hr/departments/{hrDepartment}', [HrDepartmentController::class, 'update']);
+            Route::patch('hr/departments/{hrDepartment}/sort', [HrDepartmentController::class, 'updateSort']);
+            Route::patch('hr/departments/{hrDepartment}/status', [HrDepartmentController::class, 'updateStatus']);
+            Route::get('hr/departments/{hrDepartment}/leaders', [HrDepartmentController::class, 'leaders']);
+            Route::put('hr/departments/{hrDepartment}/leaders', [HrDepartmentController::class, 'syncLeaders']);
+            Route::delete('hr/departments/{hrDepartment}', [HrDepartmentController::class, 'destroy']);
+
+            Route::get('hr/posts', [HrPostController::class, 'index']);
+            Route::post('hr/posts', [HrPostController::class, 'store']);
+            Route::put('hr/posts/{hrPost}', [HrPostController::class, 'update']);
+            Route::patch('hr/posts/{hrPost}/sort', [HrPostController::class, 'updateSort']);
+            Route::patch('hr/posts/{hrPost}/status', [HrPostController::class, 'updateStatus']);
+            Route::delete('hr/posts/{hrPost}', [HrPostController::class, 'destroy']);
+
+            Route::get('hr/user-dept-posts', [HrUserDeptPostController::class, 'index']);
+            Route::post('hr/user-dept-posts', [HrUserDeptPostController::class, 'store']);
+            Route::put('hr/user-dept-posts/{hrUserDeptPost}', [HrUserDeptPostController::class, 'update']);
+            Route::delete('hr/user-dept-posts/{hrUserDeptPost}', [HrUserDeptPostController::class, 'destroy']);
 
             Route::get('users', [UserAccountController::class, 'index']);
             Route::post('users', [UserAccountController::class, 'store']);

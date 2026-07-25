@@ -36,4 +36,13 @@ class CodePrefix
 
     /** 权限管理 */
     public const AUTH_PERMISSION = 820;
+
+    /** 人事部门 */
+    public const HR_DEPARTMENT = 830;
+
+    /** 人事岗位 */
+    public const HR_POST = 840;
+
+    /** 员工任职 */
+    public const HR_USER_DEPT_POST = 850;
 }

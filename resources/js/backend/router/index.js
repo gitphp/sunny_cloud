@@ -70,6 +70,24 @@ const routes = [
                 meta: { title: '权限管理', parent: '权限菜单分类管理' },
             },
             {
+                path: 'hr/departments',
+                name: 'hr-departments',
+                component: () => import('@backend/views/hr/Department.vue'),
+                meta: { title: '部门管理', parent: '人事管理' },
+            },
+            {
+                path: 'hr/posts',
+                name: 'hr-posts',
+                component: () => import('@backend/views/hr/Post.vue'),
+                meta: { title: '岗位管理', parent: '人事管理' },
+            },
+            {
+                path: 'hr/user-dept-posts',
+                name: 'hr-user-dept-posts',
+                component: () => import('@backend/views/hr/UserDeptPost.vue'),
+                meta: { title: '任职管理', parent: '人事管理' },
+            },
+            {
                 path: 'cases',
                 name: 'cases',
                 component: () => import('@backend/views/Placeholder.vue'),

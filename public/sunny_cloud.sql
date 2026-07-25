@@ -11,7 +11,7 @@
  Target Server Version : 80046 (8.0.46)
  File Encoding         : 65001
 
- Date: 25/07/2026 18:06:27
+ Date: 25/07/2026 18:45:40
 */
 
 SET NAMES utf8mb4;
@@ -39,7 +39,7 @@ CREATE TABLE `auth_menus`  (
   INDEX `idx_permission_code`(`permission_code` ASC) USING BTREE,
   INDEX `idx_status`(`menu_status` ASC) USING BTREE,
   INDEX `idx_deleted_at`(`deleted_at` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 920733863034403270 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '菜单/功能表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 920733863034403275 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '菜单/功能表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of auth_menus
@@ -78,6 +78,11 @@ INSERT INTO `auth_menus` VALUES (920733863034403266, 0, '人事管理', 'Avatar'
 INSERT INTO `auth_menus` VALUES (920733863034403267, 920733863034403266, '部门管理', '', '/backend/hr/departments', 'hr/Department', 'hr.department', 30, 1, '2026-07-25 10:03:56', '2026-07-25 10:03:56', NULL);
 INSERT INTO `auth_menus` VALUES (920733863034403268, 920733863034403266, '岗位管理', '', '/backend/hr/posts', 'hr/Post', 'hr.post', 20, 1, '2026-07-25 10:03:56', '2026-07-25 10:03:56', NULL);
 INSERT INTO `auth_menus` VALUES (920733863034403269, 920733863034403266, '任职管理', '', '/backend/hr/user-dept-posts', 'hr/UserDeptPost', 'hr.user_dept_post', 10, 1, '2026-07-25 10:03:56', '2026-07-25 10:03:56', NULL);
+INSERT INTO `auth_menus` VALUES (920733863034403270, 0, '商品管理', 'Goods', '', '', 'products', 40, 1, '2026-07-25 10:29:43', '2026-07-25 10:30:49', NULL);
+INSERT INTO `auth_menus` VALUES (920733863034403271, 920733863034403270, '品牌管理', '', '/backend/product/brands', 'product/Brand', 'product.brand', 40, 1, '2026-07-25 10:29:43', '2026-07-25 10:29:43', NULL);
+INSERT INTO `auth_menus` VALUES (920733863034403272, 920733863034403270, '商品分类', '', '/backend/product/categories', 'product/Category', 'product.category', 30, 1, '2026-07-25 10:29:43', '2026-07-25 10:29:43', NULL);
+INSERT INTO `auth_menus` VALUES (920733863034403273, 920733863034403270, '规格管理', '', '/backend/product/specifications', 'product/Specification', 'product.spec', 20, 1, '2026-07-25 10:29:43', '2026-07-25 10:29:43', NULL);
+INSERT INTO `auth_menus` VALUES (920733863034403274, 920733863034403270, '商品管理', '', '/backend/product/products', 'product/Index', 'product.product', 50, 1, '2026-07-25 10:37:40', '2026-07-25 10:37:40', NULL);
 
 -- ----------------------------
 -- Table structure for auth_permissions
@@ -241,6 +246,11 @@ INSERT INTO `auth_role_menus` VALUES (920733860755423247, 920733863034403266, '2
 INSERT INTO `auth_role_menus` VALUES (920733860755423247, 920733863034403267, '2026-07-25 10:03:56');
 INSERT INTO `auth_role_menus` VALUES (920733860755423247, 920733863034403268, '2026-07-25 10:03:56');
 INSERT INTO `auth_role_menus` VALUES (920733860755423247, 920733863034403269, '2026-07-25 10:03:56');
+INSERT INTO `auth_role_menus` VALUES (920733860755423247, 920733863034403270, '2026-07-25 10:37:40');
+INSERT INTO `auth_role_menus` VALUES (920733860755423247, 920733863034403271, '2026-07-25 10:37:40');
+INSERT INTO `auth_role_menus` VALUES (920733860755423247, 920733863034403272, '2026-07-25 10:37:40');
+INSERT INTO `auth_role_menus` VALUES (920733860755423247, 920733863034403273, '2026-07-25 10:37:40');
+INSERT INTO `auth_role_menus` VALUES (920733860755423247, 920733863034403274, '2026-07-25 10:37:40');
 INSERT INTO `auth_role_menus` VALUES (920733860755423257, 920733860755423248, '2026-07-24 12:06:27');
 INSERT INTO `auth_role_menus` VALUES (920733860755423257, 920733860755423249, '2026-07-24 12:06:27');
 INSERT INTO `auth_role_menus` VALUES (920733860755423257, 920733860755423250, '2026-07-24 12:06:27');
@@ -275,6 +285,11 @@ INSERT INTO `auth_role_menus` VALUES (920733860755423257, 920733863034403266, '2
 INSERT INTO `auth_role_menus` VALUES (920733860755423257, 920733863034403267, '2026-07-25 10:03:56');
 INSERT INTO `auth_role_menus` VALUES (920733860755423257, 920733863034403268, '2026-07-25 10:03:56');
 INSERT INTO `auth_role_menus` VALUES (920733860755423257, 920733863034403269, '2026-07-25 10:03:56');
+INSERT INTO `auth_role_menus` VALUES (920733860755423257, 920733863034403270, '2026-07-25 10:37:40');
+INSERT INTO `auth_role_menus` VALUES (920733860755423257, 920733863034403271, '2026-07-25 10:37:40');
+INSERT INTO `auth_role_menus` VALUES (920733860755423257, 920733863034403272, '2026-07-25 10:37:40');
+INSERT INTO `auth_role_menus` VALUES (920733860755423257, 920733863034403273, '2026-07-25 10:37:40');
+INSERT INTO `auth_role_menus` VALUES (920733860755423257, 920733863034403274, '2026-07-25 10:37:40');
 
 -- ----------------------------
 -- Table structure for auth_role_permissions
@@ -755,7 +770,7 @@ CREATE TABLE `migrations`  (
   `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of migrations
@@ -773,6 +788,14 @@ INSERT INTO `migrations` VALUES (10, '2026_07_25_000001_create_hr_department_tab
 INSERT INTO `migrations` VALUES (11, '2026_07_25_000002_create_hr_post_table', 1000);
 INSERT INTO `migrations` VALUES (12, '2026_07_25_000003_create_hr_dept_leaders_table', 1000);
 INSERT INTO `migrations` VALUES (13, '2026_07_25_000004_create_hr_user_dept_post_table', 1000);
+INSERT INTO `migrations` VALUES (14, '2026_07_25_000010_create_product_brand_table', 1001);
+INSERT INTO `migrations` VALUES (15, '2026_07_25_000011_create_product_category_table', 1001);
+INSERT INTO `migrations` VALUES (16, '2026_07_25_000012_create_product_specification_table', 1001);
+INSERT INTO `migrations` VALUES (17, '2026_07_25_000013_create_product_specification_value_table', 1001);
+INSERT INTO `migrations` VALUES (18, '2026_07_25_000020_create_product_table', 1002);
+INSERT INTO `migrations` VALUES (19, '2026_07_25_000021_create_product_media_table', 1002);
+INSERT INTO `migrations` VALUES (20, '2026_07_25_000022_create_product_sku_table', 1002);
+INSERT INTO `migrations` VALUES (21, '2026_07_25_000023_create_product_sku_spec_value_table', 1002);
 
 -- ----------------------------
 -- Table structure for operation_log
@@ -821,6 +844,262 @@ CREATE TABLE `password_reset_tokens`  (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for product
+-- ----------------------------
+DROP TABLE IF EXISTS `product`;
+CREATE TABLE `product`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键(雪花ID)',
+  `auto_code` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '系统产生编码SP000001自增',
+  `product_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '商品名称',
+  `product_model` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '商品型号',
+  `category_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '商品分类ID',
+  `brand_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '品牌ID',
+  `material_quality` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '材质',
+  `filling` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '填充',
+  `short_desc` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '商品简短描述',
+  `main_image_url` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '主图URL',
+  `product_status` tinyint UNSIGNED NOT NULL DEFAULT 1 COMMENT '状态 0=已下架 1=已上架',
+  `sort_order` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序',
+  `created_at` datetime(6) NULL DEFAULT NULL,
+  `created_by` bigint UNSIGNED NULL DEFAULT NULL,
+  `updated_at` datetime(6) NULL DEFAULT NULL,
+  `updated_by` bigint UNSIGNED NULL DEFAULT NULL,
+  `deleted_at` datetime(6) NULL DEFAULT NULL,
+  `deleted_by` bigint UNSIGNED NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `product_category_id_index`(`category_id` ASC) USING BTREE,
+  INDEX `product_brand_id_index`(`brand_id` ASC) USING BTREE,
+  INDEX `product_auto_code_index`(`auto_code` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 920733863000000001 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of product
+-- ----------------------------
+INSERT INTO `product` VALUES (920733863000000000, 'SP000001', '测试的', 'SFF234324234', 920733862755420000, 920733862755000000, '木头的', '海绵的', '完成产品主表，产品图片暂时就用本地存储，在网站创建文件夹目录存储\n完成产品sku模块。', '/uploads/products/2026/07/01kycdx3a2t5sanh1vjf33jjzc.png', 1, 0, '2026-07-25 10:42:43.000000', 934035802554576897, '2026-07-25 10:42:43.000000', 934035802554576897, NULL, NULL);
+
+-- ----------------------------
+-- Table structure for product_brand
+-- ----------------------------
+DROP TABLE IF EXISTS `product_brand`;
+CREATE TABLE `product_brand`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键(雪花ID)',
+  `brand_code` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '系统产生编码BR000001自增',
+  `brand_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '品牌名称',
+  `alias` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '英文别名（可选）',
+  `is_system` tinyint UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否系统预设 1=系统预设 0=自定义',
+  `is_show` tinyint UNSIGNED NOT NULL DEFAULT 1 COMMENT '状态 0=隐藏 1=显示',
+  `sort_order` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序',
+  `brand_remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '备注',
+  `created_at` datetime(6) NULL DEFAULT NULL COMMENT '创建时间',
+  `created_by` bigint UNSIGNED NULL DEFAULT NULL COMMENT '创建人',
+  `updated_at` datetime(6) NULL DEFAULT NULL COMMENT '更新时间',
+  `updated_by` bigint UNSIGNED NULL DEFAULT NULL COMMENT '更新人',
+  `deleted_at` datetime(6) NULL DEFAULT NULL COMMENT '删除时间',
+  `deleted_by` bigint UNSIGNED NULL DEFAULT NULL COMMENT '删除人',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 920733862755000002 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of product_brand
+-- ----------------------------
+INSERT INTO `product_brand` VALUES (920733862755000000, 'BR000001', '自有品牌', 'Own', 1, 1, 100, '系统预设品牌', '2026-07-25 10:29:42.000000', NULL, '2026-07-25 10:29:42.000000', NULL, NULL, NULL);
+INSERT INTO `product_brand` VALUES (920733862755000001, 'BR000002', '示例品牌', 'Demo', 0, 1, 90, '', '2026-07-25 10:29:42.000000', NULL, '2026-07-25 10:29:42.000000', NULL, NULL, NULL);
+
+-- ----------------------------
+-- Table structure for product_category
+-- ----------------------------
+DROP TABLE IF EXISTS `product_category`;
+CREATE TABLE `product_category`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键(雪花ID)',
+  `category_code` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '系统产生编码FL000001自增',
+  `category_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '分类名称',
+  `parent_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '父级分类ID 0是一级分类',
+  `level` tinyint UNSIGNED NOT NULL DEFAULT 1 COMMENT '级别 1=一级 2=二级 3=三级',
+  `product_count` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '商品数量 冗余',
+  `unit` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '数量单位',
+  `cat_status` tinyint UNSIGNED NOT NULL DEFAULT 1 COMMENT '状态 0=隐藏 1=显示',
+  `sort_order` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序',
+  `cat_remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '备注',
+  `created_at` datetime(6) NULL DEFAULT NULL COMMENT '创建时间',
+  `created_by` bigint UNSIGNED NULL DEFAULT NULL COMMENT '创建人',
+  `updated_at` datetime(6) NULL DEFAULT NULL COMMENT '更新时间',
+  `updated_by` bigint UNSIGNED NULL DEFAULT NULL COMMENT '更新人',
+  `deleted_at` datetime(6) NULL DEFAULT NULL COMMENT '删除时间',
+  `deleted_by` bigint UNSIGNED NULL DEFAULT NULL COMMENT '删除人',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `category_parent_id_index`(`parent_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 920733862755420003 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of product_category
+-- ----------------------------
+INSERT INTO `product_category` VALUES (920733862755420000, 'FL000001', '家具', 0, 1, 1, '件', 1, 100, '', '2026-07-25 10:29:42.000000', NULL, '2026-07-25 10:42:45.000000', NULL, NULL, NULL);
+INSERT INTO `product_category` VALUES (920733862755420001, 'FL000002', '沙发', 920733862755420000, 2, 0, '件', 1, 20, '', '2026-07-25 10:29:42.000000', NULL, '2026-07-25 10:29:42.000000', NULL, NULL, NULL);
+INSERT INTO `product_category` VALUES (920733862755420002, 'FL000003', '桌椅', 920733862755420000, 2, 0, '套', 1, 10, '', '2026-07-25 10:29:42.000000', NULL, '2026-07-25 10:29:42.000000', NULL, NULL, NULL);
+
+-- ----------------------------
+-- Table structure for product_media
+-- ----------------------------
+DROP TABLE IF EXISTS `product_media`;
+CREATE TABLE `product_media`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键(雪花ID)',
+  `product_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '商品ID',
+  `media_type` tinyint UNSIGNED NOT NULL DEFAULT 0 COMMENT '类型 1=主图 2=详情图 3=视频 4=资质文件 5=其他附件',
+  `file_url` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '文件URL',
+  `file_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '原始文件名',
+  `file_key` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '存储键/路径',
+  `storage_provider` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'local' COMMENT '存储提供方',
+  `extension` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '文件拓展名',
+  `file_size` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '字节大小',
+  `file_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'MimeType',
+  `sort_order` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序',
+  `created_at` datetime(6) NULL DEFAULT NULL,
+  `created_by` bigint UNSIGNED NULL DEFAULT NULL,
+  `updated_at` datetime(6) NULL DEFAULT NULL,
+  `updated_by` bigint UNSIGNED NULL DEFAULT NULL,
+  `deleted_at` datetime(6) NULL DEFAULT NULL,
+  `deleted_by` bigint UNSIGNED NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `media_product_id_index`(`product_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 920733863100000002 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of product_media
+-- ----------------------------
+INSERT INTO `product_media` VALUES (920733863100000000, 920733863000000000, 1, '/uploads/products/2026/07/01kycdx3a2t5sanh1vjf33jjzc.png', 'gywm_logo.png', 'uploads/products/2026/07/01kycdx3a2t5sanh1vjf33jjzc.png', 'local', 'png', 4418, 'image/png', 0, '2026-07-25 10:42:45.000000', 934035802554576897, '2026-07-25 10:42:45.000000', 934035802554576897, NULL, NULL);
+INSERT INTO `product_media` VALUES (920733863100000001, 920733863000000000, 2, '/uploads/products/2026/07/01kycdx90zj2vpppkafdd0fkaa.png', '设计方案.png', 'uploads/products/2026/07/01kycdx90zj2vpppkafdd0fkaa.png', 'local', 'png', 1581757, 'image/png', 1, '2026-07-25 10:42:45.000000', 934035802554576897, '2026-07-25 10:42:45.000000', 934035802554576897, NULL, NULL);
+
+-- ----------------------------
+-- Table structure for product_sku
+-- ----------------------------
+DROP TABLE IF EXISTS `product_sku`;
+CREATE TABLE `product_sku`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键(雪花ID)',
+  `product_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '商品ID',
+  `sku_code` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'SKU编码',
+  `price` decimal(10, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '销售价',
+  `market_price` decimal(10, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '划线价/市场价',
+  `cost_price` decimal(10, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '成本价',
+  `stock_num` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '库存数量',
+  `weight` decimal(10, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '重量(KG)',
+  `volume` decimal(10, 4) UNSIGNED NOT NULL DEFAULT 0.0000 COMMENT '体积(m³)',
+  `sale_status` tinyint UNSIGNED NOT NULL DEFAULT 1 COMMENT '销售状态 0下架 1上架',
+  `sort_order` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序',
+  `created_at` datetime(6) NULL DEFAULT NULL,
+  `created_by` bigint UNSIGNED NULL DEFAULT NULL,
+  `updated_at` datetime(6) NULL DEFAULT NULL,
+  `updated_by` bigint UNSIGNED NULL DEFAULT NULL,
+  `deleted_at` datetime(6) NULL DEFAULT NULL,
+  `deleted_by` bigint UNSIGNED NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `sku_code_unique`(`sku_code` ASC) USING BTREE,
+  INDEX `sku_product_id_index`(`product_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 920733863200000006 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of product_sku
+-- ----------------------------
+INSERT INTO `product_sku` VALUES (920733863200000000, 920733863000000000, 'SKU000001', 10.00, 20.00, 0.00, 0, 10.00, 0.1000, 1, 0, '2026-07-25 10:42:43.000000', 934035802554576897, '2026-07-25 10:42:43.000000', 934035802554576897, NULL, NULL);
+INSERT INTO `product_sku` VALUES (920733863200000001, 920733863000000000, 'SKU000002', 20.00, 30.00, 0.00, 0, 20.00, 0.1000, 1, 1, '2026-07-25 10:42:44.000000', 934035802554576897, '2026-07-25 10:42:44.000000', 934035802554576897, NULL, NULL);
+INSERT INTO `product_sku` VALUES (920733863200000002, 920733863000000000, 'SKU000003', 30.00, 40.00, 0.00, 0, 30.00, 1.0000, 1, 2, '2026-07-25 10:42:44.000000', 934035802554576897, '2026-07-25 10:42:44.000000', 934035802554576897, NULL, NULL);
+INSERT INTO `product_sku` VALUES (920733863200000003, 920733863000000000, 'SKU000004', 40.00, 50.00, 0.00, 0, 40.00, 0.1000, 1, 3, '2026-07-25 10:42:44.000000', 934035802554576897, '2026-07-25 10:42:44.000000', 934035802554576897, NULL, NULL);
+INSERT INTO `product_sku` VALUES (920733863200000004, 920733863000000000, 'SKU000005', 50.00, 60.00, 0.00, 0, 50.00, 0.1000, 1, 4, '2026-07-25 10:42:45.000000', 934035802554576897, '2026-07-25 10:42:45.000000', 934035802554576897, NULL, NULL);
+INSERT INTO `product_sku` VALUES (920733863200000005, 920733863000000000, 'SKU000006', 60.00, 70.00, 0.00, 0, 60.00, 0.0100, 1, 5, '2026-07-25 10:42:45.000000', 934035802554576897, '2026-07-25 10:42:45.000000', 934035802554576897, NULL, NULL);
+
+-- ----------------------------
+-- Table structure for product_sku_spec_value
+-- ----------------------------
+DROP TABLE IF EXISTS `product_sku_spec_value`;
+CREATE TABLE `product_sku_spec_value`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键(雪花ID)',
+  `sku_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '关联SKU表ID',
+  `spec_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '关联规格维度ID',
+  `spec_value_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '关联规格值ID',
+  `created_at` datetime(6) NULL DEFAULT NULL,
+  `created_by` bigint UNSIGNED NULL DEFAULT NULL,
+  `updated_at` datetime(6) NULL DEFAULT NULL,
+  `updated_by` bigint UNSIGNED NULL DEFAULT NULL,
+  `deleted_at` datetime(6) NULL DEFAULT NULL,
+  `deleted_by` bigint UNSIGNED NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `sku_spec_value_unique`(`sku_id` ASC, `spec_id` ASC, `spec_value_id` ASC) USING BTREE,
+  INDEX `sku_spec_sku_id_index`(`sku_id` ASC) USING BTREE,
+  INDEX `sku_spec_value_id_index`(`spec_value_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 920733863300000012 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of product_sku_spec_value
+-- ----------------------------
+INSERT INTO `product_sku_spec_value` VALUES (920733863300000000, 920733863200000000, 920733862755400000, 920733862755320000, '2026-07-25 10:42:43.000000', 934035802554576897, '2026-07-25 10:42:43.000000', 934035802554576897, NULL, NULL);
+INSERT INTO `product_sku_spec_value` VALUES (920733863300000001, 920733863200000000, 920733862755400001, 920733862755320003, '2026-07-25 10:42:43.000000', 934035802554576897, '2026-07-25 10:42:43.000000', 934035802554576897, NULL, NULL);
+INSERT INTO `product_sku_spec_value` VALUES (920733863300000002, 920733863200000001, 920733862755400000, 920733862755320000, '2026-07-25 10:42:44.000000', 934035802554576897, '2026-07-25 10:42:44.000000', 934035802554576897, NULL, NULL);
+INSERT INTO `product_sku_spec_value` VALUES (920733863300000003, 920733863200000001, 920733862755400001, 920733862755320004, '2026-07-25 10:42:44.000000', 934035802554576897, '2026-07-25 10:42:44.000000', 934035802554576897, NULL, NULL);
+INSERT INTO `product_sku_spec_value` VALUES (920733863300000004, 920733863200000002, 920733862755400000, 920733862755320001, '2026-07-25 10:42:44.000000', 934035802554576897, '2026-07-25 10:42:44.000000', 934035802554576897, NULL, NULL);
+INSERT INTO `product_sku_spec_value` VALUES (920733863300000005, 920733863200000002, 920733862755400001, 920733862755320003, '2026-07-25 10:42:44.000000', 934035802554576897, '2026-07-25 10:42:44.000000', 934035802554576897, NULL, NULL);
+INSERT INTO `product_sku_spec_value` VALUES (920733863300000006, 920733863200000003, 920733862755400000, 920733862755320001, '2026-07-25 10:42:44.000000', 934035802554576897, '2026-07-25 10:42:44.000000', 934035802554576897, NULL, NULL);
+INSERT INTO `product_sku_spec_value` VALUES (920733863300000007, 920733863200000003, 920733862755400001, 920733862755320004, '2026-07-25 10:42:44.000000', 934035802554576897, '2026-07-25 10:42:44.000000', 934035802554576897, NULL, NULL);
+INSERT INTO `product_sku_spec_value` VALUES (920733863300000008, 920733863200000004, 920733862755400000, 920733862755320002, '2026-07-25 10:42:45.000000', 934035802554576897, '2026-07-25 10:42:45.000000', 934035802554576897, NULL, NULL);
+INSERT INTO `product_sku_spec_value` VALUES (920733863300000009, 920733863200000004, 920733862755400001, 920733862755320003, '2026-07-25 10:42:45.000000', 934035802554576897, '2026-07-25 10:42:45.000000', 934035802554576897, NULL, NULL);
+INSERT INTO `product_sku_spec_value` VALUES (920733863300000010, 920733863200000005, 920733862755400000, 920733862755320002, '2026-07-25 10:42:45.000000', 934035802554576897, '2026-07-25 10:42:45.000000', 934035802554576897, NULL, NULL);
+INSERT INTO `product_sku_spec_value` VALUES (920733863300000011, 920733863200000005, 920733862755400001, 920733862755320004, '2026-07-25 10:42:45.000000', 934035802554576897, '2026-07-25 10:42:45.000000', 934035802554576897, NULL, NULL);
+
+-- ----------------------------
+-- Table structure for product_specification
+-- ----------------------------
+DROP TABLE IF EXISTS `product_specification`;
+CREATE TABLE `product_specification`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键(雪花ID)',
+  `spec_code` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '系统产生编码GL000001自增',
+  `spec_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '规格名称',
+  `spec_remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '备注',
+  `spec_status` tinyint UNSIGNED NOT NULL DEFAULT 1 COMMENT '状态 0=隐藏 1=显示',
+  `sort_order` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序',
+  `created_at` datetime(6) NULL DEFAULT NULL COMMENT '创建时间',
+  `created_by` bigint UNSIGNED NULL DEFAULT NULL COMMENT '创建人',
+  `updated_at` datetime(6) NULL DEFAULT NULL COMMENT '更新时间',
+  `updated_by` bigint UNSIGNED NULL DEFAULT NULL COMMENT '更新人',
+  `deleted_at` datetime(6) NULL DEFAULT NULL COMMENT '删除时间',
+  `deleted_by` bigint UNSIGNED NULL DEFAULT NULL COMMENT '删除人',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 920733862755400002 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of product_specification
+-- ----------------------------
+INSERT INTO `product_specification` VALUES (920733862755400000, 'GL000001', '颜色', '', 1, 100, '2026-07-25 10:29:43.000000', NULL, '2026-07-25 10:29:43.000000', NULL, NULL, NULL);
+INSERT INTO `product_specification` VALUES (920733862755400001, 'GL000002', '材质', '', 1, 90, '2026-07-25 10:29:43.000000', NULL, '2026-07-25 10:29:43.000000', NULL, NULL, NULL);
+
+-- ----------------------------
+-- Table structure for product_specification_value
+-- ----------------------------
+DROP TABLE IF EXISTS `product_specification_value`;
+CREATE TABLE `product_specification_value`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键(雪花ID)',
+  `spec_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '规格ID',
+  `value_code` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '系统产生编码GV000001自增',
+  `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '规格值',
+  `sort_order` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序',
+  `value_status` tinyint UNSIGNED NOT NULL DEFAULT 1 COMMENT '状态 0=隐藏 1=显示',
+  `created_at` datetime(6) NULL DEFAULT NULL COMMENT '创建时间',
+  `created_by` bigint UNSIGNED NULL DEFAULT NULL COMMENT '创建人',
+  `updated_at` datetime(6) NULL DEFAULT NULL COMMENT '更新时间',
+  `updated_by` bigint UNSIGNED NULL DEFAULT NULL COMMENT '更新人',
+  `deleted_at` datetime(6) NULL DEFAULT NULL COMMENT '删除时间',
+  `deleted_by` bigint UNSIGNED NULL DEFAULT NULL COMMENT '删除人',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `spec_value_spec_id_index`(`spec_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 920733862755320005 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of product_specification_value
+-- ----------------------------
+INSERT INTO `product_specification_value` VALUES (920733862755320000, 920733862755400000, 'GV000001', '红色', 30, 1, '2026-07-25 10:29:43.000000', NULL, '2026-07-25 10:29:43.000000', NULL, NULL, NULL);
+INSERT INTO `product_specification_value` VALUES (920733862755320001, 920733862755400000, 'GV000002', '黑色', 20, 1, '2026-07-25 10:29:43.000000', NULL, '2026-07-25 10:29:43.000000', NULL, NULL, NULL);
+INSERT INTO `product_specification_value` VALUES (920733862755320002, 920733862755400000, 'GV000003', '白色', 10, 1, '2026-07-25 10:29:43.000000', NULL, '2026-07-25 10:29:43.000000', NULL, NULL, NULL);
+INSERT INTO `product_specification_value` VALUES (920733862755320003, 920733862755400001, 'GV000004', '实木', 20, 1, '2026-07-25 10:29:43.000000', NULL, '2026-07-25 10:29:43.000000', NULL, NULL, NULL);
+INSERT INTO `product_specification_value` VALUES (920733862755320004, 920733862755400001, 'GV000005', '布艺', 10, 1, '2026-07-25 10:29:43.000000', NULL, '2026-07-25 10:29:43.000000', NULL, NULL, NULL);
+
+-- ----------------------------
 -- Table structure for sessions
 -- ----------------------------
 DROP TABLE IF EXISTS `sessions`;
@@ -839,20 +1118,7 @@ CREATE TABLE `sessions`  (
 -- ----------------------------
 -- Records of sessions
 -- ----------------------------
-INSERT INTO `sessions` VALUES ('4ECEX6Qj6uGqCXeWlrpqBRhykeWfk6ZzIJu0VUjS', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT; Windows NT 10.0; zh-CN) WindowsPowerShell/5.1.19041.6328', 'eyJfdG9rZW4iOiJpbEtDdU1FVVJGcW5FYXp4bENJTzhTM3hTczVHSmR5S2ZtWmZiMG1xIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAwXC9iYWNrZW5kXC9sb2dpbiIsInJvdXRlIjoiYmFja2VuZC5pbmRleCJ9LCJfZmxhc2giOnsib2xkIjpbXSwibmV3IjpbXX0sImxvZ2luX2JhY2tlbmRfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI6OTM0MDM1ODAyNTU0NTc2ODk3fQ==', 1784894814);
-INSERT INTO `sessions` VALUES ('5QquVawJ2QQKHWKQmqa4S1C034GXGQroe0SYn8gu', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT; Windows NT 10.0; zh-CN) WindowsPowerShell/5.1.19041.6328', 'eyJfdG9rZW4iOiJ2bzBueGVzaGJKcFpwWUptZnI1WllETWhmT1hqUkRud3J1MFhzSDRzIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAwXC9iYWNrZW5kXC9sb2dpbiIsInJvdXRlIjoiYmFja2VuZC5pbmRleCJ9LCJfZmxhc2giOnsib2xkIjpbXSwibmV3IjpbXX0sImxvZ2luX2JhY2tlbmRfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI6OTM0MDM1ODAyNTU0NTc2ODk3fQ==', 1784893577);
-INSERT INTO `sessions` VALUES ('AMnDi6Qv6unEvJnL1wIlcDs2uin4EBNIoUoXznyj', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT; Windows NT 10.0; zh-CN) WindowsPowerShell/5.1.19041.6328', 'eyJfdG9rZW4iOiJUTjczRk9ucW9GU3JuakIxZ09STXo2WjRGV0N0MFg4S2dRU3FudnlSIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAwXC9iYWNrZW5kXC9sb2dpbiIsInJvdXRlIjoiYmFja2VuZC5pbmRleCJ9LCJfZmxhc2giOnsib2xkIjpbXSwibmV3IjpbXX0sImxvZ2luX2JhY2tlbmRfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI6OTM0MDM1ODAyNTU0NTc2ODk3fQ==', 1784892159);
-INSERT INTO `sessions` VALUES ('GsdBZXQO6s20XFQz0ThBmWLLzomqPxDjstjzpxmA', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT; Windows NT 10.0; zh-CN) WindowsPowerShell/5.1.19041.6328', 'eyJfdG9rZW4iOiIzRldNeDdCNjZPMUxjWHRXOUU1WUJqM3JGWU1KYU40VmVBQm9STFRxIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAwXC9iYWNrZW5kXC9uZXdzXC9jYXRlZ29yaWVzIiwicm91dGUiOiJiYWNrZW5kLmluZGV4In0sIl9mbGFzaCI6eyJvbGQiOltdLCJuZXciOltdfX0=', 1784891380);
-INSERT INTO `sessions` VALUES ('hj58Tka1bxgHMNIHzhKr9usMLCO2C1TCLmOJtiHJ', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36', 'eyJfdG9rZW4iOiJiRkhNZVZEQlVKQ3VmU1QyZWRGV3ZiMXpKY1dtVnE2b25aRExBV1RsIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAwXC9iYWNrZW5kXC9uZXdzXC9jYXRlZ29yaWVzIiwicm91dGUiOiJiYWNrZW5kLmluZGV4In0sIl9mbGFzaCI6eyJvbGQiOltdLCJuZXciOltdfX0=', 1784891423);
-INSERT INTO `sessions` VALUES ('HjMOEP7mlrDA73qPnQVV5GZZn24NJhqRi6SZUnaN', NULL, '127.0.0.1', 'Symfony', 'eyJfdG9rZW4iOiI1Rlp5WTFxTmlXQmlKaXdvSXJINDZqcEpGcVp3dWcyMUFwMkt2TWNmIiwiX2ZsYXNoIjp7Im9sZCI6W10sIm5ldyI6W119fQ==', 1784892226);
-INSERT INTO `sessions` VALUES ('jBHa4xmcEB6XNMfOirS4jbqVCVj5L0fmmVZ4mPe6', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT; Windows NT 10.0; zh-CN) WindowsPowerShell/5.1.19041.6328', 'eyJfdG9rZW4iOiJrcHdCRDFHQjZWQkpKRUpvTklMNFJoNkNFckJMWE1WZDMyVE9tQnh6IiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAwXC9iYWNrZW5kXC9sb2dpbiIsInJvdXRlIjoiYmFja2VuZC5pbmRleCJ9LCJfZmxhc2giOnsib2xkIjpbXSwibmV3IjpbXX0sImxvZ2luX2JhY2tlbmRfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI6OTM0MDM1ODAyNTU0NTc2ODk3fQ==', 1784894484);
-INSERT INTO `sessions` VALUES ('LxHpydyPgfrIdSkmzThC5yRjvB9VfBkh00cJH61J', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT; Windows NT 10.0; zh-CN) WindowsPowerShell/5.1.19041.6328', 'eyJfdG9rZW4iOiJQcEp2ejNhWVFqWU9WN1VqTXUwbVdKdnI1NlZWZndjUk5meW1sZFI1IiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAwXC9iYWNrZW5kXC9hcGlcL2NhdGVnb3JpZXMiLCJyb3V0ZSI6bnVsbH0sIl9mbGFzaCI6eyJvbGQiOltdLCJuZXciOltdfX0=', 1784891370);
-INSERT INTO `sessions` VALUES ('NF8RCbmY4H9fvobQzNIwbxUhbnyAf9115BrGfA0O', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0', 'eyJfdG9rZW4iOiJFT2tEajFYOWR1V0xsOUplRzlRVWFUUVZsZVViQXNHczhEUTRZc0g3IiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAwXC9iYWNrZW5kXC9wZXJtaXNzaW9ucyIsInJvdXRlIjoiYmFja2VuZC5pbmRleCJ9LCJfZmxhc2giOnsib2xkIjpbXSwibmV3IjpbXX0sImxvZ2luX2JhY2tlbmRfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI6OTM0MDM1ODAyNTU0NTc2ODk3fQ==', 1784894928);
-INSERT INTO `sessions` VALUES ('Q6oquW6WR1qxIMfGTObOeT9ULCG5YQFej4JO3FC5', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Cursor/3.1.15 Chrome/142.0.7444.265 Electron/39.8.1 Safari/537.36', 'eyJfdG9rZW4iOiJVUUNBTUZRVURZMXFSRHZUTk1NNTF1QnBzTktMNzl0UDdqNnpXbEthIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAwXC9iYWNrZW5kXC9uZXdzXC9jYXRlZ29yaWVzIiwicm91dGUiOiJiYWNrZW5kLmluZGV4In0sIl9mbGFzaCI6eyJvbGQiOltdLCJuZXciOltdfX0=', 1784891412);
-INSERT INTO `sessions` VALUES ('qiyqvNIFDcVyrzsS3v3VY4X8aFZz7jBw2olSxeXx', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT; Windows NT 10.0; zh-CN) WindowsPowerShell/5.1.19041.6328', 'eyJfdG9rZW4iOiJlWkxvMmYyRkR1NzdyTWplSGhBcXY0V21ySGtya3RETzJGZ1loNjFCIiwiX2ZsYXNoIjp7Im9sZCI6W10sIm5ldyI6W119LCJfcHJldmlvdXMiOnsidXJsIjoiaHR0cDpcL1wvMTI3LjAuMC4xOjgwMDBcL2JhY2tlbmRcL2FwaVwvYXV0aFwvbWUiLCJyb3V0ZSI6bnVsbH19', 1784892147);
-INSERT INTO `sessions` VALUES ('qmczJ96sLAWr3HiTvyWCf84l9pqifWgzvcOpIWH5', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT; Windows NT 10.0; zh-CN) WindowsPowerShell/5.1.19041.6328', 'eyJfdG9rZW4iOiJFTm03VTd5SWw4bEFzU3ltbWwwWlhTWTU0SUY2QWJZdk03UnpVejk2IiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAwXC9iYWNrZW5kXC9uZXdzXC9jYXRlZ29yaWVzIiwicm91dGUiOiJiYWNrZW5kLmluZGV4In0sIl9mbGFzaCI6eyJvbGQiOltdLCJuZXciOltdfX0=', 1784891387);
-INSERT INTO `sessions` VALUES ('VucumqsxJgo6kjkhyUruT6hGGeVbqAsMuaspJSlz', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT; Windows NT 10.0; zh-CN) WindowsPowerShell/5.1.19041.6328', 'eyJfdG9rZW4iOiJKNU94c25TNUtIdDNmSlBjczA3TVIyVmJHbmNwZ2x4VFhjWEtHaURrIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAwXC9iYWNrZW5kXC9sb2dpbiIsInJvdXRlIjoiYmFja2VuZC5pbmRleCJ9LCJfZmxhc2giOnsib2xkIjpbXSwibmV3IjpbXX0sImxvZ2luX2JhY2tlbmRfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI6OTM0MDM1ODAyNTU0NTc2ODk3fQ==', 1784894103);
-INSERT INTO `sessions` VALUES ('We7UVPlzi3nNQwaWvc3Sxz1AG3xmyclJ3A8XUhQu', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT; Windows NT 10.0; zh-CN) WindowsPowerShell/5.1.19041.6328', 'eyJfdG9rZW4iOiJwbjZBRXR6NURKeVNvWDQzZ1VXTk1XU1hrMkpscmp2bnE3VUpnUGM4IiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAwXC9iYWNrZW5kXC9sb2dpbiIsInJvdXRlIjoiYmFja2VuZC5pbmRleCJ9LCJfZmxhc2giOnsib2xkIjpbXSwibmV3IjpbXX0sImxvZ2luX2JhY2tlbmRfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI6OTM0MDM1ODAyNTU0NTc2ODk3fQ==', 1784892248);
+INSERT INTO `sessions` VALUES ('HYo1PkjmaPB3exeXjp9DDYC1qnmqL8qrVDEYvLEk', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36', 'eyJfdG9rZW4iOiJSVUF5QjNZMzBqVGVIb0daWERpNHhBR0ZNamsxZk81WG5XTmxMZVJTIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAwXC9iYWNrZW5kXC9wcm9kdWN0XC9zcGVjaWZpY2F0aW9ucyIsInJvdXRlIjoiYmFja2VuZC5pbmRleCJ9LCJfZmxhc2giOnsib2xkIjpbXSwibmV3IjpbXX0sImxvZ2luX2JhY2tlbmRfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI6OTM0MDM1ODAyNTU0NTc2ODk3fQ==', 1784976166);
 
 -- ----------------------------
 -- Table structure for user_account
@@ -901,7 +1167,7 @@ INSERT INTO `user_account` VALUES (920733860755423008, 'intern_huang', '', '1380
 INSERT INTO `user_account` VALUES (920733860755423009, 'former_zhao', '', '13800000009', 'zhaolei@company.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '', 2, '因违反公司信息安全规定，账号临时冻结', '2026-08-31 23:59:59', '192.168.4.50', '广东深圳', '2026-07-10 15:00:00', '192.168.4.1', 'Chrome/Windows', 'web', 2, '2026-01-15 00:00:00', '2026-07-10 15:00:00', NULL);
 INSERT INTO `user_account` VALUES (920733860755423010, 'former_lu', '', '13800000010', 'luyang@company.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '', 3, '用户主动注销', NULL, '192.168.5.60', '浙江杭州', '2026-06-01 10:00:00', '192.168.5.1', 'Chrome/Mac', 'web', 2, '2025-12-01 00:00:00', '2026-06-01 10:00:00', '2026-06-01 10:00:00');
 INSERT INTO `user_account` VALUES (934035802554576896, 'sunny', '', '13026661119', 'itpeeg@gmail.com', '$2y$10$RTRidRM2EtMIH6pAhsula..8xqM84yh9CPqN3/5pX5JpKP9vscA9e', 'salt', 1, '', NULL, '', '', NULL, '', '', 'web', 0, '2026-07-22 02:39:20', '2026-07-23 04:50:10', NULL);
-INSERT INTO `user_account` VALUES (934035802554576897, 'admin', '管理员', '13800000000', 'admin@example.com', '$2y$12$HhM3Cq8aFGc0xhkMh0kneuMQZxTGW583MSAKN4/F255Nfu1Tr4a4K', '', 1, '', NULL, '127.0.0.1', '', '2026-07-24 12:06:54', '', '', 'web', 2, '2026-07-23 02:21:16', '2026-07-24 12:06:54', NULL);
+INSERT INTO `user_account` VALUES (934035802554576897, 'admin', '管理员', '13800000000', 'admin@example.com', '$2y$12$HhM3Cq8aFGc0xhkMh0kneuMQZxTGW583MSAKN4/F255Nfu1Tr4a4K', '', 1, '', NULL, '127.0.0.1', '', '2026-07-25 10:14:28', '', '', 'web', 2, '2026-07-23 02:21:16', '2026-07-25 10:14:28', NULL);
 INSERT INTO `user_account` VALUES (934035802554576898, 'testuser', '', '13800138002', 'test@example.com', '$2y$10$RTRidRM2EtMIH6pAhsula..8xqM84yh9CPqN3/5pX5JpKP9vscA9e', 'salt', 1, '', NULL, '', '', NULL, '', '', 'web', 1, '2026-07-23 02:21:47', '2026-07-23 04:50:13', NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -70,6 +70,18 @@ export const adminMenus = [
     ],
   },
   {
+    key: 'wf',
+    title: '流程管理',
+    icon: 'Share',
+    children: [
+      { key: 'wf-todo', title: '待我审批', path: '/backend/wf/todo' },
+      { key: 'wf-applies', title: '我的申请', path: '/backend/wf/applies' },
+      { key: 'wf-cc', title: '抄送我的', path: '/backend/wf/cc' },
+      { key: 'wf-flow-types', title: '流程类型', path: '/backend/wf/flow-types' },
+      { key: 'wf-flow-definitions', title: '流程模板', path: '/backend/wf/flow-definitions' },
+    ],
+  },
+  {
     key: 'about',
     title: '关于',
     icon: 'InfoFilled',

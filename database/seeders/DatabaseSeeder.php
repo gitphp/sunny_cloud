@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             AuthRelationSeeder::class,
             HrSeeder::class,
             ProductSeeder::class,
+            WfSeeder::class,
         ]);
     }
 }

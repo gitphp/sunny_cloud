@@ -45,4 +45,16 @@ class CodePrefix
 
     /** 员工任职 */
     public const HR_USER_DEPT_POST = 850;
+
+    /** 流程类型 */
+    public const WF_FLOW_TYPE = 860;
+
+    /** 流程定义 */
+    public const WF_FLOW_DEFINITION = 870;
+
+    /** 流程申请 */
+    public const WF_FLOW_APPLY = 880;
+
+    /** 流程审批 */
+    public const WF_FLOW_APPROVE = 890;
 }

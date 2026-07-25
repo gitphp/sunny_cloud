@@ -14,6 +14,9 @@ use App\Http\Controllers\backend\ProductCategoryController;
 use App\Http\Controllers\backend\ProductController;
 use App\Http\Controllers\backend\ProductSpecificationController;
 use App\Http\Controllers\backend\UserAccountController;
+use App\Http\Controllers\backend\WfFlowApplyController;
+use App\Http\Controllers\backend\WfFlowDefinitionController;
+use App\Http\Controllers\backend\WfFlowTypeController;
 use App\Http\Middleware\EnsureBackendAuthenticated;
 use Illuminate\Support\Facades\Route;
 
@@ -90,6 +93,40 @@ Route::prefix('backend')->group(function () {
             Route::put('product/products/{product}', [ProductController::class, 'update']);
             Route::patch('product/products/{product}/status', [ProductController::class, 'updateStatus']);
             Route::delete('product/products/{product}', [ProductController::class, 'destroy']);
+
+            Route::get('wf/flow-types', [WfFlowTypeController::class, 'index']);
+            Route::get('wf/flow-types/options', [WfFlowTypeController::class, 'options']);
+            Route::post('wf/flow-types', [WfFlowTypeController::class, 'store']);
+            Route::put('wf/flow-types/{wfFlowType}', [WfFlowTypeController::class, 'update']);
+            Route::patch('wf/flow-types/{wfFlowType}/sort', [WfFlowTypeController::class, 'updateSort']);
+            Route::patch('wf/flow-types/{wfFlowType}/status', [WfFlowTypeController::class, 'updateStatus']);
+            Route::delete('wf/flow-types/{wfFlowType}', [WfFlowTypeController::class, 'destroy']);
+
+            Route::get('wf/flow-definitions', [WfFlowDefinitionController::class, 'index']);
+            Route::post('wf/flow-definitions', [WfFlowDefinitionController::class, 'store']);
+            Route::get('wf/flow-definitions/{wfFlowDefinition}', [WfFlowDefinitionController::class, 'show']);
+            Route::put('wf/flow-definitions/{wfFlowDefinition}', [WfFlowDefinitionController::class, 'update']);
+            Route::post('wf/flow-definitions/{wfFlowDefinition}/publish', [WfFlowDefinitionController::class, 'publish']);
+            Route::post('wf/flow-definitions/{wfFlowDefinition}/unpublish', [WfFlowDefinitionController::class, 'unpublish']);
+            Route::delete('wf/flow-definitions/{wfFlowDefinition}', [WfFlowDefinitionController::class, 'destroy']);
+
+            Route::get('wf/applies/mine', [WfFlowApplyController::class, 'mine']);
+            Route::get('wf/applies/todo', [WfFlowApplyController::class, 'todo']);
+            Route::get('wf/applies/cc', [WfFlowApplyController::class, 'ccList']);
+            Route::get('wf/applies/published-definitions', [WfFlowApplyController::class, 'publishedDefinitions']);
+            Route::get('wf/applies/published-definitions/{wfFlowDefinition}', [WfFlowApplyController::class, 'definitionDetail']);
+            Route::post('wf/applies', [WfFlowApplyController::class, 'store']);
+            Route::get('wf/applies/{wfFlowApply}', [WfFlowApplyController::class, 'show']);
+            Route::put('wf/applies/{wfFlowApply}', [WfFlowApplyController::class, 'update']);
+            Route::post('wf/applies/{wfFlowApply}/submit', [WfFlowApplyController::class, 'submit']);
+            Route::post('wf/applies/{wfFlowApply}/withdraw', [WfFlowApplyController::class, 'withdraw']);
+            Route::post('wf/applies/{wfFlowApply}/void', [WfFlowApplyController::class, 'void']);
+            Route::delete('wf/applies/{wfFlowApply}', [WfFlowApplyController::class, 'destroy']);
+            Route::post('wf/applies/{wfFlowApply}/agree', [WfFlowApplyController::class, 'agree']);
+            Route::post('wf/applies/{wfFlowApply}/reject', [WfFlowApplyController::class, 'reject']);
+            Route::post('wf/applies/{wfFlowApply}/transfer', [WfFlowApplyController::class, 'transfer']);
+            Route::post('wf/applies/{wfFlowApply}/add-sign', [WfFlowApplyController::class, 'addSign']);
+            Route::post('wf/cc/{wfFlowCcUser}/read', [WfFlowApplyController::class, 'markCcRead']);
 
             Route::get('users', [UserAccountController::class, 'index']);
             Route::post('users', [UserAccountController::class, 'store']);

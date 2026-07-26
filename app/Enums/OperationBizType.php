@@ -13,6 +13,9 @@ enum OperationBizType: string
     case HrPost = 'hr_post';
     case AuthMenu = 'auth_menu';
     case AuthRole = 'auth_role';
+    case ArticleCategory = 'article_category';
+    case Article = 'article';
+    case BookMark = 'book_mark';
 
     public function label(): string
     {
@@ -26,6 +29,9 @@ enum OperationBizType: string
             self::HrPost => '岗位',
             self::AuthMenu => '菜单',
             self::AuthRole => '角色',
+            self::ArticleCategory => '文章分类',
+            self::Article => '文章',
+            self::BookMark => '书签',
         };
     }
 

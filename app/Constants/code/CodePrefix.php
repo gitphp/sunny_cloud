@@ -60,4 +60,13 @@ class CodePrefix
 
     /** 操作日志 */
     public const OPERATION_LOG = 910;
+
+    /** 文章分类 */
+    public const ARTICLE_CATEGORY = 920;
+
+    /** 文章 */
+    public const ARTICLE = 930;
+
+    /** 书签 */
+    public const BOOK_MARK = 940;
 }

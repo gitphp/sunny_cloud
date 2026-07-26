@@ -99,6 +99,14 @@ export const adminMenus = [
     ],
   },
   {
+    key: 'bookmarks',
+    title: '书签管理',
+    icon: 'Star',
+    children: [
+      { key: 'bookmarks-list', title: '书签列表', path: '/backend/bookmarks' },
+    ],
+  },
+  {
     key: 'others',
     title: '其它功能',
     icon: 'More',
@@ -106,6 +114,7 @@ export const adminMenus = [
       { key: 'others-list', title: '其它', path: '/backend/news/articles' },
     ],
   },
+
   {
     key: 'files',
     title: '文件管理',

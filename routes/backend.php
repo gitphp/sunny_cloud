@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\backend\ArticleCategoryController;
+use App\Http\Controllers\backend\ArticleController;
 use App\Http\Controllers\backend\AuthController;
+use App\Http\Controllers\backend\BookMarkController;
 use App\Http\Controllers\backend\AuthMenuController;
 use App\Http\Controllers\backend\AuthPermissionController;
 use App\Http\Controllers\backend\AuthRoleController;
@@ -38,6 +41,28 @@ Route::prefix('backend')->group(function () {
             Route::patch('categories/{category}/sort', [CategoryController::class, 'updateSort']);
             Route::patch('categories/{category}/status', [CategoryController::class, 'updateStatus']);
             Route::delete('categories/{category}', [CategoryController::class, 'destroy']);
+
+            Route::get('news/article-categories', [ArticleCategoryController::class, 'index']);
+            Route::post('news/article-categories', [ArticleCategoryController::class, 'store']);
+            Route::put('news/article-categories/{articleCategory}', [ArticleCategoryController::class, 'update']);
+            Route::patch('news/article-categories/{articleCategory}/sort', [ArticleCategoryController::class, 'updateSort']);
+            Route::patch('news/article-categories/{articleCategory}/status', [ArticleCategoryController::class, 'updateStatus']);
+            Route::delete('news/article-categories/{articleCategory}', [ArticleCategoryController::class, 'destroy']);
+
+            Route::get('news/articles', [ArticleController::class, 'index']);
+            Route::post('news/articles', [ArticleController::class, 'store']);
+            Route::get('news/articles/{article}', [ArticleController::class, 'show']);
+            Route::put('news/articles/{article}', [ArticleController::class, 'update']);
+            Route::patch('news/articles/{article}/status', [ArticleController::class, 'updateStatus']);
+            Route::patch('news/articles/{article}/top', [ArticleController::class, 'updateTop']);
+            Route::delete('news/articles/{article}', [ArticleController::class, 'destroy']);
+
+            Route::get('bookmarks', [BookMarkController::class, 'index']);
+            Route::post('bookmarks', [BookMarkController::class, 'store']);
+            Route::put('bookmarks/{bookMark}', [BookMarkController::class, 'update']);
+            Route::patch('bookmarks/{bookMark}/sort', [BookMarkController::class, 'updateSort']);
+            Route::patch('bookmarks/{bookMark}/status', [BookMarkController::class, 'updateStatus']);
+            Route::delete('bookmarks/{bookMark}', [BookMarkController::class, 'destroy']);
 
             Route::get('hr/departments', [HrDepartmentController::class, 'index']);
             Route::post('hr/departments', [HrDepartmentController::class, 'store']);

@@ -30,8 +30,20 @@ const routes = [
             {
                 path: 'news/articles',
                 name: 'news-articles',
-                component: () => import('@backend/views/Placeholder.vue'),
+                component: () => import('@backend/views/news/ArticleIndex.vue'),
                 meta: { title: '文章管理', parent: '新闻' },
+            },
+            {
+                path: 'news/articles/create',
+                name: 'news-articles-create',
+                component: () => import('@backend/views/news/ArticleForm.vue'),
+                meta: { title: '写文章', parent: '新闻' },
+            },
+            {
+                path: 'news/articles/:id/edit',
+                name: 'news-articles-edit',
+                component: () => import('@backend/views/news/ArticleForm.vue'),
+                meta: { title: '编辑文章', parent: '新闻' },
             },
             {
                 path: 'news/categories',
@@ -208,11 +220,18 @@ const routes = [
                 meta: { title: '服务管理' },
             },
             {
+                path: 'bookmarks',
+                name: 'bookmarks',
+                component: () => import('@backend/views/bookmark/Index.vue'),
+                meta: { title: '书签列表', parent: '书签管理' },
+            },
+            {
                 path: 'others',
                 name: 'others',
                 component: () => import('@backend/views/Placeholder.vue'),
                 meta: { title: '其它' },
             },
+
             {
                 path: 'files',
                 name: 'files',

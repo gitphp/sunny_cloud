@@ -5,6 +5,7 @@ use App\Http\Controllers\backend\AdSlotController;
 use App\Http\Controllers\backend\ArticleCategoryController;
 use App\Http\Controllers\backend\ArticleController;
 use App\Http\Controllers\backend\AuthController;
+use App\Http\Controllers\backend\DashboardController;
 use App\Http\Controllers\backend\BookMarkController;
 use App\Http\Controllers\backend\BossJobController;
 use App\Http\Controllers\backend\FeedbackController;
@@ -40,6 +41,8 @@ Route::prefix('backend')->group(function () {
         Route::middleware(EnsureBackendAuthenticated::class)->group(function () {
             Route::post('auth/logout', [AuthController::class, 'logout']);
             Route::get('auth/me', [AuthController::class, 'me']);
+
+            Route::get('dashboard', [DashboardController::class, 'overview']);
 
             Route::get('categories', [CategoryController::class, 'index']);
             Route::post('categories', [CategoryController::class, 'store']);

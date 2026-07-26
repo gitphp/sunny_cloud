@@ -54,7 +54,7 @@ const routes = [
             {
                 path: 'system/settings',
                 name: 'system-settings',
-                component: () => import('@backend/views/Placeholder.vue'),
+                component: () => import('@backend/views/system/SiteConfig.vue'),
                 meta: { title: '网站设置', parent: '系统设置' },
             },
             {
@@ -220,6 +220,12 @@ const routes = [
                 meta: { title: '服务管理' },
             },
             {
+                path: 'friend-links',
+                name: 'friend-links',
+                component: () => import('@backend/views/operation/FriendLinkIndex.vue'),
+                meta: { title: '友情链接', parent: '运营管理' },
+            },
+            {
                 path: 'feedbacks',
                 name: 'feedbacks',
                 component: () => import('@backend/views/operation/FeedbackIndex.vue'),
@@ -231,6 +237,7 @@ const routes = [
                 component: () => import('@backend/views/operation/BossJobIndex.vue'),
                 meta: { title: '招聘职位', parent: '运营管理' },
             },
+
             {
                 path: 'bookmarks',
                 name: 'bookmarks',

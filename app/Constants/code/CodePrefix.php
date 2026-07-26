@@ -75,4 +75,10 @@ class CodePrefix
 
     /** 招聘职位 */
     public const BOSS_JOB = 960;
+
+    /** 友情链接 */
+    public const FRIEND_LINK = 970;
+
+    /** 站点配置 */
+    public const SITE_CONFIG = 980;
 }

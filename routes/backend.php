@@ -6,6 +6,8 @@ use App\Http\Controllers\backend\AuthController;
 use App\Http\Controllers\backend\BookMarkController;
 use App\Http\Controllers\backend\BossJobController;
 use App\Http\Controllers\backend\FeedbackController;
+use App\Http\Controllers\backend\FriendLinkController;
+use App\Http\Controllers\backend\SiteConfigController;
 use App\Http\Controllers\backend\AuthMenuController;
 use App\Http\Controllers\backend\AuthPermissionController;
 use App\Http\Controllers\backend\AuthRoleController;
@@ -80,6 +82,19 @@ Route::prefix('backend')->group(function () {
             Route::patch('boss-jobs/{bossJob}/status', [BossJobController::class, 'updateStatus']);
             Route::patch('boss-jobs/{bossJob}/hot', [BossJobController::class, 'updateHot']);
             Route::delete('boss-jobs/{bossJob}', [BossJobController::class, 'destroy']);
+
+            Route::get('friend-links', [FriendLinkController::class, 'index']);
+            Route::post('friend-links', [FriendLinkController::class, 'store']);
+            Route::put('friend-links/{friendLink}', [FriendLinkController::class, 'update']);
+            Route::patch('friend-links/{friendLink}/sort', [FriendLinkController::class, 'updateSort']);
+            Route::patch('friend-links/{friendLink}/status', [FriendLinkController::class, 'updateStatus']);
+            Route::delete('friend-links/{friendLink}', [FriendLinkController::class, 'destroy']);
+
+            Route::get('site-configs', [SiteConfigController::class, 'index']);
+            Route::post('site-configs', [SiteConfigController::class, 'store']);
+            Route::post('site-configs/batch', [SiteConfigController::class, 'batchUpdate']);
+            Route::put('site-configs/{siteConfig}', [SiteConfigController::class, 'update']);
+            Route::delete('site-configs/{siteConfig}', [SiteConfigController::class, 'destroy']);
 
             Route::get('hr/departments', [HrDepartmentController::class, 'index']);
             Route::post('hr/departments', [HrDepartmentController::class, 'store']);

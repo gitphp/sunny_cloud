@@ -24,40 +24,82 @@ class OperationModuleSeeder extends Seeder
             ]
         );
 
-        $feedbackMenu = AuthMenu::query()->updateOrCreate(
-            ['permission_code' => 'feedbacksview'],
+        $menus = [
             [
-                'parent_id' => $parent->id,
+                'permission_code' => 'friendlinksview',
+                'menu_name' => '友情链接',
+                'menu_path' => '/backend/friend-links',
+                'component' => 'operation/FriendLinkIndex',
+                'menu_sort' => 30,
+            ],
+            [
+                'permission_code' => 'feedbacksview',
                 'menu_name' => '用户留言',
-                'menu_icon' => '',
                 'menu_path' => '/backend/feedbacks',
                 'component' => 'operation/FeedbackIndex',
                 'menu_sort' => 20,
+            ],
+            [
+                'permission_code' => 'bossjobview',
+                'menu_name' => '招聘职位',
+                'menu_path' => '/backend/boss-jobs',
+                'component' => 'operation/BossJobIndex',
+                'menu_sort' => 10,
+            ],
+        ];
+
+        $menuIds = [$parent->id];
+        foreach ($menus as $item) {
+            $menu = AuthMenu::query()->updateOrCreate(
+                ['permission_code' => $item['permission_code']],
+                [
+                    'parent_id' => $parent->id,
+                    'menu_name' => $item['menu_name'],
+                    'menu_icon' => '',
+                    'menu_path' => $item['menu_path'],
+                    'component' => $item['component'],
+                    'menu_sort' => $item['menu_sort'],
+                    'menu_status' => MenuStatus::Enabled,
+                ]
+            );
+            $menuIds[] = $menu->id;
+        }
+
+        $systemParent = AuthMenu::query()->updateOrCreate(
+            ['permission_code' => 'systemview'],
+            [
+                'parent_id' => 0,
+                'menu_name' => '系统管理',
+                'menu_icon' => 'Setting',
+                'menu_path' => '',
+                'component' => '',
+                'menu_sort' => 40,
                 'menu_status' => MenuStatus::Enabled,
             ]
         );
 
-        $jobMenu = AuthMenu::query()->updateOrCreate(
-            ['permission_code' => 'bossjobview'],
+        $configMenu = AuthMenu::query()->updateOrCreate(
+            ['permission_code' => 'configview'],
             [
-                'parent_id' => $parent->id,
-                'menu_name' => '招聘职位',
+                'parent_id' => $systemParent->id,
+                'menu_name' => '网站设置',
                 'menu_icon' => '',
-                'menu_path' => '/backend/boss-jobs',
-                'component' => 'operation/BossJobIndex',
-                'menu_sort' => 10,
+                'menu_path' => '/backend/system/settings',
+                'component' => 'system/SiteConfig',
+                'menu_sort' => 20,
                 'menu_status' => MenuStatus::Enabled,
             ]
         );
 
         $roles = AuthRole::query()->whereIn('role_code', ['super_admin', 'admin'])->get();
         $now = now();
+        $allIds = array_merge($menuIds, [$systemParent->id, $configMenu->id]);
         foreach ($roles as $role) {
-            $role->menus()->syncWithoutDetaching([
-                $parent->id => ['created_at' => $now],
-                $feedbackMenu->id => ['created_at' => $now],
-                $jobMenu->id => ['created_at' => $now],
-            ]);
+            $payload = [];
+            foreach ($allIds as $id) {
+                $payload[$id] = ['created_at' => $now];
+            }
+            $role->menus()->syncWithoutDetaching($payload);
         }
     }
 }

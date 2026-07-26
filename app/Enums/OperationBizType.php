@@ -18,6 +18,8 @@ enum OperationBizType: string
     case BookMark = 'book_mark';
     case Feedback = 'feedback';
     case BossJob = 'boss_job';
+    case FriendLink = 'friend_link';
+    case SiteConfig = 'site_config';
 
     public function label(): string
     {
@@ -36,6 +38,8 @@ enum OperationBizType: string
             self::BookMark => '书签',
             self::Feedback => '用户留言',
             self::BossJob => '招聘职位',
+            self::FriendLink => '友情链接',
+            self::SiteConfig => '站点配置',
         };
     }
 

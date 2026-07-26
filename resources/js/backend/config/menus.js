@@ -103,6 +103,7 @@ export const adminMenus = [
     title: '运营管理',
     icon: 'Promotion',
     children: [
+      { key: 'friend-links', title: '友情链接', path: '/backend/friend-links' },
       { key: 'feedbacks', title: '用户留言', path: '/backend/feedbacks' },
       { key: 'boss-jobs', title: '招聘职位', path: '/backend/boss-jobs' },
     ],
@@ -115,7 +116,6 @@ export const adminMenus = [
       { key: 'bookmarks-list', title: '书签列表', path: '/backend/bookmarks' },
     ],
   },
-
   {
     key: 'others',
     title: '其它功能',
@@ -124,7 +124,6 @@ export const adminMenus = [
       { key: 'others-list', title: '其它', path: '/backend/news/articles' },
     ],
   },
-
   {
     key: 'files',
     title: '文件管理',

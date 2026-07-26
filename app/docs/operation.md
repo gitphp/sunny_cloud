@@ -1,10 +1,12 @@
-用户留言、招聘职位模块已打通。
+运营相关模块已打通：用户留言、招聘职位、友情链接；网站设置在系统管理下。
 
 ### 页面
 | 模块 | 地址 |
 |---|---|
+| 友情链接 | `/backend/friend-links` |
 | 用户留言 | `/backend/feedbacks` |
 | 招聘职位 | `/backend/boss-jobs` |
+| 网站设置 | `/backend/system/settings` |
 
 ### 留言接口
 | 接口 | 说明 |

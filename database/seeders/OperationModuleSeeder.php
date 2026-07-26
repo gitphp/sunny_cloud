@@ -26,6 +26,20 @@ class OperationModuleSeeder extends Seeder
 
         $menus = [
             [
+                'permission_code' => 'adslotsview',
+                'menu_name' => '广告位管理',
+                'menu_path' => '/backend/ad-slots',
+                'component' => 'operation/AdSlotIndex',
+                'menu_sort' => 50,
+            ],
+            [
+                'permission_code' => 'adpositionsview',
+                'menu_name' => '广告管理',
+                'menu_path' => '/backend/ad-positions',
+                'component' => 'operation/AdPositionIndex',
+                'menu_sort' => 40,
+            ],
+            [
                 'permission_code' => 'friendlinksview',
                 'menu_name' => '友情链接',
                 'menu_path' => '/backend/friend-links',

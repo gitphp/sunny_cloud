@@ -81,4 +81,10 @@ class CodePrefix
 
     /** 站点配置 */
     public const SITE_CONFIG = 980;
+
+    /** 广告位定义 */
+    public const AD_SLOT = 990;
+
+    /** 广告投放 */
+    public const AD_POSITION = 991;
 }

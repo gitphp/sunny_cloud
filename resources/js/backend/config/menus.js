@@ -103,6 +103,8 @@ export const adminMenus = [
     title: '运营管理',
     icon: 'Promotion',
     children: [
+      { key: 'ad-slots', title: '广告位管理', path: '/backend/ad-slots' },
+      { key: 'ad-positions', title: '广告管理', path: '/backend/ad-positions' },
       { key: 'friend-links', title: '友情链接', path: '/backend/friend-links' },
       { key: 'feedbacks', title: '用户留言', path: '/backend/feedbacks' },
       { key: 'boss-jobs', title: '招聘职位', path: '/backend/boss-jobs' },

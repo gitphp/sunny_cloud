@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\backend\AdPositionController;
+use App\Http\Controllers\backend\AdSlotController;
 use App\Http\Controllers\backend\ArticleCategoryController;
 use App\Http\Controllers\backend\ArticleController;
 use App\Http\Controllers\backend\AuthController;
@@ -89,6 +91,22 @@ Route::prefix('backend')->group(function () {
             Route::patch('friend-links/{friendLink}/sort', [FriendLinkController::class, 'updateSort']);
             Route::patch('friend-links/{friendLink}/status', [FriendLinkController::class, 'updateStatus']);
             Route::delete('friend-links/{friendLink}', [FriendLinkController::class, 'destroy']);
+
+            Route::get('ad-slots', [AdSlotController::class, 'index']);
+            Route::get('ad-slots/options', [AdSlotController::class, 'options']);
+            Route::post('ad-slots', [AdSlotController::class, 'store']);
+            Route::put('ad-slots/{adSlot}', [AdSlotController::class, 'update']);
+            Route::patch('ad-slots/{adSlot}/status', [AdSlotController::class, 'updateStatus']);
+            Route::delete('ad-slots/{adSlot}', [AdSlotController::class, 'destroy']);
+
+            Route::get('ad-positions', [AdPositionController::class, 'index']);
+            Route::post('ad-positions', [AdPositionController::class, 'store']);
+            Route::get('ad-positions/{adPosition}', [AdPositionController::class, 'show']);
+            Route::put('ad-positions/{adPosition}', [AdPositionController::class, 'update']);
+            Route::patch('ad-positions/{adPosition}/sort', [AdPositionController::class, 'updateSort']);
+            Route::patch('ad-positions/{adPosition}/status', [AdPositionController::class, 'updateStatus']);
+            Route::post('ad-positions/{adPosition}/audit', [AdPositionController::class, 'audit']);
+            Route::delete('ad-positions/{adPosition}', [AdPositionController::class, 'destroy']);
 
             Route::get('site-configs', [SiteConfigController::class, 'index']);
             Route::post('site-configs', [SiteConfigController::class, 'store']);

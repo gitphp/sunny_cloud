@@ -220,6 +220,18 @@ const routes = [
                 meta: { title: '服务管理' },
             },
             {
+                path: 'ad-slots',
+                name: 'ad-slots',
+                component: () => import('@backend/views/operation/AdSlotIndex.vue'),
+                meta: { title: '广告位管理', parent: '运营管理' },
+            },
+            {
+                path: 'ad-positions',
+                name: 'ad-positions',
+                component: () => import('@backend/views/operation/AdPositionIndex.vue'),
+                meta: { title: '广告管理', parent: '运营管理' },
+            },
+            {
                 path: 'friend-links',
                 name: 'friend-links',
                 component: () => import('@backend/views/operation/FriendLinkIndex.vue'),

@@ -8,9 +8,9 @@
         <el-icon><Refresh /></el-icon>
       </button>
       <div class="header-breadcrumb">
-        <span>Sunny Cloud</span>
-        <span class="sep">/</span>
-        <span>ERP</span>
+        <span>WMS</span>
+        <span class="sep"> / </span>
+        <span>EHR</span>
       </div>
     </div>
 

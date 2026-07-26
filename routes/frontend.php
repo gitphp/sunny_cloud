@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\frontend\AuthController as FrontendAuthController;
 use App\Http\Controllers\frontend\FeedbackController as FrontendFeedbackController;
+use App\Http\Controllers\frontend\HomeController as FrontendHomeController;
 use App\Http\Controllers\frontend\IndexController as FrontendIndexController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,6 +13,7 @@ Route::prefix('frontend')->group(function () {
         Route::post('auth/logout', [FrontendAuthController::class, 'logout']);
         Route::get('auth/me', [FrontendAuthController::class, 'me']);
 
+        Route::get('home', [FrontendHomeController::class, 'index']);
         Route::post('feedbacks', [FrontendFeedbackController::class, 'store'])->middleware('throttle:5,1');
     });
 

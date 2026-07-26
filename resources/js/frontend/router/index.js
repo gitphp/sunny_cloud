@@ -3,14 +3,18 @@ import { useAuth } from '@frontend/composables/useAuth';
 
 const routes = [
   {
-    path: '/frontend',
-    redirect: '/frontend/home',
-  },
-  {
-    path: '/frontend/home',
+    path: '/',
     name: 'home',
     component: () => import('@frontend/views/Home.vue'),
     meta: { title: '首页' },
+  },
+  {
+    path: '/frontend',
+    redirect: '/',
+  },
+  {
+    path: '/frontend/home',
+    redirect: '/',
   },
   {
     path: '/frontend/login',
@@ -37,7 +41,7 @@ router.beforeEach(async (to) => {
     await loadMe();
   }
   if (to.meta.guest && isLoggedIn.value) {
-    return { path: '/frontend/home' };
+    return { path: '/' };
   }
   return true;
 });

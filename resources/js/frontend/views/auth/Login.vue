@@ -14,7 +14,7 @@
       </el-form>
       <div class="foot">
         没有账号？<router-link to="/frontend/register">去注册</router-link>
-        · <router-link to="/frontend/home">返回首页</router-link>
+        · <router-link to="/">返回首页</router-link>
       </div>
     </div>
   </div>
@@ -42,7 +42,7 @@ async function onSubmit() {
   try {
     await login({ ...form });
     ElMessage.success('登录成功');
-    router.replace('/frontend/home');
+    router.replace('/');
   } catch (e) {
     ElMessage.error(e.message || '登录失败');
   } finally {

@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('frontend')->group(function () {
     Route::prefix('api')->group(function () {
-        Route::post('auth/login', [FrontendAuthController::class, 'login']);
-        Route::post('auth/register', [FrontendAuthController::class, 'register']);
+        Route::post('auth/login', [FrontendAuthController::class, 'login'])->middleware('throttle:10,1');
+        Route::post('auth/register', [FrontendAuthController::class, 'register'])->middleware('throttle:5,1');
         Route::post('auth/logout', [FrontendAuthController::class, 'logout']);
         Route::get('auth/me', [FrontendAuthController::class, 'me']);
     });

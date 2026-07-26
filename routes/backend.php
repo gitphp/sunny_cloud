@@ -22,9 +22,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('backend')->group(function () {
     Route::prefix('api')->group(function () {
-        // 公开接口
-        Route::post('auth/login', [AuthController::class, 'login']);
-        Route::post('auth/register', [AuthController::class, 'register']);
+        // 公开接口（登录限流：每分钟 10 次）
+        Route::post('auth/login', [AuthController::class, 'login'])->middleware('throttle:10,1');
+        Route::post('auth/register', [AuthController::class, 'register'])->middleware('throttle:5,1');
 
         // 需登录
         Route::middleware(EnsureBackendAuthenticated::class)->group(function () {

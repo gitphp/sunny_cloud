@@ -540,8 +540,16 @@ a:hover {
     height: 42px !important;
 }
 
+.auth-hint {
+    margin: 14px 0 0;
+    text-align: center;
+    color: #a0a0a0;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
 .auth-footer {
-    margin-top: 18px;
+    margin-top: 12px;
     text-align: center;
     color: #888;
     font-size: 13px;

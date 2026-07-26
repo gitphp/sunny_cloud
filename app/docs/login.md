@@ -1,8 +1,11 @@
-登录、注册、用户模块已按 `user_account` 表打通，前后台都可用。
+登录、注册、用户模块已按 `user_account` 表打通，前后台都走真实库表校验（`password_hash` + 账号状态）。
 
-### 默认账号
-- 用户名：`admin`
-- 密码：`admin123`
+### 可用账号（库内真实数据）
+| 用户名 | 密码 | 说明 |
+|---|---|---|
+| `admin` | `admin123` | 后台默认管理员（种子） |
+| `super_admin` / `admin123` 等演示账号 | `password` | `sunny_cloud.sql` 导入账号 |
+| 手机号 / 邮箱 | 同上 | 支持 `user_mobile` / `user_email` 登录 |
 
 ### 访问地址
 | 端 | 地址 |

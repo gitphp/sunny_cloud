@@ -57,11 +57,19 @@ class UserAccount extends Authenticatable
     }
 
     /**
-     * Auth 契约：密码字段映射到 password_hash
+     * Auth 契约：密码字段映射到 password_hash（对应表字段，禁止用 password）
      */
     public function getAuthPassword(): string
     {
-        return $this->password_hash;
+        return (string) $this->password_hash;
+    }
+
+    /**
+     * 会话标识使用主键 id（雪花/自增均可）
+     */
+    public function getAuthIdentifierName(): string
+    {
+        return 'id';
     }
 
     public function isLoginAllowed(): bool
@@ -70,14 +78,12 @@ class UserAccount extends Authenticatable
             return true;
         }
 
+        // 限时冻结到期后允许登录，由 AuthService 自动解冻
         if ($this->user_status === UserStatus::Frozen) {
-            if ($this->lock_expire_time && $this->lock_expire_time->isPast()) {
-                return true;
-            }
-
-            return false;
+            return (bool) ($this->lock_expire_time && $this->lock_expire_time->isPast());
         }
 
+        // 禁用 / 注销不可登录
         return false;
     }
 

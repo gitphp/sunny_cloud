@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\backend;
 
+use App\Constants\Code\UserError;
 use App\Exceptions\BusinessException;
 use App\Http\Requests\backend\AuthRequest;
 use App\Http\Resources\backend\UserAccountResource;
@@ -34,7 +35,9 @@ class AuthController extends AbstractController
         } catch (BusinessException $e) {
             return $this->error($e->getErrorCode(), $e->getMessage());
         } catch (Throwable $e) {
-            return $this->error(2001099, '注册失败');
+            report($e);
+
+            return $this->error(UserError::AUTH_REGISTER_FAILED, '注册失败');
         }
     }
 
@@ -62,7 +65,7 @@ class AuthController extends AbstractController
         } catch (Throwable $e) {
             report($e);
 
-            return $this->error(2001098, '登录失败');
+            return $this->error(UserError::AUTH_LOGIN_FAILED, '登录失败');
         }
     }
 
@@ -77,7 +80,7 @@ class AuthController extends AbstractController
     {
         $user = $this->authService->currentUser();
         if (! $user) {
-            return $this->error(2001003, '未登录');
+            return $this->error(UserError::AUTH_NOT_LOGGED_IN, '未登录');
         }
 
         $user->load(['roles.permissions']);

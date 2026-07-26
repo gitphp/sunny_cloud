@@ -26,6 +26,7 @@
         </el-button>
       </el-form>
 
+      <p class="auth-hint">演示账号：admin / admin123，或 super_admin / password</p>
       <div class="auth-footer">
         还没有账号？
         <router-link to="/backend/register">立即注册</router-link>

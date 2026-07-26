@@ -99,6 +99,15 @@ export const adminMenus = [
     ],
   },
   {
+    key: 'operation',
+    title: '运营管理',
+    icon: 'Promotion',
+    children: [
+      { key: 'feedbacks', title: '用户留言', path: '/backend/feedbacks' },
+      { key: 'boss-jobs', title: '招聘职位', path: '/backend/boss-jobs' },
+    ],
+  },
+  {
     key: 'bookmarks',
     title: '书签管理',
     icon: 'Star',
@@ -106,6 +115,7 @@ export const adminMenus = [
       { key: 'bookmarks-list', title: '书签列表', path: '/backend/bookmarks' },
     ],
   },
+
   {
     key: 'others',
     title: '其它功能',

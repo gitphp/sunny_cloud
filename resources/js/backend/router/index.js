@@ -220,11 +220,24 @@ const routes = [
                 meta: { title: '服务管理' },
             },
             {
+                path: 'feedbacks',
+                name: 'feedbacks',
+                component: () => import('@backend/views/operation/FeedbackIndex.vue'),
+                meta: { title: '用户留言', parent: '运营管理' },
+            },
+            {
+                path: 'boss-jobs',
+                name: 'boss-jobs',
+                component: () => import('@backend/views/operation/BossJobIndex.vue'),
+                meta: { title: '招聘职位', parent: '运营管理' },
+            },
+            {
                 path: 'bookmarks',
                 name: 'bookmarks',
                 component: () => import('@backend/views/bookmark/Index.vue'),
                 meta: { title: '书签列表', parent: '书签管理' },
             },
+
             {
                 path: 'others',
                 name: 'others',

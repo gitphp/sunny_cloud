@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             OperationLogSeeder::class,
             ArticleSeeder::class,
             BookMarkSeeder::class,
+            OperationModuleSeeder::class,
         ]);
     }
 }

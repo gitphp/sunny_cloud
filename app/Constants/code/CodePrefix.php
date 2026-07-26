@@ -69,4 +69,10 @@ class CodePrefix
 
     /** 书签 */
     public const BOOK_MARK = 940;
+
+    /** 用户留言 */
+    public const FEEDBACK = 950;
+
+    /** 招聘职位 */
+    public const BOSS_JOB = 960;
 }

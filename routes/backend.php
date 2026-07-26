@@ -4,6 +4,8 @@ use App\Http\Controllers\backend\ArticleCategoryController;
 use App\Http\Controllers\backend\ArticleController;
 use App\Http\Controllers\backend\AuthController;
 use App\Http\Controllers\backend\BookMarkController;
+use App\Http\Controllers\backend\BossJobController;
+use App\Http\Controllers\backend\FeedbackController;
 use App\Http\Controllers\backend\AuthMenuController;
 use App\Http\Controllers\backend\AuthPermissionController;
 use App\Http\Controllers\backend\AuthRoleController;
@@ -63,6 +65,21 @@ Route::prefix('backend')->group(function () {
             Route::patch('bookmarks/{bookMark}/sort', [BookMarkController::class, 'updateSort']);
             Route::patch('bookmarks/{bookMark}/status', [BookMarkController::class, 'updateStatus']);
             Route::delete('bookmarks/{bookMark}', [BookMarkController::class, 'destroy']);
+
+            Route::get('feedbacks', [FeedbackController::class, 'index']);
+            Route::get('feedbacks/{feedback}', [FeedbackController::class, 'show']);
+            Route::post('feedbacks/{feedback}/reply', [FeedbackController::class, 'reply']);
+            Route::patch('feedbacks/{feedback}/status', [FeedbackController::class, 'updateStatus']);
+            Route::delete('feedbacks/{feedback}', [FeedbackController::class, 'destroy']);
+
+            Route::get('boss-jobs', [BossJobController::class, 'index']);
+            Route::post('boss-jobs', [BossJobController::class, 'store']);
+            Route::get('boss-jobs/{bossJob}', [BossJobController::class, 'show']);
+            Route::put('boss-jobs/{bossJob}', [BossJobController::class, 'update']);
+            Route::patch('boss-jobs/{bossJob}/sort', [BossJobController::class, 'updateSort']);
+            Route::patch('boss-jobs/{bossJob}/status', [BossJobController::class, 'updateStatus']);
+            Route::patch('boss-jobs/{bossJob}/hot', [BossJobController::class, 'updateHot']);
+            Route::delete('boss-jobs/{bossJob}', [BossJobController::class, 'destroy']);
 
             Route::get('hr/departments', [HrDepartmentController::class, 'index']);
             Route::post('hr/departments', [HrDepartmentController::class, 'store']);

@@ -9,6 +9,7 @@ use App\Http\Controllers\backend\HrDepartmentController;
 use App\Http\Controllers\backend\HrPostController;
 use App\Http\Controllers\backend\HrUserDeptPostController;
 use App\Http\Controllers\backend\IndexController;
+use App\Http\Controllers\backend\OperationLogController;
 use App\Http\Controllers\backend\ProductBrandController;
 use App\Http\Controllers\backend\ProductCategoryController;
 use App\Http\Controllers\backend\ProductController;
@@ -136,6 +137,9 @@ Route::prefix('backend')->group(function () {
             Route::get('users/{userAccount}/roles', [UserAccountController::class, 'roles']);
             Route::put('users/{userAccount}/roles', [UserAccountController::class, 'syncRoles']);
             Route::delete('users/{userAccount}', [UserAccountController::class, 'destroy']);
+
+            Route::get('operation-logs', [OperationLogController::class, 'index']);
+            Route::get('operation-logs/{operationLog}', [OperationLogController::class, 'show']);
 
             Route::get('menus/nav', [AuthMenuController::class, 'nav']);
             Route::get('menus', [AuthMenuController::class, 'index']);

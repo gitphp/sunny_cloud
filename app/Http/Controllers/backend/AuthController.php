@@ -7,6 +7,7 @@ use App\Exceptions\BusinessException;
 use App\Http\Requests\backend\AuthRequest;
 use App\Http\Resources\backend\UserAccountResource;
 use App\Service\AuthService;
+use App\Service\OperationLogService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Throwable;
@@ -14,7 +15,8 @@ use Throwable;
 class AuthController extends AbstractController
 {
     public function __construct(
-        private readonly AuthService $authService
+        private readonly AuthService $authService,
+        private readonly OperationLogService $operationLogService
     ) {
     }
 
@@ -43,10 +45,12 @@ class AuthController extends AbstractController
 
     public function login(AuthRequest $request): JsonResponse
     {
+        $data = $request->validated();
+        $account = (string) $data['account'];
+
         try {
-            $data = $request->validated();
             $user = $this->authService->login(
-                $data['account'],
+                $account,
                 $data['password'],
                 $request->ip() ?? '',
                 ''
@@ -56,14 +60,19 @@ class AuthController extends AbstractController
 
             $user->load('roles');
 
+            $this->operationLogService->logLogin(true, $account, $user);
+
             return $this->success(
                 (new UserAccountResource($user))->resolve(),
                 '登录成功'
             );
         } catch (BusinessException $e) {
+            $this->operationLogService->logLogin(false, $account, null, $e->getMessage());
+
             return $this->error($e->getErrorCode(), $e->getMessage());
         } catch (Throwable $e) {
             report($e);
+            $this->operationLogService->logLogin(false, $account, null, '登录失败');
 
             return $this->error(UserError::AUTH_LOGIN_FAILED, '登录失败');
         }

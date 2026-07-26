@@ -4,6 +4,8 @@ namespace App\Service;
 
 use App\Constants\Code\CodePrefix;
 use App\Constants\Code\UserError;
+use App\Enums\OperationAction;
+use App\Enums\OperationBizType;
 use App\Enums\RealAuthStatus;
 use App\Enums\RoleStatus;
 use App\Enums\UserStatus;
@@ -15,6 +17,11 @@ use Illuminate\Support\Facades\Hash;
 
 class UserAccountService
 {
+    public function __construct(
+        private readonly OperationLogService $operationLogService
+    ) {
+    }
+
     public function paginate(array $filters = [], int $perPage = 15): LengthAwarePaginator
     {
         $query = UserAccount::query()->orderByDesc('id');
@@ -44,7 +51,7 @@ class UserAccountService
     {
         $this->assertUnique($data);
 
-        return UserAccount::query()->create([
+        $user = UserAccount::query()->create([
             'user_name' => $data['user_name'],
             'nick_name' => $data['nick_name'],
             'user_mobile' => $data['user_mobile'],
@@ -59,11 +66,26 @@ class UserAccountService
             'register_channel' => $data['register_channel'] ?? 'web',
             'real_auth_status' => RealAuthStatus::from((int) ($data['real_auth_status'] ?? RealAuthStatus::None->value)),
         ]);
+
+        $this->operationLogService->logCrud(
+            OperationAction::Insert,
+            OperationBizType::User,
+            'user_created',
+            $user->id,
+            $user->user_name,
+            null,
+            $this->snapshot($user),
+            'UserAccountService@create'
+        );
+
+        return $user;
     }
 
     public function update(UserAccount $user, array $data): UserAccount
     {
         $this->assertUnique($data, (int) $user->id);
+
+        $old = $this->snapshot($user);
 
         $user->fill([
             'user_name' => $data['user_name'] ?? $user->user_name,
@@ -88,12 +110,26 @@ class UserAccountService
         }
 
         $user->save();
+        $user = $user->fresh();
 
-        return $user->fresh();
+        $this->operationLogService->logCrud(
+            OperationAction::Update,
+            OperationBizType::User,
+            'user_updated',
+            $user->id,
+            $user->user_name,
+            $old,
+            $this->snapshot($user),
+            'UserAccountService@update'
+        );
+
+        return $user;
     }
 
     public function updateStatus(UserAccount $user, int $status, string $reason = '', ?string $expireTime = null): UserAccount
     {
+        $old = $this->snapshot($user);
+
         $userStatus = UserStatus::from($status);
         $user->user_status = $userStatus;
         $user->lock_reason = $reason;
@@ -107,13 +143,51 @@ class UserAccountService
 
         $user->save();
 
+        $this->operationLogService->logCrud(
+            OperationAction::Update,
+            OperationBizType::User,
+            'user_status_updated',
+            $user->id,
+            $user->user_name,
+            $old,
+            $this->snapshot($user),
+            'UserAccountService@updateStatus'
+        );
+
         return $user;
     }
 
     public function delete(UserAccount $user): void
     {
+        $old = $this->snapshot($user);
+
         $user->roles()->detach();
         $user->delete();
+
+        $this->operationLogService->logCrud(
+            OperationAction::Delete,
+            OperationBizType::User,
+            'user_deleted',
+            $old['id'],
+            $old['user_name'],
+            $old,
+            null,
+            'UserAccountService@delete'
+        );
+    }
+
+    private function snapshot(UserAccount $user): array
+    {
+        return [
+            'id' => (string) $user->id,
+            'user_name' => $user->user_name,
+            'nick_name' => $user->nick_name,
+            'user_mobile' => $user->user_mobile,
+            'user_email' => $user->user_email,
+            'user_status' => $user->user_status?->value,
+            'real_auth_status' => $user->real_auth_status?->value,
+            'lock_reason' => $user->lock_reason,
+        ];
     }
 
     public function getRoleIds(UserAccount $user): array

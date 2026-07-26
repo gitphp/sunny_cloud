@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             HrSeeder::class,
             ProductSeeder::class,
             WfSeeder::class,
+            OperationLogSeeder::class,
         ]);
     }
 }

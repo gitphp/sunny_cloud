@@ -21,6 +21,7 @@ export const adminMenus = [
     icon: 'Setting',
     children: [
       { key: 'system-settings', title: '网站设置', path: '/backend/system/settings' },
+      { key: 'system-operation-logs', title: '操作日志', path: '/backend/system/operation-logs' },
     ],
   },
   {

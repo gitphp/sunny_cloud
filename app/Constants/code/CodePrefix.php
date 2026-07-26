@@ -57,4 +57,7 @@ class CodePrefix
 
     /** 流程审批 */
     public const WF_FLOW_APPROVE = 890;
+
+    /** 操作日志 */
+    public const OPERATION_LOG = 910;
 }

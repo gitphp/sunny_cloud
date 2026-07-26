@@ -46,6 +46,12 @@ const routes = [
                 meta: { title: '网站设置', parent: '系统设置' },
             },
             {
+                path: 'system/operation-logs',
+                name: 'system-operation-logs',
+                component: () => import('@backend/views/system/OperationLog.vue'),
+                meta: { title: '操作日志', parent: '系统设置' },
+            },
+            {
                 path: 'users',
                 name: 'users',
                 component: () => import('@backend/views/users/Index.vue'),

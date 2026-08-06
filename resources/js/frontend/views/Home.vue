@@ -192,7 +192,7 @@
             {{ item.link_name }}
           </a>
         </div>
-        <p class="copy">© {{ year }} {{ site.company_full_name || '深圳市名扬科技有限公司' }}</p>
+        <p class="copy">© {{ year }} {{ site.company_full_name || '深圳市名扬科技有限公司  粤ICP备2026110578号' }}</p>
       </div>
     </footer>
   </div>

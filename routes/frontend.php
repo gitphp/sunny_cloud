@@ -4,6 +4,7 @@ use App\Http\Controllers\frontend\AuthController as FrontendAuthController;
 use App\Http\Controllers\frontend\FeedbackController as FrontendFeedbackController;
 use App\Http\Controllers\frontend\HomeController as FrontendHomeController;
 use App\Http\Controllers\frontend\IndexController as FrontendIndexController;
+use App\Http\Controllers\frontend\PortalApplyController as FrontendPortalApplyController;
 use App\Http\Controllers\frontend\PortalController as FrontendPortalController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,6 +18,10 @@ Route::prefix('frontend')->group(function () {
         Route::get('portal', [FrontendPortalController::class, 'index']);
         Route::get('home', [FrontendHomeController::class, 'index']);
         Route::post('feedbacks', [FrontendFeedbackController::class, 'store'])->middleware('throttle:5,1');
+
+        Route::get('apply/meta', [FrontendPortalApplyController::class, 'meta']);
+        Route::post('apply/fetch-tkd', [FrontendPortalApplyController::class, 'fetchTkd'])->middleware('throttle:20,1');
+        Route::post('apply', [FrontendPortalApplyController::class, 'store'])->middleware('throttle:5,1');
     });
 
     Route::get('/{any?}', [FrontendIndexController::class, 'index'])

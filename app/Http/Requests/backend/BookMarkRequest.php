@@ -19,7 +19,7 @@ class BookMarkRequest extends FormRequest
         return match ($this->scene()) {
             'create', 'update' => [
                 'category_id' => ['nullable'],
-                'short_title' => ['nullable', 'string', 'max:16'],
+                'short_title' => ['nullable', 'string', 'max:32'],
                 'book_title' => ['required', 'string', 'max:128'],
                 'book_url' => ['required', 'string', 'max:2048'],
                 'book_favicon' => ['nullable', 'string', 'max:512'],

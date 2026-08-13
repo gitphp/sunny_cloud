@@ -116,7 +116,7 @@
           />
         </el-form-item>
         <el-form-item label="短标题" prop="short_title">
-          <el-input v-model="form.short_title" maxlength="16" show-word-limit placeholder="列表展示用" />
+          <el-input v-model="form.short_title" maxlength="32" show-word-limit placeholder="列表展示用" />
         </el-form-item>
         <el-form-item label="长标题" prop="book_title">
           <el-input v-model="form.book_title" maxlength="128" show-word-limit />

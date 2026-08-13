@@ -18,6 +18,7 @@ class BookMark extends Model
         'book_url',
         'book_favicon',
         'book_desc',
+        'click_count',
         'sort_order',
         'status',
         'is_bold',
@@ -28,6 +29,7 @@ class BookMark extends Model
     {
         return [
             'category_id' => 'integer',
+            'click_count' => 'integer',
             'sort_order' => 'integer',
             'created_by' => 'integer',
             'status' => BookMarkStatus::class,

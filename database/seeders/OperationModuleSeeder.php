@@ -62,6 +62,11 @@ class OperationModuleSeeder extends Seeder
             ],
         ];
 
+        // 移除已废弃的申请收录独立菜单
+        AuthMenu::query()
+            ->where('permission_code', 'sitesubmitview')
+            ->update(['menu_status' => MenuStatus::Disabled]);
+
         $menuIds = [$parent->id];
         foreach ($menus as $item) {
             $menu = AuthMenu::query()->updateOrCreate(

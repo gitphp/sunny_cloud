@@ -45,7 +45,7 @@ class PortalService
             'site_description' => '精选优质网站与云盘资源导航',
             'email' => 'githup@163.com',
             'icp' => '',
-            'copyright' => 'Copyright © 2022 - 2026 帮扶导航 All Rights Reserved 粤ICP备2026110578号',
+            'copyright' => 'Copyright © 2026 - 2026 帮扶导航 All Rights Reserved 粤ICP备2026110578号',
         ];
 
         return array_merge($defaults, array_filter($map, fn ($v) => $v !== null && $v !== ''));

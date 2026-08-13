@@ -15,6 +15,12 @@ const routes = [
     meta: { title: '企业官网' },
   },
   {
+    path: '/apply',
+    name: 'apply',
+    component: () => import('@frontend/views/Apply.vue'),
+    meta: { title: '申请收录' },
+  },
+  {
     path: '/frontend',
     redirect: '/',
   },

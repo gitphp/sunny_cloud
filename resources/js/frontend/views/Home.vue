@@ -41,9 +41,7 @@
         </nav>
 
         <div class="header-actions">
-          <a class="apply-btn" href="mailto:githup@163.com?subject=申请收录">
-            ❤ 申请收录
-          </a>
+          <router-link class="apply-btn" to="/apply">申请收录</router-link>
           <button type="button" class="icon-btn" title="切换主题" @click="isDark = !isDark">
             <el-icon><Moon /></el-icon>
           </button>
@@ -150,7 +148,7 @@
             本站内容仅供学习交流，如有侵权请联系邮箱：
             <a :href="`mailto:${site.email || 'githup@163.com'}`">{{ site.email || 'githup@163.com' }}</a>
           </p>
-          <p>{{ site.copyright || 'Copyright © 2022 - 2026 帮扶导航 All Rights Reserved' }}</p>
+          <p>{{ site.copyright || 'Copyright © 2026 - 2026 帮扶导航 All Rights Reserved' }}</p>
           <p v-if="site.icp">{{ site.icp }}</p>
         </div>
         <router-link class="footer-brand" to="/">

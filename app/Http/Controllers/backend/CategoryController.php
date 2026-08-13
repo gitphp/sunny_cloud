@@ -5,6 +5,7 @@ namespace App\Http\Controllers\backend;
 use App\Enums\CategoryLevel;
 use App\Enums\CategoryShowType;
 use App\Enums\CategoryStatus;
+use App\Enums\CategoryType;
 use App\Exceptions\BusinessException;
 use App\Http\Requests\backend\CategoryRequest;
 use App\Http\Resources\backend\CategoryResource;
@@ -23,11 +24,16 @@ class CategoryController extends AbstractController
 
     public function index(Request $request): JsonResponse
     {
-        $tree = $this->categoryService->getTree($request->query('keyword'));
+        $type = $request->query('category_type');
+        $tree = $this->categoryService->getTree(
+            $request->query('keyword'),
+            $type !== null && $type !== '' ? (int) $type : null
+        );
 
         return $this->success([
             'list' => $tree,
             'options' => [
+                'category_type' => CategoryType::labels(),
                 'show_type' => CategoryShowType::labels(),
                 'cat_status' => CategoryStatus::labels(),
                 'level' => CategoryLevel::labels(),

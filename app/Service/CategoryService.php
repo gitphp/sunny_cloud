@@ -7,6 +7,7 @@ use App\Constants\Code\ProductCategoryError;
 use App\Enums\CategoryLevel;
 use App\Enums\CategoryShowType;
 use App\Enums\CategoryStatus;
+use App\Enums\CategoryType;
 use App\Exceptions\BusinessException;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Collection;
@@ -14,9 +15,13 @@ use Illuminate\Support\Facades\Auth;
 
 class CategoryService
 {
-    public function getTree(?string $keyword = null): array
+    public function getTree(?string $keyword = null, ?int $categoryType = null): array
     {
         $baseQuery = Category::query()->orderByDesc('sort_order')->orderBy('id');
+
+        if ($categoryType !== null) {
+            $baseQuery->where('category_type', $categoryType);
+        }
 
         if ($keyword !== null && $keyword !== '') {
             $matchedIds = (clone $baseQuery)
@@ -45,9 +50,14 @@ class CategoryService
 
         $this->assertNameUnique($data['category_name'], $parentId);
 
+        $categoryType = isset($data['category_type'])
+            ? CategoryType::from((int) $data['category_type'])
+            : ($parent?->category_type ?? CategoryType::Content);
+
         return Category::query()->create([
             'category_name' => $data['category_name'],
             'parent_id' => $parentId,
+            'category_type' => $categoryType,
             'show_type' => CategoryShowType::from((int) ($data['show_type'] ?? CategoryShowType::All->value)),
             'cat_status' => CategoryStatus::from((int) ($data['cat_status'] ?? CategoryStatus::Visible->value)),
             'level' => CategoryLevel::from($level),
@@ -84,6 +94,9 @@ class CategoryService
         $category->fill([
             'category_name' => $categoryName,
             'parent_id' => $parentId,
+            'category_type' => isset($data['category_type'])
+                ? CategoryType::from((int) $data['category_type'])
+                : ($category->category_type ?? CategoryType::Content),
             'show_type' => isset($data['show_type'])
                 ? CategoryShowType::from((int) $data['show_type'])
                 : $category->show_type,
@@ -300,6 +313,8 @@ class CategoryService
             'id' => (string) $category->id,
             'category_name' => $category->category_name,
             'parent_id' => (string) $category->parent_id,
+            'category_type' => $category->category_type?->value ?? CategoryType::Content->value,
+            'category_type_label' => $category->category_type?->label() ?? CategoryType::Content->label(),
             'show_type' => $category->show_type?->value,
             'show_type_label' => $category->show_type?->label(),
             'cat_status' => $category->cat_status?->value,

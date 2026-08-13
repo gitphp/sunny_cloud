@@ -1,354 +1,838 @@
 <template>
-  <div class="site">
-    <header class="nav" :class="{ solid: navSolid }">
-      <a class="brand" href="#top" @click.prevent="scrollTo('top')">
-        <span class="brand-mark">MY</span>
-        <span class="brand-text">
-          <strong>名扬科技</strong>
-          <small>MINGYANG TECH</small>
-        </span>
-      </a>
-      <nav class="nav-links">
-        <a href="#products" @click.prevent="scrollTo('products')">产品</a>
-        <a href="#news" @click.prevent="scrollTo('news')">资讯</a>
-        <a href="#careers" @click.prevent="scrollTo('careers')">招聘</a>
-        <a href="#contact" @click.prevent="scrollTo('contact')">联系</a>
-      </nav>
-      <div class="nav-actions">
-        <template v-if="isLoggedIn">
-          <span class="hello">{{ user?.nick_name || user?.user_name }}</span>
-          <button type="button" class="link-btn" @click="onLogout">退出</button>
-        </template>
-        <template v-else>
-          <router-link to="/frontend/login">登录</router-link>
-          <router-link class="nav-cta" to="/frontend/register">注册</router-link>
-        </template>
+  <div class="portal" :class="{ dark: isDark }">
+    <header class="portal-header">
+      <div class="portal-header-inner">
+        <router-link class="brand" to="/">
+          <img class="brand-logo" :src="logo" alt="logo" width="220" height="66" />
+        </router-link>
+
+        <nav class="top-nav">
+          <a
+            class="nav-item"
+            :class="{ active: !channelId }"
+            href="/"
+            @click.prevent="goHome"
+          >首页</a>
+          <div
+            v-for="item in nav"
+            :key="item.id"
+            class="nav-item-wrap"
+            @mouseenter="openMenu = item.id"
+            @mouseleave="openMenu = ''"
+          >
+            <a
+              class="nav-item"
+              :class="{ active: channelId === item.id }"
+              href="#"
+              @click.prevent="selectChannel(item.id)"
+            >
+              {{ item.category_name }}
+              <span v-if="item.children?.length" class="chev">▾</span>
+            </a>
+            <div v-if="item.children?.length && openMenu === item.id" class="nav-drop">
+              <a
+                v-for="child in item.children"
+                :key="child.id"
+                href="#"
+                @click.prevent="scrollToSection(child.id)"
+              >{{ child.category_name }}</a>
+            </div>
+          </div>
+        </nav>
+
+        <div class="header-actions">
+          <a class="apply-btn" href="mailto:githup@163.com?subject=申请收录">
+            ❤ 申请收录
+          </a>
+          <button type="button" class="icon-btn" title="切换主题" @click="isDark = !isDark">
+            <el-icon><Moon /></el-icon>
+          </button>
+          <button type="button" class="icon-btn" title="搜索" @click="focusSearch">
+            <el-icon><Search /></el-icon>
+          </button>
+        </div>
       </div>
     </header>
 
-    <section id="top" class="hero">
-      <div
-        class="hero-media"
-        :style="heroStyle"
-        :class="{ animate: heroReady }"
-      />
-      <div class="hero-veil" />
-      <div class="hero-content" :class="{ in: heroReady }">
-        <p class="hero-brand">深圳市名扬科技</p>
-        <h1>{{ heroTitle }}</h1>
-        <p class="hero-desc">{{ site.site_description }}</p>
-        <div class="hero-actions">
-          <a class="btn primary" href="#products" @click.prevent="scrollTo('products')">了解产品</a>
-          <a class="btn ghost" href="#contact" @click.prevent="scrollTo('contact')">联系我们</a>
-        </div>
-      </div>
-      <div v-if="banners.length > 1" class="hero-dots">
-        <button
-          v-for="(item, idx) in banners"
-          :key="item.id"
-          type="button"
-          :class="{ active: idx === bannerIndex }"
-          @click="bannerIndex = idx"
-        />
-      </div>
-    </section>
+    <div class="portal-body">
+      <aside class="side-nav">
+        <a
+          v-for="sec in sections"
+          :key="sec.id"
+          class="side-item"
+          :class="{ active: activeSection === sec.id }"
+          href="#"
+          @click.prevent="scrollToSection(sec.id)"
+        >{{ sec.category_name }}</a>
+      </aside>
 
-    <section id="products" class="section products">
-      <div class="section-inner">
-        <header class="section-head">
-          <h2>产品与方案</h2>
-          <p>面向企业数字化场景，持续打磨可落地的产品能力</p>
-        </header>
-        <div v-if="categories.length" class="cat-row">
-          <span v-for="item in categories" :key="item.id">{{ item.category_name }}</span>
-        </div>
-        <div v-if="products.length" class="product-list">
-          <article v-for="item in products" :key="item.id" class="product-row">
-            <div class="product-visual">
-              <img
-                v-if="item.main_image_url"
-                :src="item.main_image_url"
-                :alt="item.product_name"
-                @error="hideImg"
-              />
-              <div v-else class="img-fallback" />
-            </div>
-            <div class="product-body">
-              <h3>{{ item.product_name }}</h3>
-              <p>{{ item.short_desc || '为企业提供稳定高效的数字化能力。' }}</p>
-              <div class="meta">
-                <span v-if="item.category_name">{{ item.category_name }}</span>
-                <span v-if="item.brand_name">{{ item.brand_name }}</span>
-              </div>
-            </div>
-          </article>
-        </div>
-        <p v-else class="empty">产品即将上架，敬请期待</p>
-      </div>
-    </section>
-
-    <section id="news" class="section news">
-      <div class="section-inner">
-        <header class="section-head">
-          <h2>资讯动态</h2>
-          <p>名扬观点、产品进展与行业观察</p>
-        </header>
-        <div v-if="articles.length" class="news-list">
-          <article v-for="item in articles" :key="item.id" class="news-item">
-            <time>{{ item.published_at || '近期' }}</time>
-            <h3>{{ item.title }}</h3>
-            <p>{{ item.summary }}</p>
-          </article>
-        </div>
-        <p v-else class="empty">暂无已发布资讯</p>
-      </div>
-    </section>
-
-    <section id="careers" class="section careers">
-      <div class="section-inner">
-        <header class="section-head light">
-          <h2>加入名扬</h2>
-          <p>与优秀的人一起，把复杂做成简单</p>
-        </header>
-        <div v-if="jobs.length" class="job-list">
-          <a
-            v-for="item in jobs"
-            :key="item.id"
-            class="job-item"
-            href="#contact"
-            @click.prevent="prefillJob(item)"
+      <main class="main-area">
+        <div class="toolbar">
+          <el-input
+            ref="searchRef"
+            v-model="keyword"
+            clearable
+            placeholder="搜索站点名称 / 描述"
+            class="search-box"
           >
-            <div>
-              <h3>
-                {{ item.job_title }}
-                <em v-if="item.is_hot === 1">急聘</em>
-              </h3>
-              <p>{{ item.department }} · {{ item.workplace }}</p>
-            </div>
-            <strong>{{ item.salary_range || '面议' }}</strong>
-          </a>
+            <template #prefix>
+              <el-icon><Search /></el-icon>
+            </template>
+          </el-input>
         </div>
-        <p v-else class="empty light">当前暂无开放职位</p>
-      </div>
-    </section>
 
-    <section id="contact" class="section contact">
-      <div class="section-inner contact-grid">
-        <div>
-          <header class="section-head">
-            <h2>联系名扬</h2>
-            <p>留下需求，我们会尽快与您沟通</p>
+        <section
+          v-for="sec in filteredSections"
+          :id="`sec-${sec.id}`"
+          :key="sec.id"
+          class="block"
+        >
+          <header class="block-head">
+            <h2>{{ sec.category_name }}</h2>
+            <a class="more" href="#" @click.prevent>更多 +</a>
           </header>
-          <ul class="contact-info">
-            <li><span>电话</span>{{ site.phone }}</li>
-            <li><span>邮箱</span>{{ site.email }}</li>
-            <li><span>地址</span>{{ site.address }}</li>
-            <li v-if="site.wechat"><span>微信</span>{{ site.wechat }}</li>
-          </ul>
-        </div>
-        <form class="contact-form" @submit.prevent="onSubmitFeedback">
-          <label>
-            联系人
-            <input v-model="form.fb_name" maxlength="32" required placeholder="您的姓名" />
-          </label>
-          <label>
-            电话
-            <input v-model="form.fb_phone" maxlength="16" placeholder="方便回拨的手机号" />
-          </label>
-          <label>
-            公司
-            <input v-model="form.fb_company" maxlength="32" placeholder="公司名称" />
-          </label>
-          <label>
-            主题
-            <input v-model="form.fb_title" maxlength="128" required placeholder="合作 / 产品咨询 / 应聘" />
-          </label>
-          <label class="full">
-            内容
-            <textarea v-model="form.fb_content" rows="4" maxlength="5000" required placeholder="请简要描述您的需求" />
-          </label>
-          <button class="btn primary" type="submit" :disabled="submitting">
-            {{ submitting ? '提交中…' : '提交留言' }}
-          </button>
-        </form>
-      </div>
-    </section>
 
-    <footer class="footer">
+          <div v-if="sec.layout === 'text'" class="text-links">
+            <a
+              v-for="bm in sec.bookmarks"
+              :key="bm.id"
+              :href="bm.book_url"
+              target="_blank"
+              rel="noopener noreferrer"
+            >{{ bm.book_title || bm.short_title }}</a>
+          </div>
+
+          <div v-else class="card-grid">
+            <a
+              v-for="bm in sec.bookmarks"
+              :key="bm.id"
+              class="link-card"
+              :href="bm.book_url"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <div class="card-icon">
+                <img v-if="bm.book_favicon" :src="bm.book_favicon" alt="" @error="hideImg" />
+                <span v-else>{{ initial(bm.book_title || bm.short_title) }}</span>
+              </div>
+              <div class="card-body">
+                <div class="card-title-row">
+                  <strong :class="{ bold: bm.is_bold === 0 }">{{ bm.book_title || bm.short_title }}</strong>
+                  <span class="arrow">›</span>
+                </div>
+                <p>{{ bm.book_desc || bm.book_url }}</p>
+              </div>
+            </a>
+          </div>
+        </section>
+
+        <el-empty v-if="!loading && !filteredSections.length" description="暂无导航内容" />
+
+        <section v-if="friendLinks.length" class="friend-block">
+          <h3>☆ 友链</h3>
+          <div class="friend-list">
+            <a
+              v-for="link in friendLinks"
+              :key="link.id"
+              :href="link.link_url"
+              target="_blank"
+              rel="noopener noreferrer"
+            >{{ link.link_name }}</a>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer class="portal-footer">
       <div class="footer-inner">
-        <div class="footer-brand">
-          <strong>深圳市名扬科技</strong>
-          <p>{{ site.company_full_name || '深圳市名扬科技有限公司' }}</p>
+        <div class="footer-text">
+          <p>
+            本站内容仅供学习交流，如有侵权请联系邮箱：
+            <a :href="`mailto:${site.email || 'githup@163.com'}`">{{ site.email || 'githup@163.com' }}</a>
+          </p>
+          <p>{{ site.copyright || 'Copyright © 2022 - 2026 帮扶导航 All Rights Reserved' }}</p>
+          <p v-if="site.icp">{{ site.icp }}</p>
         </div>
-        <div v-if="friendLinks.length" class="friend-links">
-          <span>合作伙伴</span>
-          <a
-            v-for="item in friendLinks"
-            :key="item.id"
-            :href="item.link_url"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {{ item.link_name }}
-          </a>
-        </div>
-        <p class="copy">© {{ year }} {{ site.company_full_name || '深圳市名扬科技有限公司  粤ICP备2026110578号' }}</p>
+        <router-link class="footer-brand" to="/">
+          <img :src="logo" alt="logo" />
+          <span>{{ site.site_name || '帮扶导航' }}</span>
+        </router-link>
       </div>
     </footer>
+
+    <div class="fab">
+      <router-link class="fab-btn" to="/company" title="企业官网">
+        <el-icon><EditPen /></el-icon>
+      </router-link>
+      <button type="button" class="fab-btn" title="回到顶部" @click="toTop">
+        <el-icon><ArrowUp /></el-icon>
+      </button>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted, onUnmounted, reactive, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
-import { fetchHome, submitFeedback } from '../api/home';
-import { useAuth } from '../composables/useAuth';
+import { ArrowUp, EditPen, Moon, Search } from '@element-plus/icons-vue';
+import { fetchPortal } from '@frontend/api/portal';
 
+const route = useRoute();
 const router = useRouter();
-const { user, isLoggedIn, logout } = useAuth();
 
 const loading = ref(false);
-const submitting = ref(false);
-const navSolid = ref(false);
-const heroReady = ref(false);
-const bannerIndex = ref(0);
-const banners = ref([]);
-const products = ref([]);
-const categories = ref([]);
-const articles = ref([]);
-const jobs = ref([]);
+const site = ref({});
+const logo = ref('/uploads/logo/budff_logo.png');
+const nav = ref([]);
+const sections = ref([]);
 const friendLinks = ref([]);
-const site = reactive({
-  site_name: '名扬科技',
-  site_title: '深圳市名扬科技 — 企业数字化与智能云服务',
-  site_description: '深圳市名扬科技专注企业数字化建设，提供云平台、智能应用与行业解决方案，助力企业稳健增长。',
-  phone: '0755-88886666',
-  email: 'contact@mingyang.tech',
-  address: '深圳市南山区科技园南区科苑路',
-  wechat: 'mingyang_tech',
-  company_full_name: '深圳市名扬科技有限公司',
+const channelId = ref('');
+const activeSection = ref('');
+const openMenu = ref('');
+const keyword = ref('');
+const isDark = ref(false);
+const searchRef = ref();
+
+const filteredSections = computed(() => {
+  const kw = keyword.value.trim().toLowerCase();
+  if (!kw) return sections.value;
+  return sections.value
+    .map((sec) => ({
+      ...sec,
+      bookmarks: (sec.bookmarks || []).filter((b) => {
+        const text = `${b.book_title || ''} ${b.short_title || ''} ${b.book_desc || ''}`.toLowerCase();
+        return text.includes(kw);
+      }),
+    }))
+    .filter((sec) => sec.bookmarks.length);
 });
 
-const form = reactive({
-  fb_name: '',
-  fb_phone: '',
-  fb_email: '',
-  fb_company: '',
-  fb_title: '',
-  fb_content: '',
-});
-
-const year = new Date().getFullYear();
-let bannerTimer = null;
-
-const currentBanner = computed(() => banners.value[bannerIndex.value] || null);
-
-const heroTitle = computed(() => {
-  return currentBanner.value?.ad_title || '让数字化成为企业增长引擎';
-});
-
-const heroStyle = computed(() => {
-  const url = currentBanner.value?.cover_url;
-  if (url) {
-    return { backgroundImage: `url(${url})` };
-  }
-  return {};
-});
+function initial(title) {
+  const t = String(title || '?').trim();
+  return t.slice(0, 1).toUpperCase();
+}
 
 function hideImg(e) {
   e.target.style.display = 'none';
 }
 
-function scrollTo(id) {
-  if (id === 'top') {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    return;
-  }
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function onScroll() {
-  navSolid.value = window.scrollY > 40;
-}
-
-function prefillJob(item) {
-  form.fb_title = `应聘：${item.job_title}`;
-  form.fb_content = `您好，我对「${item.job_title}」（${item.department} / ${item.workplace}）职位感兴趣，期待沟通。`;
-  scrollTo('contact');
-}
-
-function startBannerRotate() {
-  stopBannerRotate();
-  if (banners.value.length <= 1) return;
-  bannerTimer = window.setInterval(() => {
-    bannerIndex.value = (bannerIndex.value + 1) % banners.value.length;
-  }, 6000);
-}
-
-function stopBannerRotate() {
-  if (bannerTimer) {
-    clearInterval(bannerTimer);
-    bannerTimer = null;
-  }
-}
-
-async function loadHome() {
+async function loadData() {
   loading.value = true;
   try {
-    const res = await fetchHome();
+    const res = await fetchPortal({
+      channel_id: channelId.value || undefined,
+    });
     const data = res.data || {};
-    Object.assign(site, data.site || {});
-    banners.value = data.banners || [];
-    products.value = data.products || [];
-    categories.value = data.categories || [];
-    articles.value = data.articles || [];
-    jobs.value = data.jobs || [];
+    site.value = data.site || {};
+    logo.value = data.logo || '/uploads/logo/budff_logo.png';
+    nav.value = data.nav || [];
+    sections.value = data.sections || [];
     friendLinks.value = data.friend_links || [];
-    document.title = site.site_title || '深圳市名扬科技';
-    startBannerRotate();
+    if (site.value.site_title) {
+      document.title = site.value.site_title;
+    }
+    await nextTick();
+    observeSections();
   } catch (e) {
-    ElMessage.error(e?.message || '首页加载失败');
+    ElMessage.error(e?.message || '加载失败');
   } finally {
     loading.value = false;
-    requestAnimationFrame(() => {
-      heroReady.value = true;
-    });
   }
 }
 
-async function onSubmitFeedback() {
-  submitting.value = true;
-  try {
-    await submitFeedback({ ...form });
-    ElMessage.success('提交成功，我们会尽快与您联系');
-    form.fb_name = '';
-    form.fb_phone = '';
-    form.fb_email = '';
-    form.fb_company = '';
-    form.fb_title = '';
-    form.fb_content = '';
-  } catch (e) {
-    ElMessage.error(e?.message || '提交失败');
-  } finally {
-    submitting.value = false;
+function goHome() {
+  channelId.value = '';
+  router.replace({ path: '/', query: {} });
+  loadData();
+}
+
+function selectChannel(id) {
+  channelId.value = String(id);
+  router.replace({ path: '/', query: { channel_id: id } });
+  loadData();
+}
+
+function scrollToSection(id) {
+  activeSection.value = String(id);
+  const el = document.getElementById(`sec-${id}`);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
 
-async function onLogout() {
-  await logout();
-  ElMessage.success('已退出');
-  router.push('/frontend/login');
+function toTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+function focusSearch() {
+  searchRef.value?.focus?.();
+}
+
+let observer;
+function observeSections() {
+  observer?.disconnect();
+  observer = new IntersectionObserver(
+    (entries) => {
+      const visible = entries
+        .filter((e) => e.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+      if (visible[0]) {
+        activeSection.value = visible[0].target.id.replace(/^sec-/, '');
+      }
+    },
+    { rootMargin: '-20% 0px -60% 0px', threshold: [0.1, 0.4] }
+  );
+  sections.value.forEach((sec) => {
+    const el = document.getElementById(`sec-${sec.id}`);
+    if (el) observer.observe(el);
+  });
+}
+
+watch(
+  () => route.query.channel_id,
+  (val) => {
+    const next = val ? String(val) : '';
+    if (next !== channelId.value) {
+      channelId.value = next;
+      loadData();
+    }
+  }
+);
 
 onMounted(() => {
-  loadHome();
-  onScroll();
-  window.addEventListener('scroll', onScroll, { passive: true });
+  channelId.value = route.query.channel_id ? String(route.query.channel_id) : '';
+  loadData();
 });
 
-onUnmounted(() => {
-  stopBannerRotate();
-  window.removeEventListener('scroll', onScroll);
-});
+onUnmounted(() => observer?.disconnect());
 </script>
+
+<style scoped>
+.portal {
+  --accent: #e74c3c;
+  --accent-soft: #ffe8e6;
+  --bg: #f3f4f6;
+  --card: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --header-h: 78px;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+}
+
+.portal.dark {
+  --bg: #111827;
+  --card: #1f2937;
+  --text: #f3f4f6;
+  --muted: #9ca3af;
+  --line: #374151;
+  --accent-soft: #3f1d1d;
+}
+
+.portal-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: var(--header-h);
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.02);
+}
+
+.portal-header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  height: 100%;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--text);
+  flex-shrink: 0;
+}
+
+.brand-logo {
+  width: 220px;
+  height: 66px;
+  object-fit: contain;
+  display: block;
+}
+
+.top-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.nav-item-wrap {
+  position: relative;
+}
+
+.nav-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 14px;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 15px;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+
+.nav-item.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  font-weight: 600;
+}
+
+.nav-item:hover {
+  color: var(--accent);
+}
+
+.chev {
+  font-size: 10px;
+  opacity: 0.7;
+}
+
+.nav-drop {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 140px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  padding: 6px;
+  z-index: 20;
+}
+
+.nav-drop a {
+  display: block;
+  padding: 8px 12px;
+  color: var(--text);
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.nav-drop a:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.apply-btn {
+  display: inline-flex;
+  align-items: center;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 18px;
+  background: var(--accent);
+  color: #fff;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.icon-btn {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.portal-body {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.side-nav {
+  position: sticky;
+  top: calc(var(--header-h) + 20px);
+  background: var(--card);
+  border-radius: 12px;
+  padding: 12px 0;
+  border: 1px solid var(--line);
+}
+
+.side-item {
+  display: block;
+  padding: 10px 16px 10px 20px;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 14px;
+  position: relative;
+}
+
+.side-item.active {
+  color: var(--accent);
+  font-weight: 600;
+  background: linear-gradient(90deg, var(--accent-soft), transparent);
+}
+
+.side-item.active::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 14px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+
+.main-area {
+  min-width: 0;
+}
+
+.toolbar {
+  margin-bottom: 16px;
+}
+
+.search-box {
+  max-width: 360px;
+}
+
+.block {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px 20px 20px;
+  margin-bottom: 16px;
+  scroll-margin-top: calc(var(--header-h) + 16px);
+}
+
+.block-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.block-head h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.more {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.more:hover {
+  color: var(--accent);
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.link-card {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.link-card:hover {
+  background: var(--accent-soft);
+  transform: translateY(-1px);
+}
+
+.card-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.portal.dark .card-icon {
+  background: #111827;
+}
+
+.card-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-body {
+  min-width: 0;
+  flex: 1;
+}
+
+.card-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.card-title-row strong {
+  font-size: 14px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-title-row strong.bold {
+  font-weight: 800;
+}
+
+.arrow {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.card-body p {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.text-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+}
+
+.text-links a {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.text-links a:hover {
+  color: var(--accent);
+}
+
+.friend-block {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 16px;
+}
+
+.friend-block h3 {
+  margin: 0 0 12px;
+  font-size: 15px;
+}
+
+.friend-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+}
+
+.friend-list a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.friend-list a:hover {
+  color: var(--accent);
+}
+
+.portal-footer {
+  border-top: 1px solid var(--line);
+  background: var(--card);
+  margin-top: 24px;
+}
+
+.footer-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 28px 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: flex-end;
+}
+
+.footer-text {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.footer-text p {
+  margin: 0;
+}
+
+.footer-text a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--text);
+  opacity: 0.85;
+}
+
+.footer-brand img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.fab {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 40;
+}
+
+.fab-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.fab-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+@media (max-width: 1100px) {
+  .card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .portal-body {
+    grid-template-columns: 1fr;
+  }
+
+  .side-nav {
+    position: static;
+    display: flex;
+    overflow-x: auto;
+    padding: 8px;
+    gap: 4px;
+  }
+
+  .side-item {
+    white-space: nowrap;
+    padding: 8px 12px;
+  }
+
+  .side-item.active::before {
+    display: none;
+  }
+
+  .card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .apply-btn {
+    padding: 0 10px;
+    font-size: 12px;
+  }
+
+  .brand-logo {
+    width: 160px;
+    height: 48px;
+  }
+
+  .top-nav {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+</style>

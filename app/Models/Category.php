@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\CategoryLevel;
 use App\Enums\CategoryShowType;
 use App\Enums\CategoryStatus;
+use App\Enums\CategoryType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,6 +19,7 @@ class Category extends Model
     protected $fillable = [
         'category_name',
         'parent_id',
+        'category_type',
         'show_type',
         'cat_status',
         'level',
@@ -33,6 +35,7 @@ class Category extends Model
     {
         return [
             'parent_id' => 'integer',
+            'category_type' => CategoryType::class,
             'show_type' => CategoryShowType::class,
             'cat_status' => CategoryStatus::class,
             'level' => CategoryLevel::class,

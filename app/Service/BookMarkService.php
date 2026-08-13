@@ -6,6 +6,7 @@ use App\Constants\Code\BookMarkError;
 use App\Constants\Code\CodePrefix;
 use App\Enums\BookMarkBold;
 use App\Enums\BookMarkStatus;
+use App\Enums\CategoryType;
 use App\Enums\OperationAction;
 use App\Enums\OperationBizType;
 use App\Exceptions\BusinessException;
@@ -182,7 +183,7 @@ class BookMarkService
 
     public function categoryOptions(): array
     {
-        return $this->categoryService->getTree();
+        return $this->categoryService->getTree(null, CategoryType::Portal->value);
     }
 
     private function normalizeCategoryId(mixed $categoryId): int

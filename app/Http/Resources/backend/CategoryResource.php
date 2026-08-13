@@ -16,6 +16,8 @@ class CategoryResource extends JsonResource
             'id' => (string) $this->id,
             'category_name' => $this->category_name,
             'parent_id' => (string) $this->parent_id,
+            'category_type' => $this->category_type?->value,
+            'category_type_label' => $this->category_type?->label(),
             'show_type' => $this->show_type?->value,
             'show_type_label' => $this->show_type?->label(),
             'cat_status' => $this->cat_status?->value,

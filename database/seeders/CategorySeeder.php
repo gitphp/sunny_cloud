@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Enums\CategoryLevel;
 use App\Enums\CategoryShowType;
 use App\Enums\CategoryStatus;
+use App\Enums\CategoryType;
 use App\Models\Category;
 use Illuminate\Database\Seeder;
 
@@ -19,6 +20,7 @@ class CategorySeeder extends Seeder
         $parent = Category::query()->create([
             'category_name' => '新闻资讯',
             'parent_id' => 0,
+            'category_type' => CategoryType::Content,
             'show_type' => CategoryShowType::All,
             'cat_status' => CategoryStatus::Visible,
             'level' => CategoryLevel::Level1,
@@ -30,6 +32,7 @@ class CategorySeeder extends Seeder
         Category::query()->create([
             'category_name' => '公司动态',
             'parent_id' => $parent->id,
+            'category_type' => CategoryType::Content,
             'show_type' => CategoryShowType::All,
             'cat_status' => CategoryStatus::Visible,
             'level' => CategoryLevel::Level2,
@@ -38,6 +41,7 @@ class CategorySeeder extends Seeder
         Category::query()->create([
             'category_name' => '项目动态',
             'parent_id' => $parent->id,
+            'category_type' => CategoryType::Content,
             'show_type' => CategoryShowType::All,
             'cat_status' => CategoryStatus::Visible,
             'level' => CategoryLevel::Level2,
@@ -46,6 +50,7 @@ class CategorySeeder extends Seeder
         Category::query()->create([
             'category_name' => '行业新闻',
             'parent_id' => $parent->id,
+            'category_type' => CategoryType::Content,
             'show_type' => CategoryShowType::All,
             'cat_status' => CategoryStatus::Visible,
             'level' => CategoryLevel::Level2,

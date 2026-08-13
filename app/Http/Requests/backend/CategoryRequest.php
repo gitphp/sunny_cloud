@@ -4,6 +4,7 @@ namespace App\Http\Requests\backend;
 
 use App\Enums\CategoryShowType;
 use App\Enums\CategoryStatus;
+use App\Enums\CategoryType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -69,6 +70,7 @@ class CategoryRequest extends FormRequest
         return [
             'category_name' => ['required', 'string', 'max:255'],
             'parent_id' => ['nullable'],
+            'category_type' => ['nullable', 'integer', Rule::in(array_column(CategoryType::cases(), 'value'))],
             'show_type' => ['nullable', 'integer', Rule::in(array_column(CategoryShowType::cases(), 'value'))],
             'cat_status' => ['nullable', 'integer', Rule::in(array_column(CategoryStatus::cases(), 'value'))],
             'sort_order' => ['nullable', 'integer', 'min:0'],

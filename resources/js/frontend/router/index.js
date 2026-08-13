@@ -9,6 +9,12 @@ const routes = [
     meta: { title: '首页' },
   },
   {
+    path: '/company',
+    name: 'company',
+    component: () => import('@frontend/views/Company.vue'),
+    meta: { title: '企业官网' },
+  },
+  {
     path: '/frontend',
     redirect: '/',
   },
@@ -33,6 +39,9 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior() {
+    return { top: 0 };
+  },
 });
 
 router.beforeEach(async (to) => {
@@ -42,6 +51,9 @@ router.beforeEach(async (to) => {
   }
   if (to.meta.guest && isLoggedIn.value) {
     return { path: '/' };
+  }
+  if (to.meta.title) {
+    document.title = to.meta.title;
   }
   return true;
 });

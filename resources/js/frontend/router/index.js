@@ -21,6 +21,12 @@ const routes = [
     meta: { title: '申请收录' },
   },
   {
+    path: '/tools/mortgage',
+    name: 'mortgage',
+    component: () => import('@frontend/views/tools/Mortgage.vue'),
+    meta: { title: '房贷计算器' },
+  },
+  {
     path: '/frontend',
     redirect: '/',
   },

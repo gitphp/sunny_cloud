@@ -10,6 +10,9 @@ Route::get('/company/{any?}', [FrontendIndexController::class, 'index'])
 Route::get('/apply/{any?}', [FrontendIndexController::class, 'index'])
     ->where('any', '.*')
     ->name('apply');
+Route::get('/tools/{any?}', [FrontendIndexController::class, 'index'])
+    ->where('any', '.*')
+    ->name('tools');
 
 Route::redirect('/frontend/home', '/', 301);
 Route::redirect('/frontend', '/', 301);

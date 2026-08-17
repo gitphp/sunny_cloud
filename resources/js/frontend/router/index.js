@@ -27,6 +27,12 @@ const routes = [
     meta: { title: '房贷计算器' },
   },
   {
+    path: '/tools/json',
+    name: 'json-format',
+    component: () => import('@frontend/views/tools/Json.vue'),
+    meta: { title: 'JSON 格式化' },
+  },
+  {
     path: '/frontend',
     redirect: '/',
   },

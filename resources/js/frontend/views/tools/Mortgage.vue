@@ -7,6 +7,7 @@
         </router-link>
         <div class="header-links">
           <router-link to="/tools/mortgage" class="active">房贷计算器</router-link>
+          <router-link to="/tools/json">JSON 格式化</router-link>
           <router-link to="/apply">申请收录</router-link>
           <router-link to="/">返回首页</router-link>
         </div>

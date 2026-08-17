@@ -7,6 +7,7 @@
         </router-link>
         <div class="header-links">
           <router-link to="/tools/json" class="active">JSON 格式化</router-link>
+          <router-link to="/tools/encode">编解码</router-link>
           <router-link to="/tools/mortgage">房贷计算器</router-link>
           <router-link to="/apply">申请收录</router-link>
           <router-link to="/">返回首页</router-link>

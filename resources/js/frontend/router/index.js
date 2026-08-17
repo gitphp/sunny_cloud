@@ -33,6 +33,12 @@ const routes = [
     meta: { title: 'JSON 格式化' },
   },
   {
+    path: '/tools/encode',
+    name: 'encode',
+    component: () => import('@frontend/views/tools/Encode.vue'),
+    meta: { title: '编解码工具' },
+  },
+  {
     path: '/frontend',
     redirect: '/',
   },
